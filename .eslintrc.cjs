@@ -3,8 +3,7 @@ module.exports = {
     env: {browser: true, es2020: true},
     extends: [
         'eslint:recommended',
-        'plugin:@typescript-eslint/recommended-type-checked',
-        'plugin:@typescript-eslint/stylistic-type-checked',
+        'plugin:@typescript-eslint/recommended',
         'plugin:react-hooks/recommended',
         'plugin:react/recommended',
         'plugin:react/jsx-runtime',
@@ -23,5 +22,6 @@ module.exports = {
             'warn',
             {allowConstantExport: true},
         ],
+        "react/prop-types": "off",
     },
 }
