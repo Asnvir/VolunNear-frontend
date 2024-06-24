@@ -1,7 +1,7 @@
 import { Link } from 'react-router-dom';
 import { useKeycloak } from '@react-keycloak/web';
 
-const Nav = () => {
+export const Nav = () => {
     const { keycloak } = useKeycloak();
 
     return (
@@ -43,7 +43,7 @@ const Nav = () => {
                                             className="text-blue-800"
                                             onClick={() => keycloak.logout()}
                                         >
-                                            Logout ({keycloak.tokenParsed.preferred_username})
+                                            Logout ({keycloak.tokenParsed?.preferred_username})
                                         </button>
                                     )}
                                 </div>
@@ -56,4 +56,4 @@ const Nav = () => {
     );
 };
 
-export default Nav;
+

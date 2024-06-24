@@ -1,4 +1,4 @@
-const Secured = () => {
+export const SecuredPage = () => {
 
     return (
         <div>
@@ -7,4 +7,3 @@ const Secured = () => {
     );
 };
 
-export default Secured;

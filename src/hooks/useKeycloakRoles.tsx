@@ -1,7 +1,7 @@
-import { useKeycloak } from '@react-keycloak/web';
+import {useKeycloak} from '@react-keycloak/web';
 
-const useKeycloakRoles = () => {
-    const { keycloak } = useKeycloak();
+export const useKeycloakRoles = () => {
+    const {keycloak} = useKeycloak();
 
     if (keycloak && keycloak.tokenParsed) {
         const realmRoles = keycloak.tokenParsed.realm_access?.roles || [];
@@ -24,4 +24,3 @@ const useKeycloakRoles = () => {
     };
 };
 
-export default useKeycloakRoles;
