@@ -1,59 +1,116 @@
-import { Link } from 'react-router-dom';
-import { useKeycloak } from '@react-keycloak/web';
+import {
+    Box,
+    Flex,
+    Link,
+    Stack,
+    useColorModeValue,
+} from '@chakra-ui/react';
+import {useKeycloak} from "@react-keycloak/web";
 
-export const Nav = () => {
-    const { keycloak } = useKeycloak();
+export const NavBar = () => {
+    const {keycloak} = useKeycloak();
+
+
+    const handleLogout = () => {
+        keycloak.logout();
+    };
+
 
     return (
-        <div>
-            <div className="top-0 w-full flex flex-wrap">
-                <section className="x-auto">
-                    <nav className="flex justify-between bg-gray-200 text-blue-800 w-screen">
-                        <div className="px-5 xl:px-12 py-6 flex w-full items-center">
-                            <h1 className="text-3xl font-bold font-heading">
-                                Keycloak React AUTH.
-                            </h1>
-                            <ul className="hidden md:flex px-4 mx-auto font-semibold font-heading space-x-12">
-                                <li>
-                                    <Link className="hover:text-blue-800" to="/">
-                                        Home
-                                    </Link>
-                                </li>
-                                <li>
-                                    <Link className="hover:text-blue-800" to="/secured">
-                                        Secured Page
-                                    </Link>
-                                </li>
-                            </ul>
-                            <div className="hidden xl:flex items-center space-x-5">
-                                <div className="hover:text-gray-200">
-                                    {!keycloak.authenticated && (
-                                        <button
-                                            type="button"
-                                            className="text-blue-800"
-                                            onClick={() => keycloak.login()}
-                                        >
-                                            Login
-                                        </button>
-                                    )}
+        <Box>
+            <Flex
+                bg={useColorModeValue('black', 'gray.800')}
+                color={useColorModeValue('white', 'white')}
+                minH={'60px'}
+                py={{base: 2}}
+                px={{base: 4}}
+                align={'center'}
+                borderRadius="md"
+            >
+                <Flex flex={{base: 1}} justify={{base: 'start'}}>
+                    <Link
+                        href={'/'}
+                        fontFamily={'heading'}
+                        fontSize={'lg'}
+                        fontWeight={700}
+                        color={useColorModeValue('white', 'white')}
+                        mr={10}
+                    >
+                        Logo-IMG
+                    </Link>
+                </Flex>
 
-                                    {keycloak.authenticated && (
-                                        <button
-                                            type="button"
-                                            className="text-blue-800"
-                                            onClick={() => keycloak.logout()}
-                                        >
-                                            Logout ({keycloak.tokenParsed?.preferred_username})
-                                        </button>
-                                    )}
-                                </div>
-                            </div>
-                        </div>
-                    </nav>
-                </section>
-            </div>
-        </div>
+                <Stack
+                    flex={{base: 1, md: 0}}
+                    justify={'flex-end'}
+                    direction={'row'}
+                    spacing={6}
+                >
+                    <Link
+                        px={2}
+                        py={1}
+                        rounded={'md'}
+                        href={'/home'}
+                        _hover={{
+                            textDecoration: 'none',
+                            bg: useColorModeValue('gray.700', 'gray.700'),
+                        }}
+                    >
+                        Home
+                    </Link>
+                    <Link
+                        px={2}
+                        py={1}
+                        rounded={'md'}
+                        href={'/about'}
+                        _hover={{
+                            textDecoration: 'none',
+                            bg: useColorModeValue('gray.700', 'gray.700'),
+                        }}
+                    >
+                        About us
+                    </Link>
+                    <Link
+                        px={2}
+                        py={1}
+                        rounded={'md'}
+                        href={'/how-it-works'}
+                        _hover={{
+                            textDecoration: 'none',
+                            bg: useColorModeValue('gray.700', 'gray.700'),
+                        }}
+                    >
+                        How it works?
+                    </Link>
+                    <Link
+                        px={2}
+                        py={1}
+                        rounded={'md'}
+                        href={'/profile'}
+                        _hover={{
+                            textDecoration: 'none',
+                            bg: useColorModeValue('gray.700', 'gray.700'),
+                        }}
+                        color="red.300"
+                    >
+                        Profile
+                    </Link>
+                    <Link
+                        px={2}
+                        py={1}
+                        rounded={'md'}
+                        onClick={handleLogout}
+                        _hover={{
+                            textDecoration: 'none',
+                            bg: useColorModeValue('gray.700', 'gray.700'),
+                        }}
+                        color="red.300"
+                        cursor="pointer"
+                    >
+                        Logout
+                    </Link>
+                </Stack>
+            </Flex>
+        </Box>
     );
-};
-
-
+}

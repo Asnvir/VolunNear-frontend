@@ -1,16 +1,18 @@
-import {ReactKeycloakProvider} from "@react-keycloak/web";
-import {keycloak} from "./Keycloak";
 import {RouterProvider} from "react-router-dom";
-import router from "./routes.tsx";
+import {router} from "./routes.tsx";
 import {ChakraProvider} from '@chakra-ui/react'
+import {AuthProvider} from "./providers/AuthProvider.tsx";
+import { ServiceProvider } from "./providers/ServiceProvider.tsx";
 
 export const App = () => {
     return (
-        <ChakraProvider>
-            <ReactKeycloakProvider authClient={keycloak}>
-                <RouterProvider router={router}/>
-            </ReactKeycloakProvider>
-        </ChakraProvider>
+    <ServiceProvider>
+            <ChakraProvider>
+                <AuthProvider>            
+                    <RouterProvider router={router}/>
+                </AuthProvider>
+            </ChakraProvider>
+        </ServiceProvider>
     );
 }
 
