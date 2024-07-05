@@ -1,23 +1,23 @@
 import React, { useState } from "react";
-import {useNavigate} from "react-router-dom";
 import { Box, Button, Input } from "@chakra-ui/react";
 import {useLogin} from "../hooks/useLogin.ts";
+import {useNavigate} from "react-router-dom";
+
 
 const LoginPage: React.FC = () => {
     const [username, setUsername] = useState("");
     const [password, setPassword] = useState("");
     const navigate = useNavigate();
-    const {login} = useLogin();
-    const [error, setError] = useState("");
+    const login = useLogin();
+    const [error, setError] = useState<string | null>(null);
+
     const handleLogin = async () => {
         try {
-            await login(username,password);
-            navigate('/main');
+            login(username, password).then(() => navigate('/'));
         } catch (error) {
-            console.error('Login failed:', error);
-            setError('Login failed. Please check your credentials and try again.');
+            setError(error.message);
         }
-    };
+    }
 
     return (
         <Box p={4}>

@@ -7,7 +7,7 @@ interface PrivateRouteProps {
 }
 
 export const PrivateRoute = ({ children, roles }: PrivateRouteProps) => {
-    roles
 
-    return isAuthorized ? <>{children}</> : <Navigate to="/" />;
+    roles
+    return  <>{children}</> : <Navigate to="/" />;
 };

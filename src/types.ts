@@ -1,11 +1,3 @@
-// User.ts
-export type User = {
-    email: string;
-    username: string;
-    name: string;
-    role: "volunteer" | "organization"; // depending on the role, the profile fields will differ
-};
-
 // Event.ts
 export type Event = {
     id: string;
@@ -73,3 +65,9 @@ export type OrganizationList = {
 export type FeedbackList = {
     feedbacks: Feedback[];
 };
+
+// User.ts
+export type User = {
+    username: string;
+    role: "volunteer" | "organization";
+}

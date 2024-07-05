@@ -26,4 +26,8 @@ export class AuthService {
         }
         return data;
     }
+
+    public async logout() {
+        this.localStorageHelper.removeItem(AUTH_TOKEN);
+    }
 }

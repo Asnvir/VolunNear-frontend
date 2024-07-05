@@ -12,6 +12,7 @@ import {
 import {EventCard} from '../components/EventCard';
 import {useGetAllActivities} from '../hooks/useGetAllActivities';
 import {useNavigate} from "react-router-dom";
+import {useLoggedIn} from "../hooks/useLoggedIn.ts";
 
 export const Home = () => {
   const {activities} = useGetAllActivities();
@@ -23,11 +24,12 @@ export const Home = () => {
   const borderColor = useColorModeValue('gray.300', 'gray.700');
   const textColor = useColorModeValue('gray.800', 'white');
   const navigate = useNavigate();
-  const initialized = false;
+  const loggedIn = useLoggedIn();
+  console.log(loggedIn)
   return (
     <Box>
       <Heading>Welcome to the Home Page</Heading>
-      {initialized ? (
+      {loggedIn ? (
         <Flex minH="100vh" bg={bgColor} color={textColor}>
           <VStack
             w="20%"
