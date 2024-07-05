@@ -1,3 +1,5 @@
+import {AxiosRequestConfig} from "axios";
+
 export type HttpResponse<T> = {
   status: number;
   data: T;
@@ -5,6 +7,7 @@ export type HttpResponse<T> = {
 
 export type HttpClient = {
   get: <T>(url: string) => Promise<HttpResponse<T>>;
+  post: <T, B>(url: string, body: B, options?: AxiosRequestConfig) => Promise<HttpResponse<T>>;
 };
 
 export type ActivityDTO = {

@@ -1,5 +1,5 @@
-import { createContext} from 'react';
-import { SericeContextType } from "./types";
+import {createContext} from 'react';
+import {ServiceContextType} from "./types";
 
-export const ServiceContext = createContext<SericeContextType | undefined>(undefined);
+export const ServiceContext = createContext<ServiceContextType | undefined>(undefined);
 

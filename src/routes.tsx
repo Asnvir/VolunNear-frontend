@@ -15,6 +15,8 @@ import {RegistrationOrganization} from './pages/RegistrationOrganization';
 // import {SocialNetworks} from './pages/SocialNetworks';
 // import {ProtectedRoute} from './components/ProtectedRoute';
 import {MainLayout} from './layouts/MainLayout';
+import LoginPage from "./pages/LoginPage.tsx";
+import MainPage from "./pages/MainPage.tsx";
 // import {EventsList} from './components/EventsList';
 // import {MyEvents} from './components/MyEvents';
 // import {OrganizationsList} from './components/OrganizationsList';
@@ -23,11 +25,13 @@ import {MainLayout} from './layouts/MainLayout';
 export const router = createBrowserRouter([
     {
         path: '/',
-        element: <MainLayout />,
+        element: <MainLayout/>,
         children: [
-            { path: '/', element: <Home /> },
-            { path: 'registration/volunteer', element: <RegistrationVolunteer /> },
-            { path: 'registration/organization', element: <RegistrationOrganization /> },
+            {path: '/', element: <Home/>},
+            {path: '/main', element: <MainPage/>},
+            {path: '/login', element: <LoginPage/>},
+            {path: 'registration/volunteer', element: <RegistrationVolunteer/>},
+            {path: 'registration/organization', element: <RegistrationOrganization/>},
             // { path: 'login', element: <Login /> },
             // {
             //     path: 'profile',

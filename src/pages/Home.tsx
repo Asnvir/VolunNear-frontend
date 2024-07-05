@@ -1,4 +1,3 @@
-add .import {useKeycloak} from '@react-keycloak/web';
 import {
   Box,
   Button,
@@ -12,18 +11,19 @@ import {
 } from '@chakra-ui/react';
 import {EventCard} from '../components/EventCard';
 import {useGetAllActivities} from '../hooks/useGetAllActivities';
+import {useNavigate} from "react-router-dom";
 
 export const Home = () => {
   const {activities} = useGetAllActivities();
 
   console.log({activities});
 
-  const {initialized, keycloak} = useKeycloak();
 
   const bgColor = useColorModeValue('gray.100', 'gray.900');
   const borderColor = useColorModeValue('gray.300', 'gray.700');
   const textColor = useColorModeValue('gray.800', 'white');
-
+  const navigate = useNavigate();
+  const initialized = false;
   return (
     <Box>
       <Heading>Welcome to the Home Page</Heading>
@@ -73,7 +73,7 @@ export const Home = () => {
       ) : (
         <Box p={4}>
           <Text>You need to log in to see the events.</Text>
-          <Button onClick={() => keycloak.login()}>Login</Button>
+          <Button onClick={() => navigate('/login')}>Login</Button>
         </Box>
       )}
     </Box>

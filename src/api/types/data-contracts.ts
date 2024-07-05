@@ -41,11 +41,11 @@ export interface IOrganisationInfoDTO {
 }
 
 export interface IAddActivityRequestDTO {
-  title: string;
-  description: string;
-  country: string;
-  city: string;
-  kindOfActivity: string;
+  title?: string;
+  description?: string;
+  country?: string;
+  city?: string;
+  kindOfActivity?: string;
 }
 
 export interface IActivityDTO {
@@ -87,6 +87,15 @@ export interface IRegistrationOrganisationRequestDTO {
   country?: string;
   city?: string;
   address?: string;
+}
+
+export interface IJwtRequest {
+  username?: string;
+  password?: string;
+}
+
+export interface IJwtResponse {
+  token?: string;
 }
 
 export interface IActivitiesDTO {
@@ -181,11 +190,9 @@ export interface ISubscribeToNotificationsByIdOfOrganisationParams {
 
 export type ISubscribeToNotificationsByIdOfOrganisationData = string;
 
+export type ICreateAuthTokenData = IJwtResponse;
+
 export type IPostFeedbackAboutOrganisationData = string;
-
-export type IGetDatasourceUrlData = string;
-
-export type ICheckStatusData = string;
 
 export type IGetVolunteerProfileData = IVolunteerProfileResponseDTO;
 

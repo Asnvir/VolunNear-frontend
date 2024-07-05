@@ -3,6 +3,7 @@ import {HttpClientImpl} from '../api/HttpClientImpl.ts';
 import {ActivitiesService} from '../api/services/ActivitiesService';
 import {LocalStorageHelper} from '../helpers/LocalStorageHelper';
 import {ServiceContext} from '../context/ServiceContext';
+import {AuthService} from "../api/services/AuthService.ts";
 
 type ServiceProviderProps = {
   children: React.ReactNode;
@@ -13,8 +14,9 @@ const initServices = () => {
   const httpClient = new HttpClientImpl(localStorageHelper);
 
   const activitiesService = new ActivitiesService(httpClient);
+  const authService = new AuthService(httpClient, localStorageHelper);
 
-  return {activitiesService};
+  return {authService, activitiesService};
 };
 
 export const ServiceProvider: React.FC<ServiceProviderProps> = ({children}) => {

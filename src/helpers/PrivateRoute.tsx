@@ -1,5 +1,4 @@
 import { ReactNode } from "react";
-import { useKeycloak } from "@react-keycloak/web";
 import { Navigate } from "react-router-dom";
 
 interface PrivateRouteProps {
@@ -8,9 +7,7 @@ interface PrivateRouteProps {
 }
 
 export const PrivateRoute = ({ children, roles }: PrivateRouteProps) => {
-    const { keycloak } = useKeycloak();
-
-    const isAuthorized = roles.some(role => keycloak?.hasRealmRole(role));
+    roles
 
     return isAuthorized ? <>{children}</> : <Navigate to="/" />;
 };
