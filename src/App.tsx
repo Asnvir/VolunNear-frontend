@@ -1,20 +1,18 @@
-import React from "react";
-import {ChakraProvider} from "@chakra-ui/react";
-import {Navigate, Route, Routes} from "react-router-dom";
-import LoginPage from "./pages/LoginPage.tsx";
-import MainPage from "./pages/MainPage.tsx";
+import {RouterProvider} from "react-router-dom";
+import {router} from "./routes.tsx";
+import {ChakraProvider} from '@chakra-ui/react'
+import {AuthProvider} from "./providers/AuthProvider.tsx";
+import { ServiceProvider } from "./providers/ServiceProvider.tsx";
 
-
-const App: React.FC = () => {
+export const App = () => {
     return (
-        <ChakraProvider>
-                <Routes>
-                    <Route path="/login" element={<LoginPage />} />
-                    <Route path="/main" element={<MainPage />} />
-                    <Route path="/" element={<Navigate to="/login" />} />
-                </Routes>
-        </ChakraProvider>
+    <ServiceProvider>
+            <ChakraProvider>
+                <AuthProvider>
+                    <RouterProvider router={router}/>
+                </AuthProvider>
+            </ChakraProvider>
+        </ServiceProvider>
     );
-};
+}
 
-export default App;
