@@ -1,6 +1,6 @@
 import { ActivitiesService } from '../api/services/ActivitiesService';
-import {AuthService} from "../api/services/AuthService.ts";
 import {User} from "../types.ts";
+import {AuthService} from "../api/services/AuthService.ts";
 
 
 export type ServiceContextType = {

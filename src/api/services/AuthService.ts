@@ -1,4 +1,9 @@
-import {IJwtRequest, IJwtResponse} from "../types/data-contracts.ts";
+import {
+    IJwtRequest,
+    IJwtResponse,
+    IRegistrationOrganisationRequestDTO,
+    IRegistrationVolunteerRequestDTO
+} from "../types/data-contracts.ts";
 import {API_ENDPOINTS} from "../../contsts/apiContsts.ts";
 import {iLocalStorageHelper} from "../../helpers/types.ts";
 import {HttpClient} from "../types.ts";
@@ -29,5 +34,29 @@ export class AuthService {
 
     public async logout() {
         this.localStorageHelper.removeItem(AUTH_TOKEN);
+    }
+
+    public async registerVolunteer(volunteerData: IRegistrationVolunteerRequestDTO) {
+        return this.httpClient.post<void>(
+            API_ENDPOINTS.REGISTER_VOLUNTEER,
+            volunteerData,
+            {
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+            }
+        );
+    }
+
+    public async registerOrganisation(organisationData: IRegistrationOrganisationRequestDTO) {
+        return this.httpClient.post<void>(
+            API_ENDPOINTS.REGISTER_ORGANISATION,
+            organisationData,
+            {
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+            }
+        );
     }
 }
