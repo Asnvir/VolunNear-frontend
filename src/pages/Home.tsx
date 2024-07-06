@@ -14,8 +14,8 @@ import {
 import { EventCard } from '../components/EventCard';
 import { useGetAllActivities } from '../hooks/useGetAllActivities';
 import { useNavigate } from 'react-router-dom';
-import { useLoggedIn } from '../hooks/useLoggedIn.ts';
 import { RegistrationTypeModal } from "../components/modals/RegistrationTypeModal.tsx";
+import {useAuthContext} from "../shared/hooks/useAuthContext.tsx";
 
 
 export const Home = () => {
@@ -24,14 +24,14 @@ export const Home = () => {
   const borderColor = useColorModeValue('gray.300', 'gray.700');
   const textColor = useColorModeValue('gray.800', 'white');
   const navigate = useNavigate();
-  const loggedIn = useLoggedIn();
+  const {isLoggedIn} = useAuthContext();
   const { isOpen, onOpen, onClose } = useDisclosure();
 
   console.log({ activities });
-  console.log(loggedIn);
+  console.log(isLoggedIn);
 
   const handleRegisterClick = () => {
-    if (!loggedIn) {
+    if (!isLoggedIn) {
       onOpen();
     } else {
       navigate('/'); // or wherever you want logged-in users to go
@@ -41,7 +41,7 @@ export const Home = () => {
   return (
       <Box>
         <Heading>Welcome to the Home Page</Heading>
-        {loggedIn ? (
+        {isLoggedIn ? (
             <Flex minH="100vh" bg={bgColor} color={textColor}>
               <VStack
                   w="20%"
