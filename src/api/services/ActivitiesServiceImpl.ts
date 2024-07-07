@@ -1,7 +1,7 @@
 import {ActivityMapper} from '../mappers/ActivityMapper.ts';
 import {HttpClient, ActivitiesResponse} from '../types.ts';
 
-export class ActivitiesService {
+export class ActivitiesServiceImpl {
   constructor(private httpClient: HttpClient) {}
 
   public async getActivities() {
