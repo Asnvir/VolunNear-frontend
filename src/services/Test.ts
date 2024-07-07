@@ -9,10 +9,7 @@
  * ---------------------------------------------------------------
  */
 
-import {
-  ICheckStatusData,
-  IGetDatasourceUrlData,
-} from '../api/types/data-contracts.ts';
+import {ICheckStatusData, IGetDatasourceUrlData} from '../data-contracts.ts';
 import {HttpClient, RequestParams} from '../api/types/http-client.ts';
 
 export class Test<SecurityDataType = unknown> {

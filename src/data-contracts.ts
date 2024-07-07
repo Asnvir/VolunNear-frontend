@@ -89,15 +89,6 @@ export interface IRegistrationOrganisationRequestDTO {
   address?: string;
 }
 
-export interface IJwtRequest {
-  username?: string;
-  password?: string;
-}
-
-export interface IJwtResponse {
-  token?: string;
-}
-
 export interface IActivitiesDTO {
   activities?: IActivityDTO[];
   organisationResponseDTO?: IOrganisationResponseDTO;
@@ -190,7 +181,7 @@ export interface ISubscribeToNotificationsByIdOfOrganisationParams {
 
 export type ISubscribeToNotificationsByIdOfOrganisationData = string;
 
-export type ICreateAuthTokenData = IJwtResponse;
+// export type ICreateAuthTokenData = IJwtResponse;
 
 export type IPostFeedbackAboutOrganisationData = string;
 
@@ -248,7 +239,10 @@ export type IFindNearbyActivitiesData = IActivitiesDTO[];
 
 export type IFindNearbyActivitiesError = IActivitiesDTO[];
 
-export type IGetAllFeedbacksAboutAllOrganisationsData = Record<string, IFeedbackResponseDTO[]>;
+export type IGetAllFeedbacksAboutAllOrganisationsData = Record<
+  string,
+  IFeedbackResponseDTO[]
+>;
 
 export interface IGetFeedbacksAboutCurrentOrganisationParams {
   /** @format uuid */
