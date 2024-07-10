@@ -4,15 +4,19 @@ import {ChakraProvider} from '@chakra-ui/react';
 import {ServiceProvider} from './providers/ServiceProvider.tsx';
 import {AppStateProvider} from './providers/AppStateProvider.tsx';
 import {AuthProvider} from './providers/AuthProvider.tsx';
+import {QueryClientProvider} from '@tanstack/react-query';
+import {queryClient} from './providers/queryClientProvider/util.ts';
 
 export const App = () => {
-  return (
+    return (
     <ServiceProvider>
       <AppStateProvider>
         <AuthProvider>
-          <ChakraProvider>
-            <RouterProvider router={router} />
-          </ChakraProvider>
+          <QueryClientProvider client={queryClient}>
+            <ChakraProvider>
+              <RouterProvider router={router} />
+            </ChakraProvider>
+          </QueryClientProvider>
         </AuthProvider>
       </AppStateProvider>
     </ServiceProvider>

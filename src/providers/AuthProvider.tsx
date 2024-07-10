@@ -1,5 +1,5 @@
 import React, {useEffect} from 'react';
-import {useServiceContext} from '../shared/hooks/useServiceContext.tsx';
+import {useServiceContext} from '../shared/hooks/useServiceContext.ts';
 import {useAppStateContext} from '../shared/hooks/useAppStateProvider.ts';
 
 type AuthProviderProps = {

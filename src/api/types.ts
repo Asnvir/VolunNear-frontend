@@ -1,6 +1,8 @@
 import {AxiosRequestConfig} from 'axios';
-import {IRegistrationVolunteerRequestDTO} from '../data-contracts.ts';
 import {Role} from './services/AuthServiceImpl.ts';
+import {RegisterOrgCredentials} from '../hooks/useRegisterOrg.ts';
+import {RegisterVolCredentials} from '../hooks/useRegisterVol.ts';
+import {LoginCredentials} from '../hooks/useLogin.ts';
 
 export type HttpResponse<T> = {
   status: number;
@@ -54,25 +56,19 @@ export type Activity = {
   organisationAddress: string;
 };
 
-// AuthService
-export type LoginCredentials = {
-  username: string;
-  password: string;
-};
-
 export type User = {
   username: string;
   role: Role;
 };
 
 export type AuthService = {
-  login: (credentials: LoginCredentials) => Promise<User>;
+  login: (loginCredentials: LoginCredentials) => Promise<User>;
   logout: () => void;
   registerVolunteer: (
-    volunteerData: IRegistrationVolunteerRequestDTO
+    registerVolCredentials: RegisterVolCredentials
   ) => Promise<void>;
   registerOrganisation: (
-    organisationData: IRegistrationVolunteerRequestDTO
+    registerOrgCredentials: RegisterOrgCredentials
   ) => Promise<void>;
   getCurrentUser: () => User | null;
 };

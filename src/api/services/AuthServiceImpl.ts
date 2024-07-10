@@ -1,6 +1,6 @@
 import {API_ENDPOINTS} from '../constants.ts';
 import {LocalStorageHelper} from '../../helpers/types.ts';
-import {AuthService, HttpClient, LoginCredentials} from '../types.ts';
+import {AuthService, HttpClient} from '../types.ts';
 import {
   AUTH_TOKEN,
   ROLE_ORGANISATION,
@@ -8,7 +8,15 @@ import {
 } from '../../utils/constants.ts';
 import {jwtDecode} from 'jwt-decode';
 import {JwtToken} from '../../providers/types.ts';
-import {IRegistrationVolunteerRequestDTO} from '../../data-contracts.ts';
+import {
+  IRegistrationOrganisationRequestDTO,
+  IRegistrationVolunteerRequestDTO,
+} from '../../data-contracts.ts';
+import {RegisterOrgCredentials} from '../../hooks/useRegisterOrg.ts';
+import {RegisterVolCredentials} from '../../hooks/useRegisterVol.ts';
+import {RegistrationOrgMapper} from '../mappers/RegistrationOrgMapper.ts';
+import {RegistrationVolMapper} from '../mappers/RegistrationVolMapper.ts';
+import {LoginCredentials} from '../../hooks/useLogin.ts';
 
 export type Role = typeof ROLE_ORGANISATION | typeof ROLE_VOLUNTEER;
 export type User = {
@@ -100,20 +108,42 @@ export class AuthServiceImpl implements AuthService {
     };
   }
 
-  logout(): void {}
+  public async logout(): Promise<void> {}
 
-  registerOrganisation(
-    organisationData: IRegistrationVolunteerRequestDTO
+  public async registerOrganisation(
+    credentials: RegisterOrgCredentials
   ): Promise<void> {
-    organisationData;
-    return Promise.resolve(undefined);
+    const credentialsDTO = RegistrationOrgMapper.toDTO(credentials);
+    const response = await this.httpClient.post<
+      void,
+      IRegistrationOrganisationRequestDTO
+    >(API_ENDPOINTS.REGISTER_ORGANISATION, credentialsDTO, {
+      headers: {
+        'Content-Type': 'application/json',
+      },
+    });
+
+    if (response.status !== 201) {
+      throw new Error('Registration failed');
+    }
   }
 
-  registerVolunteer(
-    volunteerData: IRegistrationVolunteerRequestDTO
+  public async registerVolunteer(
+    credentials: RegisterVolCredentials
   ): Promise<void> {
-    volunteerData;
-    return Promise.resolve(undefined);
+    const volDTO = RegistrationVolMapper.toDTO(credentials);
+    const response = await this.httpClient.post<
+      void,
+      IRegistrationVolunteerRequestDTO
+    >(API_ENDPOINTS.REGISTER_VOLUNTEER, volDTO, {
+      headers: {
+        'Content-Type': 'application/json',
+      },
+    });
+
+    if (response.status !== 201) {
+      throw new Error('Registration failed');
+    }
   }
 
   private isTokenExpired = (token: JwtToken) => {

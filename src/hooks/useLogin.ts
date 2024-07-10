@@ -1,6 +1,9 @@
-import {useServiceContext} from '../shared/hooks/useServiceContext.tsx';
-import {useCallback, useState} from 'react';
+import {useServiceContext} from '../shared/hooks/useServiceContext.ts';
 import {useAppStateContext} from '../shared/hooks/useAppStateProvider.ts';
+import {useMutation} from '@tanstack/react-query';
+import {FormValues} from '../validation/LoginValidation.ts';
+
+export type LoginCredentials = FormValues;
 
 type UseLoginProps = {
   onSuccess?: () => void;
@@ -9,30 +12,23 @@ type UseLoginProps = {
 export const useLogin = ({onSuccess}: UseLoginProps) => {
   const {authService} = useServiceContext();
   const {setUser} = useAppStateContext();
-  const [isLoading, setIsLoading] = useState<boolean>(false);
-  const [error, setError] = useState<string | null>(null);
 
-  const login = useCallback(
-    async (username: string, password: string) => {
-      setIsLoading(true);
-      setError(null);
-
-      try {
-        const user = await authService.login({username, password});
-        setUser(user);
-        setIsLoading(false);
-        onSuccess?.();
-      } catch (error) {
-        setIsLoading(false);
-        if (error instanceof Error) {
-          setError(error.message);
-        } else {
-          setError('Failed to login.');
-        }
-      }
+  const mutation = useMutation({
+    mutationFn: (loginCredentials: LoginCredentials) =>
+      authService.login(loginCredentials),
+    onSuccess: user => {
+      setUser(user);
+      onSuccess?.();
     },
-    [authService, onSuccess, setUser]
-  );
+  });
 
-  return {login, isLoading, error};
+  const login = (userCredentials: LoginCredentials) => {
+    mutation.mutate(userCredentials);
+  };
+
+  return {
+    login,
+    isLoading: mutation.isPending,
+    error: mutation.error?.message,
+  };
 };
