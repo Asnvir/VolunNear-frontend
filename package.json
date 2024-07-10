@@ -12,12 +12,15 @@
     "generate:api": "npx swagger-typescript-api -p http://localhost:8080/v3/api-docs -o ./src/api/types -n api.ts --no-client  --responses --type-prefix I --api-class-name MyApi --modular --unwrap-response-data --extract-request-params --extract-request-body --extract-response-body --extract-response-error --single-http-client --clean-output "
   },
   "dependencies": {
+    "@chakra-ui/icons": "^2.1.1",
     "@chakra-ui/react": "^2.8.2",
     "@emotion/react": "^11.11.4",
     "@emotion/styled": "^11.11.5",
+    "@hookform/resolvers": "^3.9.0",
     "@openapitools/openapi-generator-cli": "^2.13.4",
     "@tanstack/react-query": "^5.50.1",
     "axios": "^1.7.2",
+    "dotenv": "^16.4.5",
     "eslint-config-prettier": "^9.1.0",
     "eslint-plugin-prettier": "^5.1.3",
     "framer-motion": "^11.2.13",
@@ -28,8 +31,10 @@
     "prettier": "^3.3.2",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
+    "react-hook-form": "^7.52.1",
     "react-router-dom": "^6.23.1",
-    "swagger-typescript-api": "^13.0.9"
+    "swagger-typescript-api": "^13.0.9",
+    "zod": "^3.23.8"
   },
   "devDependencies": {
     "@tanstack/eslint-plugin-query": "^5.50.1",
