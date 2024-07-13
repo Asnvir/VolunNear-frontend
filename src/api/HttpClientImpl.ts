@@ -1,7 +1,7 @@
 import {HttpResponse, HttpClient} from './types.ts';
 import axios, {AxiosInstance, AxiosRequestConfig} from 'axios';
 import {LocalStorageHelper} from '../helpers/types.ts';
-import {AUTH_TOKEN} from '../utils/constants.ts';
+import {AUTH_TOKEN} from '../utils/constants/routes.ts';
 
 export class HttpClientImpl implements HttpClient {
   private axios: AxiosInstance;

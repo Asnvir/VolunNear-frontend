@@ -3,23 +3,21 @@ import {
   Box,
   Button,
   Flex,
-  Text,
   Heading,
   Input,
   SimpleGrid,
-  VStack,
+  Text,
   useColorModeValue,
   useDisclosure,
+  VStack,
 } from '@chakra-ui/react';
-import {EventCard} from '../components/EventCard';
-import {useGetAllActivities} from '../hooks/useGetAllActivities';
 import {useNavigate} from 'react-router-dom';
 import {RegistrationTypeModal} from '../components/modals/RegistrationTypeModal.tsx';
 import {useLoggedIn} from '../hooks/useLoggedIn.ts';
+import {ActivitiesList} from '../components/ActivitiesList.tsx';
 // import {useAuthContext} from "../shared/hooks/useAuthContext.tsx";
 
 export const Home = () => {
-  const {activities} = useGetAllActivities();
   const bgColor = useColorModeValue('gray.100', 'gray.900');
   const borderColor = useColorModeValue('gray.300', 'gray.700');
   const textColor = useColorModeValue('gray.800', 'white');
@@ -27,9 +25,6 @@ export const Home = () => {
   // const {isLoggedIn} = useAuthContext();
   const isLoggedIn = useLoggedIn();
   const {isOpen, onOpen, onClose} = useDisclosure();
-
-  console.log({activities});
-  console.log(isLoggedIn);
 
   const handleRegisterClick = () => {
     if (!isLoggedIn) {
@@ -78,10 +73,7 @@ export const Home = () => {
               </SimpleGrid>
             </Box>
             <VStack w="full" spacing={4}>
-              <EventCard />
-              <EventCard />
-              <EventCard />
-              <EventCard />
+              <ActivitiesList />
             </VStack>
           </VStack>
         </Flex>

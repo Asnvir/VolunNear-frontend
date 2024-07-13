@@ -5,7 +5,7 @@ import {
   AUTH_TOKEN,
   ROLE_ORGANISATION,
   ROLE_VOLUNTEER,
-} from '../../utils/constants.ts';
+} from '../../utils/constants/routes.ts';
 import {jwtDecode} from 'jwt-decode';
 import {JwtToken} from '../../providers/types.ts';
 import {

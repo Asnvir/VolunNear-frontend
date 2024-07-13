@@ -7,6 +7,7 @@ export class ActivitiesServiceImpl {
   public async getActivities() {
     const {data: organizations} = await this.httpClient.get<ActivitiesResponse>(
       '/api/v1/organisation/get_all_activities'
+      // 'error'
     );
     return organizations.flatMap(({activities, organisationResponseDTO}) =>
       activities.map(activity =>
