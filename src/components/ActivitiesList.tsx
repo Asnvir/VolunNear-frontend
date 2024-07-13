@@ -12,6 +12,7 @@ import {ActivityCard} from './ActivityCard.tsx';
 
 export const ActivitiesList = () => {
   const {activities, isLoading, error, refetch} = useGetAllActivities();
+  const areActivitiesAvailable = !!(activities && activities.length > 0);
 
   if (isLoading) {
     return (
@@ -34,9 +35,9 @@ export const ActivitiesList = () => {
   return (
     <VStack spacing={4} width="100%">
       <Button onClick={() => refetch()} colorScheme="teal">
-        Refetch Activities
+        Reload Activities
       </Button>
-      {activities && activities.length > 0 ? (
+      {areActivitiesAvailable ? (
         activities.map(activity => (
           <ActivityCard key={activity.activityId} activity={activity} />
         ))

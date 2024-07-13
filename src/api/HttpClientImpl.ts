@@ -9,7 +9,6 @@ export class HttpClientImpl implements HttpClient {
   constructor(private localStorageHelper: LocalStorageHelper) {
     this.axios = axios.create({
       baseURL: import.meta.env.VITE_BACKEND_URL,
-      // baseURL: 'http://localhost:8081',
     });
     this.axios.interceptors.request.use(
       config => {

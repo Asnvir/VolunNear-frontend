@@ -5,9 +5,9 @@ export class ActivitiesServiceImpl {
   constructor(private httpClient: HttpClient) {}
 
   public async getActivities() {
+    console.log(this.httpClient);
     const {data: organizations} = await this.httpClient.get<ActivitiesResponse>(
       '/api/v1/organisation/get_all_activities'
-      // 'error'
     );
     return organizations.flatMap(({activities, organisationResponseDTO}) =>
       activities.map(activity =>
