@@ -1,5 +1,5 @@
 import React, {useCallback, useState} from 'react';
-import {AppState} from '../context/types.ts';
+import {AppStateType} from '../context/types.ts';
 import {AppStateContext} from '../context/AppStateContext.ts';
 import {User} from '../api/types.ts';
 
@@ -12,7 +12,7 @@ const initialState = {
 };
 
 export const AppStateProvider = ({children}: AppStateProviderProps) => {
-  const [state, setState] = useState<AppState>(initialState);
+  const [state, setState] = useState<AppStateType>(initialState);
   const setUser = useCallback((user: User | null) => setState({user}), []);
 
   return (

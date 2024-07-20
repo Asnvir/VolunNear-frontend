@@ -1,7 +1,18 @@
 import ls from 'localstorage-slim';
 import {LocalStorageHelper} from './types';
 
-export class LocalStorageHelper implements LocalStorageHelper {
+export class LocalStorageHelperImpl implements LocalStorageHelper {
+  private static instance: LocalStorageHelperImpl | null = null;
+
+  private constructor() {}
+
+  public static getInstance(): LocalStorageHelperImpl {
+    if (!LocalStorageHelperImpl.instance) {
+      LocalStorageHelperImpl.instance = new LocalStorageHelperImpl();
+    }
+    return LocalStorageHelperImpl.instance;
+  }
+
   public setItem(key: string, value: string) {
     try {
       ls.set(key, value);

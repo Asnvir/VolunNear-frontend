@@ -4,8 +4,6 @@ import {
   Button,
   Flex,
   Heading,
-  Input,
-  SimpleGrid,
   Text,
   useColorModeValue,
   useDisclosure,
@@ -13,8 +11,9 @@ import {
 } from '@chakra-ui/react';
 import {useNavigate} from 'react-router-dom';
 import {RegistrationTypeModal} from '../components/modals/RegistrationTypeModal.tsx';
-import {useLoggedIn} from '../hooks/useLoggedIn.ts';
-import {ActivitiesList} from '../components/ActivitiesList.tsx';
+import {useLoggedIn} from '../hooks/auth/useLoggedIn/useLoggedIn.ts';
+import {ActivitiesList} from '../components/activities/ActivitiesList.tsx';
+import {ActivitiesFilter} from '../components/activities/activitiesFilter/ActivitiesFilter.tsx';
 // import {useAuthContext} from "../shared/hooks/useAuthContext.tsx";
 
 export const Home = () => {
@@ -56,22 +55,7 @@ export const Home = () => {
             </Button>
           </VStack>
           <VStack w="80%" p={4} spacing={4}>
-            <Box
-              w="full"
-              p={4}
-              border="1px solid"
-              borderColor="orange.400"
-              borderRadius="md"
-            >
-              <SimpleGrid columns={6} spacing={4}>
-                <Input placeholder="Name" />
-                <Input placeholder="Date" />
-                <Input placeholder="Type" />
-                <Input placeholder="City" />
-                <Input placeholder="Country" />
-                <Input placeholder="Organization" />
-              </SimpleGrid>
-            </Box>
+            <ActivitiesFilter onApply={filters => console.log(filters)} />
             <VStack w="full" spacing={4}>
               <ActivitiesList />
             </VStack>

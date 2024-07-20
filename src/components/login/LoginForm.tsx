@@ -1,12 +1,12 @@
 import {SubmitHandler, useForm} from 'react-hook-form';
 import {
-  FormValues,
-  validationSchema,
-} from '../../validation/LoginValidation.ts';
+  LoginFormValues,
+  LoginValidationSchema,
+} from '../../api/validation/login/LoginValidation.ts';
 import {zodResolver} from '@hookform/resolvers/zod';
 import {useNavigate} from 'react-router-dom';
 import {useEffect, useState} from 'react';
-import {useLogin} from '../../hooks/useLogin.ts';
+import {useLogin} from '../../hooks/auth/useLogin/useLogin.ts';
 import {
   Alert,
   AlertDescription,
@@ -30,8 +30,8 @@ export const LoginForm = () => {
     handleSubmit,
     setError,
     formState: {errors, isSubmitting},
-  } = useForm<FormValues>({
-    resolver: zodResolver(validationSchema),
+  } = useForm<LoginFormValues>({
+    resolver: zodResolver(LoginValidationSchema),
   });
 
   const navigate = useNavigate();
@@ -45,7 +45,7 @@ export const LoginForm = () => {
 
   const {login, error: errorOnServer} = useLogin({onSuccess: onLoginSuccess});
 
-  const onSubmit: SubmitHandler<FormValues> = data => {
+  const onSubmit: SubmitHandler<LoginFormValues> = data => {
     login(data);
   };
 

@@ -1,9 +1,9 @@
 import {SubmitHandler, useForm} from 'react-hook-form';
 import {zodResolver} from '@hookform/resolvers/zod';
 import {
-  FormValues,
-  validationSchema,
-} from '../../validation/RegistrationOrgValidation.ts';
+  RegistrationOrgFormValues,
+  RegistrationOrgValidationSchema,
+} from '../../api/validation/register/RegistrationOrgValidation.ts';
 import {
   Alert,
   AlertDescription,
@@ -20,7 +20,7 @@ import {
   VStack,
 } from '@chakra-ui/react';
 import {ViewIcon, ViewOffIcon} from '@chakra-ui/icons';
-import {useRegisterOrg} from '../../hooks/useRegisterOrg.ts';
+import {useRegisterOrg} from '../../hooks/auth/useRegisterOrg/useRegisterOrg.ts';
 import {useNavigate} from 'react-router-dom';
 import {useEffect, useState} from 'react';
 
@@ -30,8 +30,8 @@ export const RegistrationOrgForm = () => {
     handleSubmit,
     setError,
     formState: {errors, isSubmitting},
-  } = useForm<FormValues>({
-    resolver: zodResolver(validationSchema),
+  } = useForm<RegistrationOrgFormValues>({
+    resolver: zodResolver(RegistrationOrgValidationSchema),
   });
   const navigate = useNavigate();
   const [showPassword, setShowPassword] = useState(false);
@@ -52,7 +52,7 @@ export const RegistrationOrgForm = () => {
     }
   }, [errorOnServer, setError]);
 
-  const onSubmit: SubmitHandler<FormValues> = data => {
+  const onSubmit: SubmitHandler<RegistrationOrgFormValues> = data => {
     registerOrg(data);
   };
 
