@@ -1,6 +1,6 @@
 import {Box, Flex, Link, Stack, useColorModeValue} from '@chakra-ui/react';
 // import { useAuthContext } from "../shared/hooks/useAuthContext.tsx";
-import {useLoggedIn} from '../hooks/useLoggedIn.ts';
+import {useLoggedIn} from '../hooks/auth/useLoggedIn/useLoggedIn.ts';
 
 export const Nav = () => {
   // const { isLoggedIn, logout } = useAuthContext();

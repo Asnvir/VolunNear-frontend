@@ -1,22 +1,4 @@
-import {AxiosRequestConfig} from 'axios';
-import {Role} from './services/AuthServiceImpl.ts';
-import {RegisterOrgCredentials} from '../hooks/useRegisterOrg.ts';
-import {RegisterVolCredentials} from '../hooks/useRegisterVol.ts';
-import {LoginCredentials} from '../hooks/useLogin.ts';
-
-export type HttpResponse<T> = {
-  status: number;
-  data: T;
-};
-
-export type HttpClient = {
-  get: <T>(url: string) => Promise<HttpResponse<T>>;
-  post: <T, B>(
-    url: string,
-    body: B,
-    options?: AxiosRequestConfig
-  ) => Promise<HttpResponse<T>>;
-};
+import {Role} from './services/auth/service/types.ts';
 
 export type ActivityDTO = {
   id: string;
@@ -59,16 +41,4 @@ export type Activity = {
 export type User = {
   username: string;
   role: Role;
-};
-
-export type AuthService = {
-  login: (loginCredentials: LoginCredentials) => Promise<User>;
-  logout: () => void;
-  registerVolunteer: (
-    registerVolCredentials: RegisterVolCredentials
-  ) => Promise<void>;
-  registerOrganisation: (
-    registerOrgCredentials: RegisterOrgCredentials
-  ) => Promise<void>;
-  getCurrentUser: () => User | null;
 };

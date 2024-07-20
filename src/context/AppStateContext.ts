@@ -1,6 +1,4 @@
 import {createContext} from 'react';
 import {AppStateContextType} from './types.ts';
 
-export const AppStateContext = createContext<AppStateContextType | undefined>(
-  undefined
-);
+export const AppStateContext = createContext<AppStateContextType | null>(null);

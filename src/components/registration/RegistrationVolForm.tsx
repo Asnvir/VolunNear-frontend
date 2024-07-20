@@ -1,12 +1,12 @@
 import {SubmitHandler, useForm} from 'react-hook-form';
 import {
-  FormValues,
-  validationSchema,
-} from '../../validation/RegistrationVolValidation.ts';
+  RegistrationVolFormValues,
+  RegistrationVolValidationSchema,
+} from '../../api/validation/register/RegistrationVolValidation.ts';
 import {zodResolver} from '@hookform/resolvers/zod';
 import {useNavigate} from 'react-router-dom';
 import {useEffect, useState} from 'react';
-import {useRegisterVol} from '../../hooks/useRegisterVol.ts';
+import {useRegisterVol} from '../../hooks/auth/useRegisterVol/useRegisterVol.ts';
 import {
   Alert,
   AlertDescription,
@@ -30,8 +30,8 @@ export const RegistrationVolForm = () => {
     handleSubmit,
     setError,
     formState: {errors, isSubmitting},
-  } = useForm<FormValues>({
-    resolver: zodResolver(validationSchema),
+  } = useForm<RegistrationVolFormValues>({
+    resolver: zodResolver(RegistrationVolValidationSchema),
   });
 
   const navigate = useNavigate();
@@ -45,7 +45,7 @@ export const RegistrationVolForm = () => {
     },
   });
 
-  const onSubmit: SubmitHandler<FormValues> = data => {
+  const onSubmit: SubmitHandler<RegistrationVolFormValues> = data => {
     registerVol(data);
   };
 
