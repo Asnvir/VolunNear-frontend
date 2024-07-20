@@ -116,8 +116,7 @@ export const LoginForm = () => {
 
         <Button
           disabled={isSubmitting}
-          type="submit"
-          colorScheme="blue"
+          variant={'primary'}
           width="full"
           size="lg"
           onClick={handleSubmit(onSubmit)}

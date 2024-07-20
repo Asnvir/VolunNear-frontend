@@ -1,5 +1,5 @@
 import {Outlet} from "react-router-dom";
-import {Footer} from "../components/Footer";
+import Footer from "../components/Footer";
 import {Box} from "@chakra-ui/react";
 import Nav from '../components/navigation/Nav.tsx';
 

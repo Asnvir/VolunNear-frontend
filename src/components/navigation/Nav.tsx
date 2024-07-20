@@ -48,7 +48,7 @@ const Nav = () => {
             align={useBreakpointValue({ base: 'center', md: 'left' })}
             fontFamily={'heading'}
             color={useColorModeValue('gray.800', 'white')}>
-            Logo
+            Volun <Box as="span" color="gray.500">Near</Box>
           </Text>
 
           <Flex display={{ base: 'none', md: 'flex' }} ml={10}>
@@ -64,17 +64,7 @@ const Nav = () => {
           <Button as='a' fontSize={'sm'} fontWeight={400} variant={'link'} href={'/login'}>
             Sign In
           </Button>
-          <Button
-            as='a'
-            display={{ base: 'none', md: 'inline-flex' }}
-            fontSize={'sm'}
-            fontWeight={600}
-            color={'white'}
-            bg={'pink.400'}
-            href={'#'}
-            _hover={{
-              bg: 'pink.300',
-            }}>
+          <Button variant="primary">
             Sign Up
           </Button>
         </Stack>

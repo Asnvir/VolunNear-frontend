@@ -14,6 +14,8 @@ import {RegistrationTypeModal} from '../components/modals/RegistrationTypeModal.
 import {useLoggedIn} from '../hooks/auth/useLoggedIn/useLoggedIn.ts';
 import {ActivitiesList} from '../components/activities/ActivitiesList.tsx';
 import {ActivitiesFilter} from '../components/activities/activitiesFilter/ActivitiesFilter.tsx';
+import Banner from '../components/home/Banner.tsx';
+import DescriptionBoxes from '../components/home/DescriptionBoxes.tsx';
 // import {useAuthContext} from "../shared/hooks/useAuthContext.tsx";
 
 export const Home = () => {
@@ -35,9 +37,9 @@ export const Home = () => {
 
   return (
     <Flex direction="column" minHeight="100vh" width="full">
-      <Heading p={4} textAlign="center">Welcome to the Home Page</Heading>
       {isLoggedIn ? (
         <Flex flex="1" bg={bgColor} color={textColor} width="full">
+          <Heading p={4} textAlign="center">Welcome to the Home Page</Heading>
           <VStack
             w="20%"
             p={4}
@@ -63,12 +65,9 @@ export const Home = () => {
           </VStack>
         </Flex>
       ) : (
-        <Flex flex="1" justifyContent="center" alignItems="center" p={4}>
-          <Box textAlign="center">
-            <Text mb={4}>You need to log in to see the events.</Text>
-            <Button onClick={() => navigate('/login')} mr={4}>Login</Button>
-            <Button onClick={handleRegisterClick}>Register</Button>
-          </Box>
+        <Flex direction="column" minHeight="100vh" width="full" >
+          <Banner/>
+          <DescriptionBoxes/>
         </Flex>
       )}
       <RegistrationTypeModal isOpen={isOpen} onClose={onClose} />
