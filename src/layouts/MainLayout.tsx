@@ -8,8 +8,8 @@ export const MainLayout = () => {
     return (
         <Box display="flex" flexDirection="column" minHeight="100vh">
             <Nav />
-            <Box as="main" flex="1" p={4}>
-                <Outlet />
+            <Box flex="1">
+              <Outlet />
             </Box>
             <Footer />
         </Box>

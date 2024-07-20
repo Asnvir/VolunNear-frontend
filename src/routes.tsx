@@ -16,6 +16,7 @@ import {MainLayout} from './layouts/MainLayout';
 import {RegistrationOrg} from './pages/registration/RegistrationOrg.tsx';
 import {RegistrationVol} from './pages/registration/RegistrationVol.tsx';
 import {LoginPage} from './pages/LoginPage.tsx';
+import ErrorPage from './pages/ErrorPage.tsx';
 // import {EventsList} from './components/EventsList';
 // import {MyEvents} from './components/MyEvents';
 // import {OrganizationsList} from './components/OrganizationsList';
@@ -33,6 +34,9 @@ export const router = createBrowserRouter([
         path: 'registration/organization',
         element: <RegistrationOrg />,
       },
+      {
+        path: '*' , element: <ErrorPage/>
+      }
       // {
       //     path: 'profile',
       //     element: (
