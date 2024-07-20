@@ -29,6 +29,7 @@ import {
 } from '@chakra-ui/react';
 import { ViewIcon, ViewOffIcon } from '@chakra-ui/icons';
 
+
 export const LoginForm = () => {
   const {
     register,
@@ -72,7 +73,7 @@ export const LoginForm = () => {
       boxShadow="lg"
       bg="white"
     >
-      <VStack spacing={6} align="flex-start" width="full">
+      <VStack spacing={6} align="center" width="full">
         <Heading as="h1" size="lg" textAlign="center" width="full" mb={4}>
           Login
         </Heading>
@@ -144,3 +145,5 @@ export const LoginForm = () => {
     </Box>
   );
 };
+
+export default LoginForm;

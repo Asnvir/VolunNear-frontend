@@ -17,7 +17,7 @@ import {
 import DesktopNav from './DesktopNav'
 import MobileNav from './MobileNav'
 
-export const  Nav = () => {
+const Nav = () => {
   const { isOpen, onToggle } = useDisclosure()
 
   return (
@@ -61,7 +61,7 @@ export const  Nav = () => {
           justify={'flex-end'}
           direction='row'
           spacing={6}>
-          <Button as='a' fontSize={'sm'} fontWeight={400} variant={'link'} href={'login'}>
+          <Button as='a' fontSize={'sm'} fontWeight={400} variant={'link'} href={'/login'}>
             Sign In
           </Button>
           <Button
@@ -86,3 +86,5 @@ export const  Nav = () => {
     </Box>
   )
 }
+
+export default Nav;

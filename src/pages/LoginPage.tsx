@@ -1,10 +1,10 @@
-import {LoginForm} from '../components/login/LoginForm.tsx';
 import {Box, Flex} from '@chakra-ui/react';
+import LoginForm from '../components/login/LoginForm.tsx';
 
 export const LoginPage = () => {
   return (
-    <Flex flex="1" justifyContent="center" alignItems="center" minHeight="calc(100vh - var(--chakra-space-12))" padding="4">
-      <Box width="full" maxWidth="md">
+    <Flex direction="column" flex="1" alignItems="center" justifyContent="center" width="full">
+      <Box width="full" maxWidth="md" p={4}>
         <LoginForm />
       </Box>
     </Flex>

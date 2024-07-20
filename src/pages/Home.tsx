@@ -21,9 +21,9 @@ export const Home = () => {
   const borderColor = useColorModeValue('gray.300', 'gray.700');
   const textColor = useColorModeValue('gray.800', 'white');
   const navigate = useNavigate();
-  // const {isLoggedIn} = useAuthContext();
+  // const { isLoggedIn } = useAuthContext();
   const isLoggedIn = useLoggedIn();
-  const {isOpen, onOpen, onClose} = useDisclosure();
+  const { isOpen, onOpen, onClose } = useDisclosure();
 
   const handleRegisterClick = () => {
     if (!isLoggedIn) {
@@ -34,15 +34,16 @@ export const Home = () => {
   };
 
   return (
-    <Box>
-      <Heading>Welcome to the Home Page</Heading>
+    <Flex direction="column" minHeight="100vh" width="full">
+      <Heading p={4} textAlign="center">Welcome to the Home Page</Heading>
       {isLoggedIn ? (
-        <Flex minH="100vh" bg={bgColor} color={textColor}>
+        <Flex flex="1" bg={bgColor} color={textColor} width="full">
           <VStack
             w="20%"
             p={4}
             borderRight="1px solid"
             borderColor={borderColor}
+            alignItems="flex-start"
           >
             <Button w="full" variant="ghost">
               All Events
@@ -62,13 +63,15 @@ export const Home = () => {
           </VStack>
         </Flex>
       ) : (
-        <Box p={4}>
-          <Text>You need to log in to see the events.</Text>
-          <Button onClick={() => navigate('/login')}>Login</Button>
-          <Button onClick={handleRegisterClick}>Register</Button>
-        </Box>
+        <Flex flex="1" justifyContent="center" alignItems="center" p={4}>
+          <Box textAlign="center">
+            <Text mb={4}>You need to log in to see the events.</Text>
+            <Button onClick={() => navigate('/login')} mr={4}>Login</Button>
+            <Button onClick={handleRegisterClick}>Register</Button>
+          </Box>
+        </Flex>
       )}
       <RegistrationTypeModal isOpen={isOpen} onClose={onClose} />
-    </Box>
+    </Flex>
   );
 };
