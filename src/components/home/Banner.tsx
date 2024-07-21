@@ -11,6 +11,7 @@ const Banner = () => {
       mx="auto"
       maxW="1200px"
       mt={8}
+      mb={8}
       borderRadius="lg"
       boxShadow="lg"
       overflow="hidden"
