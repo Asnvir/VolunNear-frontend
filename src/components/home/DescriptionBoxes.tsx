@@ -26,7 +26,7 @@ const DescriptionBoxes = () => {
         <Text fontFamily="Epilogue" fontWeight="700" fontSize="18px" color="#FF7A00">
           Principles
         </Text>
-        <Heading fontFamily="Bevan" fontWeight="400" fontSize="48px" color="#18171C" mt={4}>
+        <Heading fontFamily="Bevan" fontWeight="700" fontSize="48px" color="#18171C" mt={4}>
           Our Guiding Principles
         </Heading>
         <Text fontFamily="Epilogue" fontWeight="400" fontSize="16px" color="#4F4F4F" mt={4}>

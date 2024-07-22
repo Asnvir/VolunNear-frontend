@@ -8,11 +8,11 @@ const AboutUsSection = () => {
         <Text fontFamily="Epilogue" fontWeight="700" fontSize="18px" color="#FF7A00">
           About us
         </Text>
-        <Heading fontFamily="Bevan" fontWeight="400" fontSize={{ base: "32px", md: "40px" }} color="black" mt={4}>
-          A Future Filled with Hope
+        <Heading fontFamily="Bevan" fontWeight="700" fontSize={{ base: "32px", md: "40px" }} color="black" mt={4}>
+          A Future Filled with VolunNear
         </Heading>
         <Text fontFamily="Epilogue" fontWeight="400" fontSize="16px" color="#4F4F4F" mt={4}>
-          At Hope, we are dedicated to uplifting communities through a range of targeted initiatives.
+          At VolunNear, we are dedicated to uplifting communities through a range of targeted initiatives.
         </Text>
       </Box>
       <Flex justifyContent="center" my={8}>

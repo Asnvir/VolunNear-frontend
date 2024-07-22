@@ -1,10 +1,8 @@
 // Home.jsx
 import {
-  Box,
   Button,
   Flex,
   Heading,
-  Text,
   useColorModeValue,
   useDisclosure,
   VStack,
@@ -17,6 +15,8 @@ import {ActivitiesFilter} from '../components/activities/activitiesFilter/Activi
 import Banner from '../components/home/Banner.tsx';
 import DescriptionBoxes from '../components/home/DescriptionBoxes.tsx';
 import AboutUs from '../components/home/AboutUs.tsx';
+import JourneyOfVolunNearSection from '../components/home/JourneyVolunNearSection.tsx';
+import Testimonials from '../components/home/Testimonials.tsx';
 // import {useAuthContext} from "../shared/hooks/useAuthContext.tsx";
 
 export const Home = () => {
@@ -69,7 +69,9 @@ export const Home = () => {
         <Flex direction="column" minHeight="100vh" width="full" >
           <Banner/>
           <DescriptionBoxes/>
-        <AboutUs/>
+          <AboutUs/>
+          <JourneyOfVolunNearSection/>
+          <Testimonials/>
         </Flex>
       )}
       <RegistrationTypeModal isOpen={isOpen} onClose={onClose} />
