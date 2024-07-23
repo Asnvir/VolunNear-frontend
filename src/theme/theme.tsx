@@ -9,12 +9,12 @@ export const theme = extendTheme({
     Button: {
       baseStyle: {
         fontFamily: 'Poppins, sans-serif',
-        letterSpacing: 2,
+        letterSpacing: 3,
         fontWeight: 'bold',
       },
       variants: {
         primary: {
-          bg: 'orange.400',
+          bg: '#FF7A00',
           color: 'white',
           _hover: {
             bg: 'orange.300',
