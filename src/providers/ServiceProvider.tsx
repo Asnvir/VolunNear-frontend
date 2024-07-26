@@ -7,9 +7,9 @@ import {AuthServiceImpl} from '../api/services/auth/service/AuthServiceImpl.ts';
 import {LocalStorageHelper} from '../helpers/types.ts';
 import {VolunteerServiceImpl} from '../api/services/volunteer/VolunteerServiceImpl.ts';
 import {HttpClientService} from '../api/services/http/types.ts';
-import {AuthService} from '../api/services/auth/types.ts';
 import {ActivitiesService} from '../api/services/activities/service/types.ts';
 import {VolunteerService} from '../api/services/volunteer/types.ts';
+import {AuthService} from '../api/services/auth/service/types.ts';
 
 type ServiceProviderProps = {
   children: React.ReactNode;

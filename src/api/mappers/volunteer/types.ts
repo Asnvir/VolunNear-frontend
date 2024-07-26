@@ -1,9 +1,6 @@
-import {ActivitiesFiltersType} from '../../../context/types.ts';
+import {ActivitiesFiltersType} from '../../services/activities/service/types.ts';
+import {ActivitiesFiltersRequest} from '../../services/http/types.ts';
 
 export type VolunteerMapper = {
-  preferencesToDTO(filters: ActivitiesFiltersType): ActivitiesFiltersDTO;
-};
-
-export type ActivitiesFiltersDTO = {
-  preferences: string[];
+  preferencesToDTO(filters: ActivitiesFiltersType): ActivitiesFiltersRequest;
 };

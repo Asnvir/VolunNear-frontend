@@ -2,11 +2,19 @@ import {ActivityMapperImpl} from '../../../mappers/activitiy/ActivityMapperImpl.
 import {ActivitiesResponse, Activity} from '../../../types.ts';
 import {ActivityMapper} from '../../../mappers/activitiy/types.ts';
 import {
-  ActivitiesFiltersDTO,
   ActivitiesFiltersType,
+  ActivitiesQueryParams,
   ActivitiesService,
+  ActivitiesTitles,
+  ActivitiesTypes,
+  ActivityType,
 } from './types.ts';
-import {HttpClientService} from '../../http/types.ts';
+import {
+  ActivitiesFiltersRequest,
+  ActivitiesFiltersResponse,
+  ActivitiesTitlesResponse,
+  HttpClientService,
+} from '../../http/types.ts';
 import {ActivityUtil} from '../util/types.ts';
 import {ActivityUtilImpl} from '../util/ActivityUtilImpl.ts';
 
@@ -14,6 +22,7 @@ export class ActivitiesServiceImpl implements ActivitiesService {
   private static instance: ActivitiesServiceImpl | null = null;
   private activityMapper: ActivityMapper = ActivityMapperImpl.getInstance();
   private activityUtil: ActivityUtil = ActivityUtilImpl.getInstance();
+
   private constructor(private httpClient: HttpClientService) {}
 
   public static getInstance(
@@ -26,15 +35,18 @@ export class ActivitiesServiceImpl implements ActivitiesService {
   }
 
   public async getActivities(
-    queryParams: ActivitiesFiltersType
+    queryParams: ActivitiesQueryParams
   ): Promise<Activity[]> {
     const filteredParams = this.activityUtil.filterEmptyFilters(queryParams);
-    const {data: organizations} = await this.httpClient.get<ActivitiesResponse>(
-      '/api/v1/organisation/get_all_activities',
-      filteredParams
-    );
+    const {data: organizationsDTO} =
+      await this.httpClient.get<ActivitiesResponse>(
+        '/api/v1/organisation/activities',
+        filteredParams
+      );
 
-    return organizations.flatMap(({activities, organisationResponseDTO}) =>
+    console.log(`filteredParams: ${JSON.stringify(filteredParams)}`);
+
+    return organizationsDTO.flatMap(({activities, organisationResponseDTO}) =>
       activities.map(activity =>
         this.activityMapper.fromDTO({
           activity,
@@ -47,12 +59,27 @@ export class ActivitiesServiceImpl implements ActivitiesService {
   public async setActivitiesFilters(
     filters: ActivitiesFiltersType
   ): Promise<ActivitiesFiltersType> {
-    const filtersDTO = this.activityMapper.preferencesToDTO(filters);
+    const filtersDTO = this.activityMapper.filtersToDTO(filters);
     const response = await this.httpClient.post<
-      ActivitiesFiltersDTO,
-      ActivitiesFiltersDTO
+      ActivitiesFiltersResponse,
+      ActivitiesFiltersRequest
     >('/api/v1/volunteer/set_preferences', filtersDTO);
     const updatedDTO = response.data;
-    return this.activityMapper.DTOToPreferences(updatedDTO);
+    console.log(`updatedDTO: ${JSON.stringify(updatedDTO)}`);
+    return this.activityMapper.DTOtoFilters(updatedDTO);
+  }
+
+  public async getActivitiesTitles(): Promise<ActivitiesTitles> {
+    const {data: titlesDTO} =
+      await this.httpClient.get<ActivitiesTitlesResponse>(
+        '/api/v1/organisation/all_activities_names'
+      );
+    const titles = this.activityMapper.DTOtoTitles(titlesDTO);
+
+    return titles;
+  }
+
+  getActivitiesTypes(): Promise<ActivitiesTypes> {
+    return Promise.resolve(Object.values(ActivityType));
   }
 }

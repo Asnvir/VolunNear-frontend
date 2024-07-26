@@ -1,8 +1,7 @@
-import {HttpResponse, RequestQueryParams} from '../../types.ts';
 import axios, {AxiosInstance, AxiosRequestConfig} from 'axios';
 import {LocalStorageHelper} from '../../../helpers/types.ts';
 import {AUTH_TOKEN} from '../../../utils/constants/routes.ts';
-import {HttpClientService} from './types.ts';
+import {HttpClientService, HttpResponse, RequestQueryParams} from './types.ts';
 
 export class HttpClientImpl implements HttpClientService {
   private static instance: HttpClientImpl | null = null;

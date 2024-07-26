@@ -1,6 +1,13 @@
 import {Activity, ActivityDTO, OrganisationDTO} from '../../types.ts';
-import {ActivitiesFiltersType} from '../../services/activities/service/types.ts';
-import {ActivitiesFiltersDTO} from '../volunteer/types.ts';
+import {
+  ActivitiesFiltersType,
+  ActivitiesTitles,
+} from '../../services/activities/service/types.ts';
+import {
+  ActivitiesFiltersRequest,
+  ActivitiesFiltersResponse,
+  ActivitiesTitlesResponse,
+} from '../../services/http/types.ts';
 
 export type ActivityMapper = {
   fromDTO({
@@ -11,7 +18,8 @@ export type ActivityMapper = {
     organization: OrganisationDTO;
   }): Activity;
 
-  preferencesToDTO(filters: ActivitiesFiltersType): ActivitiesFiltersDTO;
+  filtersToDTO(filters: ActivitiesFiltersType): ActivitiesFiltersRequest;
 
-  DTOToPreferences(dto: ActivitiesFiltersDTO): ActivitiesFiltersType;
+  DTOtoFilters(filtersDTO: ActivitiesFiltersResponse): ActivitiesFiltersType;
+  DTOtoTitles(titlesDTO: ActivitiesTitlesResponse): ActivitiesTitles;
 };

@@ -18,3 +18,17 @@ export type HttpResponse<T> = {
 };
 
 export type RequestQueryParams = Record<string, string>;
+
+export type ActivitiesFiltersRequest = {
+  preferences: string[];
+};
+
+export type ActivitiesFiltersResponse = {
+  title: string;
+  date: string;
+  type: string;
+  city: string;
+  country: string;
+};
+
+export type ActivitiesTitlesResponse = string[];
