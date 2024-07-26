@@ -10,11 +10,13 @@ const EMPTY_FILTERS: ActivitiesFiltersType = {
   country: '',
 };
 
-type ActivitiesProviderProps = {
+type ActivitiesFiltersProviderProps = {
   children: ReactNode;
 };
 
-export const ActivitiesProvider = ({children}: ActivitiesProviderProps) => {
+export const ActivitiesFiltersProvider = ({
+  children,
+}: ActivitiesFiltersProviderProps) => {
   const [filters, setFilters] = useState<ActivitiesFiltersType>(EMPTY_FILTERS);
 
   return (

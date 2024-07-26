@@ -1,12 +1,12 @@
 import {useServiceContext} from '../../../shared/hooks/useServiceContext.ts';
 import {useQuery} from '@tanstack/react-query';
 import {QUERY_KEY_GET_FILTERED_ACTIVITIES} from '../../../utils/constants/reactQueryKeys.ts';
-import {useActivitiesContext} from '../../../shared/hooks/useActivitiesContext.ts';
+import {useActivitiesFiltersContext} from '../../../shared/hooks/useActivitiesFiltersContext.ts';
 import {useGeolocated} from 'react-geolocated';
 
 export const useGetActivities = () => {
   const {activitiesService} = useServiceContext();
-  const {filters} = useActivitiesContext();
+  const {filters} = useActivitiesFiltersContext();
 
   const {coords, isGeolocationAvailable, isGeolocationEnabled, positionError} =
     useGeolocated({
@@ -32,9 +32,6 @@ export const useGetActivities = () => {
     },
     enabled: isGeolocationAvailable && isGeolocationEnabled && !!coords,
   });
-
-  console.log(query);
-  console.log(`Error: ${query.error}`);
 
   return {
     data: query.data,

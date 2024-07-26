@@ -18,6 +18,7 @@ import {ActivitiesFiltersType} from '../../../api/services/activities/service/ty
 import {ActivitiesFilterProps} from './types.ts';
 import {useGetActivitiesTitles} from '../../../hooks/activities/useGetActivitiesTitles/useGetActivitiesTitles.ts';
 import {useGetActivitiesTypes} from '../../../hooks/activities/useGetActivitiesTypes/useGetActivitiesTypes.ts';
+import {useGetCountriesCities} from '../../../hooks/forms/useGetCountriesCities/useGetCountriesCities.ts';
 
 export const ActivitiesFilter = ({onApply}: ActivitiesFilterProps) => {
   const {
@@ -48,6 +49,15 @@ export const ActivitiesFilter = ({onApply}: ActivitiesFilterProps) => {
     label: type,
     value: type,
   }));
+
+  const {
+    data: countriesCities,
+    isLoading: isLoadingCountriesCities,
+    error: errorCountriesCities,
+  } = useGetCountriesCities();
+  console.log(`countriesCities: ${JSON.stringify(countriesCities)}`);
+  console.log(`isLoadingCountriesCities: ${isLoadingCountriesCities}`);
+  console.log(`errorCountriesCities: ${errorCountriesCities}`);
 
   const {
     updateFilters,

@@ -17,19 +17,19 @@ import {
 } from '../../http/types.ts';
 import {ActivityUtil} from '../util/types.ts';
 import {ActivityUtilImpl} from '../util/ActivityUtilImpl.ts';
+import {HttpClientImpl} from '../../http/HttpClientImpl.ts';
 
 export class ActivitiesServiceImpl implements ActivitiesService {
   private static instance: ActivitiesServiceImpl | null = null;
   private activityMapper: ActivityMapper = ActivityMapperImpl.getInstance();
   private activityUtil: ActivityUtil = ActivityUtilImpl.getInstance();
+  private httpClient: HttpClientService = HttpClientImpl.getInstance();
 
-  private constructor(private httpClient: HttpClientService) {}
+  private constructor() {}
 
-  public static getInstance(
-    httpClient: HttpClientService
-  ): ActivitiesServiceImpl {
+  public static getInstance(): ActivitiesServiceImpl {
     if (!ActivitiesServiceImpl.instance) {
-      ActivitiesServiceImpl.instance = new ActivitiesServiceImpl(httpClient);
+      ActivitiesServiceImpl.instance = new ActivitiesServiceImpl();
     }
     return ActivitiesServiceImpl.instance;
   }
@@ -65,7 +65,7 @@ export class ActivitiesServiceImpl implements ActivitiesService {
       ActivitiesFiltersRequest
     >('/api/v1/volunteer/set_preferences', filtersDTO);
     const updatedDTO = response.data;
-    console.log(`updatedDTO: ${JSON.stringify(updatedDTO)}`);
+    // console.log(`updatedDTO: ${JSON.stringify(updatedDTO)}`);
     return this.activityMapper.DTOtoFilters(updatedDTO);
   }
 
@@ -79,7 +79,7 @@ export class ActivitiesServiceImpl implements ActivitiesService {
     return titles;
   }
 
-  getActivitiesTypes(): Promise<ActivitiesTypes> {
+  public async getActivitiesTypes(): Promise<ActivitiesTypes> {
     return Promise.resolve(Object.values(ActivityType));
   }
 }

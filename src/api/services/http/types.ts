@@ -1,4 +1,5 @@
 import {AxiosRequestConfig} from 'axios';
+import {CountryDataDTO} from '../../types.ts';
 
 export type HttpClientService = {
   get: <T>(
@@ -32,3 +33,9 @@ export type ActivitiesFiltersResponse = {
 };
 
 export type ActivitiesTitlesResponse = string[];
+
+export type CountriesCitiesResponse = {
+  error: boolean;
+  msg: string;
+  data: CountryDataDTO[];
+};
