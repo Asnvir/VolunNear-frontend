@@ -1,8 +1,10 @@
 // Home.jsx
 import {
+  Box,
   Button,
   Flex,
   Heading,
+  Text,
   useColorModeValue,
   useDisclosure,
   VStack,
@@ -12,11 +14,6 @@ import {RegistrationTypeModal} from '../components/modals/RegistrationTypeModal.
 import {useLoggedIn} from '../hooks/auth/useLoggedIn/useLoggedIn.ts';
 import {ActivitiesList} from '../components/activities/ActivitiesList.tsx';
 import {ActivitiesFilter} from '../components/activities/activitiesFilter/ActivitiesFilter.tsx';
-import Banner from '../components/home/Banner.tsx';
-import DescriptionBoxes from '../components/home/DescriptionBoxes.tsx';
-import AboutUs from '../components/home/AboutUs.tsx';
-import JourneyOfVolunNearSection from '../components/home/JourneyVolunNearSection.tsx';
-import Testimonials from '../components/home/Testimonials.tsx';
 // import {useAuthContext} from "../shared/hooks/useAuthContext.tsx";
 
 export const Home = () => {
@@ -24,9 +21,9 @@ export const Home = () => {
   const borderColor = useColorModeValue('gray.300', 'gray.700');
   const textColor = useColorModeValue('gray.800', 'white');
   const navigate = useNavigate();
-  // const { isLoggedIn } = useAuthContext();
+  // const {isLoggedIn} = useAuthContext();
   const isLoggedIn = useLoggedIn();
-  const { isOpen, onOpen, onClose } = useDisclosure();
+  const {isOpen, onOpen, onClose} = useDisclosure();
 
   const handleRegisterClick = () => {
     if (!isLoggedIn) {
@@ -37,16 +34,15 @@ export const Home = () => {
   };
 
   return (
-    <Flex direction="column" minHeight="100vh" width="full">
+    <Box>
+      <Heading>Welcome to the Home Page</Heading>
       {isLoggedIn ? (
-        <Flex flex="1" bg={bgColor} color={textColor} width="full">
-          <Heading p={4} textAlign="center">Welcome to the Home Page</Heading>
+        <Flex minH="100vh" bg={bgColor} color={textColor}>
           <VStack
             w="20%"
             p={4}
             borderRight="1px solid"
             borderColor={borderColor}
-            alignItems="flex-start"
           >
             <Button w="full" variant="ghost">
               All Events
@@ -66,15 +62,13 @@ export const Home = () => {
           </VStack>
         </Flex>
       ) : (
-        <Flex direction="column" minHeight="100vh" width="full" >
-          <Banner/>
-          <DescriptionBoxes/>
-          <AboutUs/>
-          <JourneyOfVolunNearSection/>
-          <Testimonials/>
-        </Flex>
+        <Box p={4}>
+          <Text>You need to log in to see the events.</Text>
+          <Button onClick={() => navigate('/login')}>Login</Button>
+          <Button onClick={handleRegisterClick}>Register</Button>
+        </Box>
       )}
       <RegistrationTypeModal isOpen={isOpen} onClose={onClose} />
-    </Flex>
+    </Box>
   );
 };

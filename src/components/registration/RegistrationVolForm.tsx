@@ -11,12 +11,11 @@ import {
   Alert,
   AlertDescription,
   AlertIcon,
-  AlertTitle, Box,
+  AlertTitle,
   Button,
   FormControl,
-  Text,
   FormErrorMessage,
-  FormLabel, Heading,
+  FormLabel,
   IconButton,
   Input,
   InputGroup,
@@ -30,7 +29,7 @@ export const RegistrationVolForm = () => {
     register,
     handleSubmit,
     setError,
-    formState: { errors, isSubmitting },
+    formState: {errors, isSubmitting},
   } = useForm<RegistrationVolFormValues>({
     resolver: zodResolver(RegistrationVolValidationSchema),
   });
@@ -40,11 +39,15 @@ export const RegistrationVolForm = () => {
 
   const handlePasswordVisibility = () => setShowPassword(!showPassword);
 
-  const { registerVol, error: errorOnServer } = useRegisterVol({
+  const {registerVol, error: errorOnServer} = useRegisterVol({
     onSuccess: () => {
       navigate('/login');
     },
   });
+
+  const onSubmit: SubmitHandler<RegistrationVolFormValues> = data => {
+    registerVol(data);
+  };
 
   useEffect(() => {
     if (errorOnServer) {
@@ -54,88 +57,61 @@ export const RegistrationVolForm = () => {
     }
   }, [errorOnServer, setError]);
 
-  const onSubmit: SubmitHandler<RegistrationVolFormValues> = data => {
-    registerVol(data);
-  };
-
   return (
-    <Box
-      maxW="lg"  // Adjust the max width to make the form wider
-      w="full"
-      p={8}
-      borderWidth={1}
-      borderRadius="lg"
-      boxShadow="lg"
-      bg="white"
+    <VStack
+      as="form"
+      onSubmit={handleSubmit(onSubmit)}
+      spacing={4}
+      align="flex-start"
+      width="full"
     >
-      <VStack spacing={6} align="center" width="full">
-        <Heading as="h1" size="lg" textAlign="center" width="full" mb={4}>
-          Register Volunteer
-        </Heading>
-        <Text fontSize="lg" color="gray.600" textAlign="center" width="full">
-          Please fill in the details to register as a volunteer.
-        </Text>
+      <FormControl isRequired isInvalid={!!errors?.username}>
+        <FormLabel htmlFor="username">Username</FormLabel>
+        <Input id="username" {...register('username')} />
+        <FormErrorMessage>{errors?.username?.message}</FormErrorMessage>
+      </FormControl>
 
-        <VStack
-          as="form"
-          onSubmit={handleSubmit(onSubmit)}
-          spacing={4}
-          align="flex-start"
-          width="full"
-        >
-          <FormControl isRequired isInvalid={!!errors?.username}>
-            <FormLabel htmlFor="username">Username</FormLabel>
-            <Input id="username" {...register('username')} />
-            <FormErrorMessage>{errors?.username?.message}</FormErrorMessage>
-          </FormControl>
+      <FormControl isRequired={true} isInvalid={!!errors?.password}>
+        <FormLabel htmlFor="password">Password</FormLabel>
+        <InputGroup>
+          <Input
+            id="password"
+            type={showPassword ? 'text' : 'password'}
+            {...register('password')}
+          />
+          <InputRightElement>
+            <IconButton
+              aria-label={showPassword ? 'Hide password' : 'Show password'}
+              icon={showPassword ? <ViewOffIcon /> : <ViewIcon />}
+              onClick={handlePasswordVisibility}
+            />
+          </InputRightElement>
+        </InputGroup>
+        <FormErrorMessage>{errors?.password?.message}</FormErrorMessage>
+      </FormControl>
 
-          <FormControl isRequired isInvalid={!!errors?.password}>
-            <FormLabel htmlFor="password">Password</FormLabel>
-            <InputGroup>
-              <Input
-                id="password"
-                type={showPassword ? 'text' : 'password'}
-                {...register('password')}
-              />
-              <InputRightElement>
-                <IconButton
-                  aria-label={showPassword ? 'Hide password' : 'Show password'}
-                  icon={showPassword ? <ViewOffIcon /> : <ViewIcon />}
-                  onClick={handlePasswordVisibility}
-                  variant="ghost"
-                />
-              </InputRightElement>
-            </InputGroup>
-            <FormErrorMessage>{errors?.password?.message}</FormErrorMessage>
-          </FormControl>
+      <FormControl isRequired isInvalid={!!errors?.email}>
+        <FormLabel htmlFor="email">Email</FormLabel>
+        <Input id="email" type="email" {...register('email')} />
+        <FormErrorMessage>{errors?.email?.message}</FormErrorMessage>
+      </FormControl>
 
-          <FormControl isRequired isInvalid={!!errors?.email}>
-            <FormLabel htmlFor="email">Email</FormLabel>
-            <Input id="email" type="email" {...register('email')} />
-            <FormErrorMessage>{errors?.email?.message}</FormErrorMessage>
-          </FormControl>
+      <FormControl isRequired isInvalid={!!errors?.realName}>
+        <FormLabel htmlFor="realName">Real Name</FormLabel>
+        <Input id="realName" {...register('realName')} />
+        <FormErrorMessage>{errors?.realName?.message}</FormErrorMessage>
+      </FormControl>
 
-          <FormControl isRequired isInvalid={!!errors?.realName}>
-            <FormLabel htmlFor="realName">Real Name</FormLabel>
-            <Input id="realName" {...register('realName')} />
-            <FormErrorMessage>{errors?.realName?.message}</FormErrorMessage>
-          </FormControl>
-
-          <Button disabled={isSubmitting} variant="primary" width="full" size="lg" type="submit">
-            Register
-          </Button>
-        </VStack>
-
-        {errorOnServer && (
-          <Alert status="error" mt={4} width="full">
-            <AlertIcon />
-            <AlertTitle mr={2}>Registration failed!</AlertTitle>
-            <AlertDescription>{errorOnServer}</AlertDescription>
-          </Alert>
-        )}
-      </VStack>
-    </Box>
+      <Button disabled={isSubmitting} type="submit" colorScheme="blue">
+        Register
+      </Button>
+      {errorOnServer && (
+        <Alert status="error">
+          <AlertIcon />
+          <AlertTitle mr={2}>Registration failed!</AlertTitle>
+          <AlertDescription>{errorOnServer}</AlertDescription>
+        </Alert>
+      )}
+    </VStack>
   );
 };
-
-export default RegistrationVolForm;
