@@ -13,10 +13,9 @@ import {Home} from './pages/Home';
 // import {SocialNetworks} from './pages/SocialNetworks';
 // import {ProtectedRoute} from './components/ProtectedRoute';
 import {MainLayout} from './layouts/MainLayout';
-import {RegistrationOrgPage} from './pages/registration/RegistrationOrgPage.tsx';
-import {RegistrationVolunteerPage} from './pages/registration/RegistrationVolunteerPage.tsx';
+import {RegistrationOrg} from './pages/registration/RegistrationOrg.tsx';
+import {RegistrationVol} from './pages/registration/RegistrationVol.tsx';
 import {LoginPage} from './pages/LoginPage.tsx';
-import ErrorPage from './pages/ErrorPage.tsx';
 // import {EventsList} from './components/EventsList';
 // import {MyEvents} from './components/MyEvents';
 // import {OrganizationsList} from './components/OrganizationsList';
@@ -29,14 +28,11 @@ export const router = createBrowserRouter([
     children: [
       {path: '/', element: <Home />},
       {path: '/login', element: <LoginPage />},
-      {path: 'registration/volunteer', element: <RegistrationVolunteerPage />},
+      {path: 'registration/volunteer', element: <RegistrationVol />},
       {
         path: 'registration/organization',
-        element: <RegistrationOrgPage />,
+        element: <RegistrationOrg />,
       },
-      {
-        path: '*' , element: <ErrorPage/>
-      }
       // {
       //     path: 'profile',
       //     element: (
