@@ -8,17 +8,24 @@ import {
   Collapse,
   useColorModeValue,
   useBreakpointValue,
-  useDisclosure,
-} from '@chakra-ui/react'
+  useDisclosure, Avatar, MenuButton, Menu, MenuList, MenuItem, MenuDivider,
+} from '@chakra-ui/react';
 import {
   HamburgerIcon,
   CloseIcon,
 } from '@chakra-ui/icons'
 import DesktopNav from './DesktopNav'
 import MobileNav from './MobileNav'
+import {useNavigate} from 'react-router-dom';
+import {useLoggedIn} from '../../hooks/auth/useLoggedIn/useLoggedIn.ts';
+import {useLoggedOut} from '../../hooks/auth/useLoggedOut/useLoggedOut.ts';
 
 const Nav = () => {
   const { isOpen, onToggle } = useDisclosure()
+  const navigate = useNavigate();
+  const isLoggedIn = useLoggedIn();
+  const logout = useLoggedOut();
+
 
   return (
     <Box>
@@ -61,15 +68,37 @@ const Nav = () => {
           justify={'flex-end'}
           direction='row'
           spacing={6}>
-          <Button as='a' fontSize={'sm'} fontWeight={400} variant={'link'} href={'/login'}>
-            Sign In
-          </Button>
-          <Button variant="primary">
-            Sign Up
-          </Button>
+          {isLoggedIn ? (
+              <Flex alignItems={'center'}>
+                <Menu>
+                  <MenuButton
+                    as={Button}
+                    rounded={'full'}
+                    variant={'link'}
+                    cursor={'pointer'}
+                    minW={0}>
+                    <Avatar
+                      size={'sm'}
+                      src={
+                        'https://images.unsplash.com/photo-1493666438817-866a91353ca9?ixlib=rb-0.3.5&q=80&fm=jpg&crop=faces&fit=crop&h=200&w=200&s=b616b2c5b373a80ffc9636ba24f7a4a9' //TODO: get user logo
+                      }
+                    />
+                  </MenuButton>
+                  <MenuList>
+                    <MenuItem>Profile</MenuItem>
+                    <MenuDivider />
+                    <MenuItem>Logout</MenuItem>
+                  </MenuList>
+                </Menu>
+              </Flex>
+          ) :
+            <Button variant="primary" onClick={() => navigate("/login")}>
+              Sign In
+            </Button>
+          }
+
         </Stack>
       </Flex>
-
       <Collapse in={isOpen} animateOpacity>
         <MobileNav />
       </Collapse>

@@ -72,7 +72,8 @@ export class AuthServiceImpl implements AuthService {
     };
   }
 
-  public async logout(): Promise<void> {}
+  public async logout(): Promise<void> {
+  }
 
   public async registerOrganisation(
     orgCredentials: RegisterOrgCredentials
