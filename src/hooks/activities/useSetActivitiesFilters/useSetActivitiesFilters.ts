@@ -1,10 +1,10 @@
-import {useActivitiesContext} from '../../../shared/hooks/useActivitiesContext.ts';
+import {useActivitiesFiltersContext} from '../../../shared/hooks/useActivitiesFiltersContext.ts';
 import {useMutation} from '@tanstack/react-query';
 import {useServiceContext} from '../../../shared/hooks/useServiceContext.ts';
 import {ActivitiesFiltersType} from '../../../api/services/activities/service/types.ts';
 
 export const useSetActivitiesFilters = () => {
-  const {setFilters} = useActivitiesContext();
+  const {setFilters} = useActivitiesFiltersContext();
   const {activitiesService} = useServiceContext();
 
   const mutation = useMutation({

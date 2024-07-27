@@ -42,3 +42,13 @@ export type User = {
   username: string;
   role: Role;
 };
+
+export type CountryDataDTO = {
+  country: string;
+  cities: string[];
+};
+
+export type MappedCountryData = {
+  country: string;
+  cities: string[];
+};

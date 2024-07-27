@@ -22,26 +22,22 @@ import {RegisterVolCredentials} from '../../../../hooks/auth/useRegisterVol/type
 import {AuthHelperImpl} from '../helper/AuthHelperImpl.ts';
 import {AuthHelper} from '../helper/types.ts';
 import {RegisterOrgCredentials} from '../../../../hooks/auth/useRegisterOrg/types.ts';
+import {LocalStorageHelperImpl} from '../../../../helpers/LocalStorageHelper.ts';
+import {HttpClientImpl} from '../../http/HttpClientImpl.ts';
 
 export class AuthServiceImpl implements AuthService {
   private static instance: AuthServiceImpl | null = null;
   private authMapper: AuthMapper = AuthMapperImpl.getInstance();
   private authHelper: AuthHelper = AuthHelperImpl.getInstance();
+  private httpClient: HttpClientService = HttpClientImpl.getInstance();
+  private localStorageHelper: LocalStorageHelper =
+    LocalStorageHelperImpl.getInstance();
 
-  private constructor(
-    private httpClient: HttpClientService,
-    private localStorageHelper: LocalStorageHelper
-  ) {}
+  private constructor() {}
 
-  public static getInstance(
-    httpClient: HttpClientService,
-    localStorageHelper: LocalStorageHelper
-  ): AuthServiceImpl {
+  public static getInstance(): AuthServiceImpl {
     if (!AuthServiceImpl.instance) {
-      AuthServiceImpl.instance = new AuthServiceImpl(
-        httpClient,
-        localStorageHelper
-      );
+      AuthServiceImpl.instance = new AuthServiceImpl();
     }
     return AuthServiceImpl.instance;
   }

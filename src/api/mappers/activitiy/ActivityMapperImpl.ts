@@ -1,7 +1,14 @@
-import {ActivityDTO, Activity, OrganisationDTO} from '../../types.ts';
+import {Activity, ActivityDTO, OrganisationDTO} from '../../types.ts';
 import {ActivityMapper} from './types.ts';
-import {ActivitiesFiltersType} from '../../services/activities/service/types.ts';
-import {ActivitiesFiltersDTO} from '../volunteer/types.ts';
+import {
+  ActivitiesFiltersType,
+  ActivitiesTitles,
+} from '../../services/activities/service/types.ts';
+import {
+  ActivitiesFiltersRequest,
+  ActivitiesFiltersResponse,
+  ActivitiesTitlesResponse,
+} from '../../services/http/types.ts';
 
 export class ActivityMapperImpl implements ActivityMapper {
   private static instance: ActivityMapperImpl | null = null;
@@ -38,27 +45,42 @@ export class ActivityMapperImpl implements ActivityMapper {
     };
   }
 
-  public preferencesToDTO(
+  public filtersToDTO(
     filters: ActivitiesFiltersType
-  ): ActivitiesFiltersDTO {
+  ): ActivitiesFiltersRequest {
+    console.log(`filters: ${JSON.stringify(filters)}`);
+
+    if (!filters) {
+      console.error('Invalid filters object');
+      return {preferences: []};
+    }
+
     const preferences = Object.entries(filters)
       .filter(
         ([, value]) => value !== undefined && value !== null && value !== ''
       )
       .map(([key, value]) => `${key}:${value}`);
 
-    return {preferences};
+    const preferencesDTO = {preferences};
+    console.log(
+      `FiltersToDTO - preferencesDTO: ${JSON.stringify(preferencesDTO)}`
+    );
+    return preferencesDTO;
   }
 
-  public DTOToPreferences(
-    filtersDTO: ActivitiesFiltersDTO
+  public DTOtoFilters(
+    filtersDTO: ActivitiesFiltersResponse
   ): ActivitiesFiltersType {
-    const filters: ActivitiesFiltersType = {};
-    const {preferences} = filtersDTO;
-    preferences.forEach(preference => {
-      const [key, value] = preference.split(':');
-      filters[key as keyof ActivitiesFiltersType] = value;
-    });
-    return filters;
+    return {
+      title: filtersDTO.title,
+      date: filtersDTO.date,
+      type: filtersDTO.type,
+      city: filtersDTO.city,
+      country: filtersDTO.country,
+    };
+  }
+
+  public DTOtoTitles(titlesDTO: ActivitiesTitlesResponse): ActivitiesTitles {
+    return titlesDTO;
   }
 }

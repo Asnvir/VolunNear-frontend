@@ -1,14 +1,16 @@
-import {HttpResponse, RequestQueryParams} from '../../types.ts';
 import axios, {AxiosInstance, AxiosRequestConfig} from 'axios';
 import {LocalStorageHelper} from '../../../helpers/types.ts';
 import {AUTH_TOKEN} from '../../../utils/constants/routes.ts';
-import {HttpClientService} from './types.ts';
+import {HttpClientService, HttpResponse, RequestQueryParams} from './types.ts';
+import {LocalStorageHelperImpl} from '../../../helpers/LocalStorageHelper.ts';
 
 export class HttpClientImpl implements HttpClientService {
   private static instance: HttpClientImpl | null = null;
   private axios: AxiosInstance;
+  private localStorageHelper: LocalStorageHelper =
+    LocalStorageHelperImpl.getInstance();
 
-  private constructor(private localStorageHelper: LocalStorageHelper) {
+  private constructor() {
     this.axios = axios.create({
       baseURL: import.meta.env.VITE_BACKEND_URL,
     });
@@ -26,11 +28,9 @@ export class HttpClientImpl implements HttpClientService {
     );
   }
 
-  public static getInstance(
-    localStorageHelper: LocalStorageHelper
-  ): HttpClientImpl {
+  public static getInstance(): HttpClientImpl {
     if (!HttpClientImpl.instance) {
-      HttpClientImpl.instance = new HttpClientImpl(localStorageHelper);
+      HttpClientImpl.instance = new HttpClientImpl();
     }
     return HttpClientImpl.instance;
   }

@@ -6,7 +6,7 @@ import {AppStateProvider} from './providers/AppStateProvider.tsx';
 import {AuthProvider} from './providers/AuthProvider.tsx';
 import {QueryClientProvider} from '@tanstack/react-query';
 import {queryClient} from './providers/queryClientProvider/util.ts';
-import {ActivitiesProvider} from './providers/ActivitiesProvider.tsx';
+import {ActivitiesFiltersProvider} from './providers/ActivitiesFiltersProvider.tsx';
 
 export const App = () => {
   return (
@@ -14,11 +14,11 @@ export const App = () => {
       <AppStateProvider>
         <AuthProvider>
           <QueryClientProvider client={queryClient}>
-            <ActivitiesProvider>
+            <ActivitiesFiltersProvider>
               <ChakraProvider>
                 <RouterProvider router={router} />
               </ChakraProvider>
-            </ActivitiesProvider>
+            </ActivitiesFiltersProvider>
           </QueryClientProvider>
         </AuthProvider>
       </AppStateProvider>

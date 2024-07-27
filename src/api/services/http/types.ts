@@ -1,4 +1,5 @@
 import {AxiosRequestConfig} from 'axios';
+import {CountryDataDTO} from '../../types.ts';
 
 export type HttpClientService = {
   get: <T>(
@@ -18,3 +19,23 @@ export type HttpResponse<T> = {
 };
 
 export type RequestQueryParams = Record<string, string>;
+
+export type ActivitiesFiltersRequest = {
+  preferences: string[];
+};
+
+export type ActivitiesFiltersResponse = {
+  title: string;
+  date: string;
+  type: string;
+  city: string;
+  country: string;
+};
+
+export type ActivitiesTitlesResponse = string[];
+
+export type CountriesCitiesResponse = {
+  error: boolean;
+  msg: string;
+  data: CountryDataDTO[];
+};
