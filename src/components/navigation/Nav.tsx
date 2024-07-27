@@ -16,16 +16,22 @@ import {
 } from '@chakra-ui/icons'
 import DesktopNav from './DesktopNav'
 import MobileNav from './MobileNav'
-import {useNavigate} from 'react-router-dom';
+import {redirect, useNavigate} from 'react-router-dom';
 import {useLoggedIn} from '../../hooks/auth/useLoggedIn/useLoggedIn.ts';
 import {useLoggedOut} from '../../hooks/auth/useLoggedOut/useLoggedOut.ts';
+import {useGetVolunteerProfile} from '../../hooks/volunteer/useGetVolunteerProfile/useGetVolunteerProfile.ts';
 
 const Nav = () => {
   const { isOpen, onToggle } = useDisclosure()
   const navigate = useNavigate();
   const isLoggedIn = useLoggedIn();
   const logout = useLoggedOut();
+  const {data} = useGetVolunteerProfile();
 
+  const handleLogout = () => {
+    logout();
+    window.location.reload();
+  }
 
   return (
     <Box>
@@ -80,14 +86,14 @@ const Nav = () => {
                     <Avatar
                       size={'md'}
                       src={
-                        'https://images.unsplash.com/photo-1493666438817-866a91353ca9?ixlib=rb-0.3.5&q=80&fm=jpg&crop=faces&fit=crop&h=200&w=200&s=b616b2c5b373a80ffc9636ba24f7a4a9' //TODO: get user logo
+                        data?.avatarUrl
                       }
                     />
                   </MenuButton>
                   <MenuList>
-                    <MenuItem>Profile</MenuItem>
+                    <MenuItem onClick={() =>navigate("/volunteer/profile")}>Profile</MenuItem>
                     <MenuDivider />
-                    <MenuItem>Logout</MenuItem>
+                    <MenuItem onClick={() => handleLogout()}>Logout</MenuItem>
                   </MenuList>
                 </Menu>
               </Flex>

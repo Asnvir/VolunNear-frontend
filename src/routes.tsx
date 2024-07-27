@@ -17,6 +17,8 @@ import {RegistrationOrgPage} from './pages/registration/RegistrationOrgPage.tsx'
 import {RegistrationVolunteerPage} from './pages/registration/RegistrationVolunteerPage.tsx';
 import {LoginPage} from './pages/LoginPage.tsx';
 import ErrorPage from './pages/ErrorPage.tsx';
+import ProfileSettings from './pages/ProfileSettings.tsx';
+
 // import {EventsList} from './components/EventsList';
 // import {MyEvents} from './components/MyEvents';
 // import {OrganizationsList} from './components/OrganizationsList';
@@ -34,9 +36,10 @@ export const router = createBrowserRouter([
         path: 'registration/organization',
         element: <RegistrationOrgPage />,
       },
+      {path: 'volunteer/profile', element: <ProfileSettings />},
       {
-        path: '*' , element: <ErrorPage/>
-      }
+        path: '*', element: <ErrorPage />,
+      },
       // {
       //     path: 'profile',
       //     element: (

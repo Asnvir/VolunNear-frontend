@@ -55,4 +55,18 @@ export class HttpClientImpl implements HttpClientService {
       ...options,
     });
   }
+
+  put<T, B>(
+    url: string,
+    body: B,
+    options: AxiosRequestConfig = {}
+  ): Promise<HttpResponse<T>> {
+    return this.axios.put<T>(url, body, {
+      headers: {
+        'Content-Type': 'application/json',
+        ...options.headers,
+      },
+      ...options,
+    });
+  }
 }

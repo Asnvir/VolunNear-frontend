@@ -72,7 +72,9 @@ export class AuthServiceImpl implements AuthService {
     };
   }
 
-  public async logout(): Promise<void> {
+  public logout(): void {
+    console.log('logout')
+    window.localStorage.removeItem(AUTH_TOKEN);
   }
 
   public async registerOrganisation(
