@@ -30,10 +30,10 @@ export const RegistrationTypeModal = ({ isOpen, onClose }) => {
                 <ModalCloseButton />
                 <ModalBody padding="6">
                     <VStack spacing={4}>
-                        <Button onClick={() => handleChoice('volunteer')} width="full" colorScheme="teal">
+                        <Button variant="primary" onClick={() => handleChoice('volunteer')} width="full" colorScheme="teal">
                             Volunteer
                         </Button>
-                        <Button onClick={() => handleChoice('organization')} width="full" colorScheme="teal">
+                        <Button variant="primary" onClick={() => handleChoice('organization')} width="full" colorScheme="teal">
                             Organization
                         </Button>
                     </VStack>

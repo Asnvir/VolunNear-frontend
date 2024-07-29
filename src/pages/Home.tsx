@@ -27,13 +27,6 @@ export const Home = () => {
   const isLoggedIn = useLoggedIn();
   const {isOpen, onOpen, onClose} = useDisclosure();
 
-  const handleRegisterClick = () => {
-    if (!isLoggedIn) {
-      onOpen();
-    } else {
-      navigate('/'); // or wherever you want logged-in users to go
-    }
-  };
 
   const cards = [
     // {
@@ -60,9 +53,7 @@ export const Home = () => {
     <Flex direction="column" minHeight="100vh" width="full">
       {isLoggedIn ? (
         <Flex flex="1" bg={bgColor} color={textColor} width="full">
-          {/*<Heading p={4} textAlign="center">*/}
-          {/*  Welcome to the Home Page*/}
-          {/*</Heading>*/}
+
           <VStack
             w="20%"
             p={4}

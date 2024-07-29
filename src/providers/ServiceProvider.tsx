@@ -6,6 +6,9 @@ import {VolunteerServiceImpl} from '../api/services/volunteer/VolunteerServiceIm
 import {ActivitiesService} from '../api/services/activities/service/types.ts';
 import {VolunteerService} from '../api/services/volunteer/types.ts';
 import {AuthService} from '../api/services/auth/service/types.ts';
+import {FormServiceImpl} from '../api/services/form/FormServiceImpl.ts';
+import {FormService} from '../api/services/form/types.ts';
+import {FileUploadServiceImpl} from '../api/services/files/service/FileServiceImpl.ts';
 import {PlacesServiceImpl} from '../api/services/places/PlacesServiceImpl.ts';
 import {PlacesService} from '../api/services/places/types.ts';
 
@@ -22,7 +25,9 @@ const initServices = () => {
 
   const formService: PlacesService = PlacesServiceImpl.getInstance();
 
-  return {authService, activitiesService, volunteerService, formService};
+  const fileUploadService = FileUploadServiceImpl.getInstance();
+
+  return {authService, activitiesService, volunteerService, formService, fileUploadService};
 };
 
 export const ServiceProvider = ({children}: ServiceProviderProps) => {

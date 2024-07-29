@@ -49,6 +49,20 @@ export class HttpClientImpl implements HttpClient {
   ): Promise<HttpResponse<T>> {
     return this.axios.post<T>(url, body, {
       headers: {
+        'Content-Type': body instanceof FormData ? 'multipart/form-data' : 'application/json',
+        ...options.headers,
+      },
+      ...options,
+    });
+  }
+
+  put<T, B>(
+    url: string,
+    body: B,
+    options: AxiosRequestConfig = {}
+  ): Promise<HttpResponse<T>> {
+    return this.axios.put<T>(url, body, {
+      headers: {
         'Content-Type': 'application/json',
         ...options.headers,
       },

@@ -12,6 +12,7 @@
 export interface IUpdateVolunteerInfoRequestDTO {
   email?: string;
   realName?: string;
+  userName?: string;
 }
 
 export interface IVolunteerInfoDTO {
@@ -109,6 +110,7 @@ export interface IVolunteerProfileResponseDTO {
   email?: string;
   username?: string;
   realName?: string;
+  avatarUrl?: string;
   preferences?: string[];
   activitiesDTO?: IActivitiesDTO[];
 }

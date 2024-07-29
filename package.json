@@ -9,7 +9,7 @@
     "lint": "eslint . --ext ts,tsx --report-unused-disable-directives --max-warnings 0",
     "preview": "vite preview",
     "format": "prettier --write ./src",
-    "generate:api": "npx swagger-typescript-api -p http://localhost:8080/v3/api-docs -o ./src/api/types -n api.ts --no-client  --responses --type-prefix I --api-class-name MyApi --modular --unwrap-response-data --extract-request-params --extract-request-body --extract-response-body --extract-response-error --single-http-client --clean-output "
+    "generate:api": "npx swagger-typescript-api -p http://localhost:8082/v3/api-docs -o ./src/api/types -n api.ts --no-client  --responses --type-prefix I --api-class-name MyApi --modular --unwrap-response-data --extract-request-params --extract-request-body --extract-response-body --extract-response-error --single-http-client --clean-output "
   },
   "dependencies": {
     "@chakra-ui/icons": "^2.1.1",
