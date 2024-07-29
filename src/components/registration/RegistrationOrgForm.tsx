@@ -1,19 +1,18 @@
 import {SubmitHandler, useForm} from 'react-hook-form';
 import {zodResolver} from '@hookform/resolvers/zod';
-import {
-  RegistrationOrgFormValues,
-  RegistrationOrgValidationSchema,
-} from '../../api/validation/register/RegistrationOrgValidation.ts';
+
 import {
   Alert,
   AlertDescription,
   AlertIcon,
-  AlertTitle, Box,
+  AlertTitle,
+  Box,
   Button,
   FormControl,
   FormErrorMessage,
   Text,
-  FormLabel, Heading,
+  FormLabel,
+  Heading,
   IconButton,
   Input,
   InputGroup,
@@ -24,13 +23,15 @@ import {ViewIcon, ViewOffIcon} from '@chakra-ui/icons';
 import {useRegisterOrg} from '../../hooks/auth/useRegisterOrg/useRegisterOrg.ts';
 import {useNavigate} from 'react-router-dom';
 import {useEffect, useState} from 'react';
+import {RegistrationOrgFormValues} from '../../api/validation/register/organization/types.ts';
+import {RegistrationOrgValidationSchema} from '../../api/validation/register/organization/RegistrationOrgValidation.ts';
 
 export const RegistrationOrgForm = () => {
   const {
     register,
     handleSubmit,
     setError,
-    formState: { errors, isSubmitting },
+    formState: {errors, isSubmitting},
   } = useForm<RegistrationOrgFormValues>({
     resolver: zodResolver(RegistrationOrgValidationSchema),
   });
@@ -39,7 +40,7 @@ export const RegistrationOrgForm = () => {
 
   const handlePasswordVisibility = () => setShowPassword(!showPassword);
 
-  const { registerOrg, error: errorOnServer } = useRegisterOrg({
+  const {registerOrg, error: errorOnServer} = useRegisterOrg({
     onSuccess: () => {
       navigate('/login');
     },
@@ -61,7 +62,7 @@ export const RegistrationOrgForm = () => {
     <Box
       maxW="lg"
       w="full"
-      minW={{ base: '90%', md: '80%' }}
+      minW={{base: '90%', md: '80%'}}
       p={8}
       borderWidth={1}
       borderRadius="lg"
@@ -116,8 +117,13 @@ export const RegistrationOrgForm = () => {
           </FormControl>
 
           <FormControl isRequired isInvalid={!!errors?.nameOfOrganisation}>
-            <FormLabel htmlFor="nameOfOrganisation">Organization Name</FormLabel>
-            <Input id="nameOfOrganisation" {...register('nameOfOrganisation')} />
+            <FormLabel htmlFor="nameOfOrganisation">
+              Organization Name
+            </FormLabel>
+            <Input
+              id="nameOfOrganisation"
+              {...register('nameOfOrganisation')}
+            />
             <FormErrorMessage>
               {errors?.nameOfOrganisation?.message}
             </FormErrorMessage>
@@ -141,7 +147,13 @@ export const RegistrationOrgForm = () => {
             <FormErrorMessage>{errors?.address?.message}</FormErrorMessage>
           </FormControl>
 
-          <Button disabled={isSubmitting} variant="primary" width="full" size="lg" type="submit">
+          <Button
+            disabled={isSubmitting}
+            variant="primary"
+            width="full"
+            size="lg"
+            type="submit"
+          >
             Register
           </Button>
         </VStack>

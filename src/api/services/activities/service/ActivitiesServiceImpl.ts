@@ -37,7 +37,10 @@ export class ActivitiesServiceImpl implements ActivitiesService {
   public async getActivities(
     queryParams: ActivitiesQueryParams
   ): Promise<Activity[]> {
-    const filteredParams = this.activityUtil.filterEmptyFilters(queryParams);
+    const backendFilters =
+      this.activityMapper.mapFrontendToBackendFilters(queryParams);
+    const filteredParams = this.activityUtil.filterEmptyFilters(backendFilters);
+    console.log(`filteredParamsAfterEmpty: ${JSON.stringify(filteredParams)}`);
     const {data: organizationsDTO} =
       await this.httpClient.get<ActivitiesResponse>(
         '/api/v1/organisation/activities',

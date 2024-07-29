@@ -1,32 +1,42 @@
 import {SubmitHandler, useForm} from 'react-hook-form';
 import {
-  Alert,
-  AlertIcon,
   Box,
   Button,
   FormControl,
   FormErrorMessage,
   FormLabel,
-  Input,
   SimpleGrid,
   Spinner,
   Text,
 } from '@chakra-ui/react';
 import {Select, SingleValue} from 'chakra-react-select';
-import {useSetActivitiesFilters} from '../../../hooks/activities/useSetActivitiesFilters/useSetActivitiesFilters.ts';
 import {ActivitiesFiltersType} from '../../../api/services/activities/service/types.ts';
 import {ActivitiesFilterProps} from './types.ts';
 import {useGetActivitiesTitles} from '../../../hooks/activities/useGetActivitiesTitles/useGetActivitiesTitles.ts';
 import {useGetActivitiesTypes} from '../../../hooks/activities/useGetActivitiesTypes/useGetActivitiesTypes.ts';
 import {useGetCountriesCities} from '../../../hooks/forms/useGetCountriesCities/useGetCountriesCities.ts';
+import {useEffect, useState} from 'react';
+import {SingleDatepicker} from 'chakra-dayzed-datepicker';
+import {zodResolver} from '@hookform/resolvers/zod';
+import {ActivitiesFilterValidationSchema} from '../../../api/validation/activitiesFilter/ActivitiesFilterValidation.ts';
+import {ActivitiesFilterValues} from '../../../api/validation/activitiesFilter/types.ts';
+import {useActivitiesFiltersContext} from '../../../shared/hooks/useActivitiesFiltersContext.ts';
 
 export const ActivitiesFilter = ({onApply}: ActivitiesFilterProps) => {
   const {
     register,
     handleSubmit,
     setValue,
+    watch,
     formState: {errors, isSubmitting},
-  } = useForm<ActivitiesFiltersType>();
+  } = useForm<ActivitiesFilterValues>({
+    resolver: zodResolver(ActivitiesFilterValidationSchema),
+  });
+  const {setFilters} = useActivitiesFiltersContext();
+
+  const [date, setDate] = useState<Date | undefined>(undefined);
+  const [cities, setCities] = useState<string[]>([]);
+  const selectedCountry = watch('country');
 
   const {
     data: activitiesTitles,
@@ -55,38 +65,61 @@ export const ActivitiesFilter = ({onApply}: ActivitiesFilterProps) => {
     isLoading: isLoadingCountriesCities,
     error: errorCountriesCities,
   } = useGetCountriesCities();
-  console.log(`countriesCities: ${JSON.stringify(countriesCities)}`);
-  console.log(`isLoadingCountriesCities: ${isLoadingCountriesCities}`);
-  console.log(`errorCountriesCities: ${errorCountriesCities}`);
 
-  const {
-    updateFilters,
-    isLoading: isLoadingFilters,
-    error: errorFilters,
-  } = useSetActivitiesFilters();
+  useEffect(() => {
+    if (selectedCountry && countriesCities) {
+      const countryData = countriesCities.find(
+        country => country.country === selectedCountry
+      );
+      if (countryData) {
+        setCities(countryData.cities);
+      } else {
+        setCities([]);
+      }
+    } else {
+      setCities([]);
+    }
+  }, [selectedCountry, countriesCities]);
+
+  useEffect(() => {
+    register('date'); // Register the date field
+  }, [register]);
+
+  useEffect(() => {
+    setValue('date', date?.toISOString()); // Update the form value whenever date changes
+  }, [date, setValue]);
 
   const onSubmit: SubmitHandler<ActivitiesFiltersType> = filters => {
     onApply(filters);
-    updateFilters(filters);
+    setFilters(filters);
   };
 
-  if (isLoadingFilters) {
+  if (isLoadingCountriesCities) {
+    return <Spinner />;
+  }
+
+  if (errorCountriesCities) {
     return (
-      <Box textAlign="center" mt="20">
-        <Spinner size="xl" />
-        <Text>Loading...</Text>
-      </Box>
+      <Text color="red.500">Failed to load countries and cities data</Text>
     );
   }
 
-  if (errorFilters) {
-    return (
-      <Alert status="error">
-        <AlertIcon />
-        {errorFilters}
-      </Alert>
-    );
-  }
+  const handleCountryChange = (
+    option: SingleValue<{value: string; label: string}>
+  ) => {
+    setValue('country', option?.value || '');
+  };
+
+  const handleCityChange = (
+    option: SingleValue<{value: string; label: string}>
+  ) => {
+    setValue('city', option?.value || '');
+  };
+
+  const handleDateChange = (date: Date) => {
+    console.log(`Chosen date: ${date}`);
+    setDate(date);
+  };
 
   return (
     <Box
@@ -140,28 +173,48 @@ export const ActivitiesFilter = ({onApply}: ActivitiesFilterProps) => {
 
           <FormControl isInvalid={!!errors.date}>
             <FormLabel>Date</FormLabel>
-            <Input placeholder="Date" {...register('date')} />
+            <SingleDatepicker
+              name="date-input"
+              date={date}
+              onDateChange={handleDateChange}
+            />
             <FormErrorMessage>
               {errors.date && errors.date.message}
             </FormErrorMessage>
           </FormControl>
 
-          <FormControl isInvalid={!!errors.city}>
-            <FormLabel>City</FormLabel>
-            <Input placeholder="City" {...register('city')} />
-            <FormErrorMessage>
-              {errors.city && errors.city.message}
-            </FormErrorMessage>
-          </FormControl>
-
           <FormControl isInvalid={!!errors.country}>
             <FormLabel>Country</FormLabel>
-            <Input placeholder="Country" {...register('country')} />
+            <Select
+              options={countriesCities?.map(country => ({
+                value: country.country,
+                label: country.country,
+              }))}
+              placeholder="Select country"
+              onChange={handleCountryChange}
+            />
             <FormErrorMessage>
               {errors.country && errors.country.message}
             </FormErrorMessage>
           </FormControl>
         </SimpleGrid>
+
+        <FormControl isInvalid={!!errors.city} isDisabled={!selectedCountry}>
+          <FormLabel>City</FormLabel>
+          <Select
+            options={cities.map(city => ({
+              value: city,
+              label: city,
+            }))}
+            placeholder="Select city"
+            onChange={handleCityChange}
+            isDisabled={!selectedCountry}
+          />
+          <FormErrorMessage>
+            {errors.city && errors.city.message}
+          </FormErrorMessage>
+        </FormControl>
+
         <Button
           type="submit"
           colorScheme="teal"

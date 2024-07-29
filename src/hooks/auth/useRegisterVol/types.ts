@@ -1,4 +1,4 @@
-import {RegistrationVolFormValues} from '../../../api/validation/register/RegistrationVolValidation.ts';
+import {RegistrationVolFormValues} from '../../../api/validation/register/volunteer/types.ts';
 
 export type RegisterVolCredentials = RegistrationVolFormValues;
 export type UseRegisterVolProps = {
