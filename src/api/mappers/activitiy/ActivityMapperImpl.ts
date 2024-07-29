@@ -3,15 +3,18 @@ import {ActivityMapper} from './types.ts';
 import {
   ActivitiesFiltersType,
   ActivitiesTitles,
+  BackendActivitiesFiltersType,
 } from '../../services/activities/service/types.ts';
 import {
   ActivitiesFiltersRequest,
   ActivitiesFiltersResponse,
   ActivitiesTitlesResponse,
 } from '../../services/http/types.ts';
+import {format} from 'date-fns';
 
 export class ActivityMapperImpl implements ActivityMapper {
   private static instance: ActivityMapperImpl | null = null;
+
 
   private constructor() {}
 
@@ -82,5 +85,18 @@ export class ActivityMapperImpl implements ActivityMapper {
 
   public DTOtoTitles(titlesDTO: ActivitiesTitlesResponse): ActivitiesTitles {
     return titlesDTO;
+  }
+
+  public mapFrontendToBackendFilters(
+    filters: ActivitiesFiltersType
+  ): BackendActivitiesFiltersType {
+    const {type, date, ...rest} = filters;
+    const formattedDate = date ? format(date, 'yyyy-MM-dd') : undefined;
+    console.log(`formattedDate: ${formattedDate}`);
+    return {
+      ...rest,
+      dateOfPlace: formattedDate,
+      kindOfActivity: type,
+    };
   }
 }

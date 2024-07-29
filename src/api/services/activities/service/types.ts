@@ -40,6 +40,14 @@ export type ActivitiesQueryParams = ActivitiesFiltersType & {
   sortOrder: SortOrder;
 } & Coordinates;
 
+export type BackendActivitiesFiltersType = Omit<
+  ActivitiesFiltersType,
+  'type' | 'date'
+> & {
+  kindOfActivity?: string;
+  dateOfPlace?: string;
+};
+
 export type ActivitiesService = {
   getActivities(queryParams: ActivitiesQueryParams): Promise<Activity[]>;
 

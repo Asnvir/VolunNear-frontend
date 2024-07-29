@@ -1,8 +1,8 @@
 import {useServiceContext} from '../../../shared/hooks/useServiceContext.ts';
 import {useQuery} from '@tanstack/react-query';
 import {QUERY_KEY_GET_FILTERED_ACTIVITIES} from '../../../utils/constants/reactQueryKeys.ts';
-import {useActivitiesFiltersContext} from '../../../shared/hooks/useActivitiesFiltersContext.ts';
 import {useGeolocated} from 'react-geolocated';
+import {useActivitiesFiltersContext} from '../../../shared/hooks/useActivitiesFiltersContext.ts';
 
 export const useGetActivities = () => {
   const {activitiesService} = useServiceContext();

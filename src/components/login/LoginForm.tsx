@@ -1,12 +1,9 @@
-import { SubmitHandler, useForm } from 'react-hook-form';
-import {
-  LoginFormValues,
-  LoginValidationSchema,
-} from '../../api/validation/login/LoginValidation.ts';
-import { zodResolver } from '@hookform/resolvers/zod';
-import { useNavigate } from 'react-router-dom';
-import { useEffect, useState } from 'react';
-import { useLogin } from '../../hooks/auth/useLogin/useLogin.ts';
+import {SubmitHandler, useForm} from 'react-hook-form';
+import {LoginValidationSchema} from '../../api/validation/login/LoginValidation.ts';
+import {zodResolver} from '@hookform/resolvers/zod';
+import {useNavigate} from 'react-router-dom';
+import {useEffect, useState} from 'react';
+import {useLogin} from '../../hooks/auth/useLogin/useLogin.ts';
 import {
   Alert,
   AlertDescription,
@@ -27,15 +24,15 @@ import {
   Heading,
   Text,
 } from '@chakra-ui/react';
-import { ViewIcon, ViewOffIcon } from '@chakra-ui/icons';
-
+import {ViewIcon, ViewOffIcon} from '@chakra-ui/icons';
+import {LoginFormValues} from '../../api/validation/login/types.ts';
 
 export const LoginForm = () => {
   const {
     register,
     handleSubmit,
     setError,
-    formState: { errors, isSubmitting },
+    formState: {errors, isSubmitting},
   } = useForm<LoginFormValues>({
     resolver: zodResolver(LoginValidationSchema),
   });
@@ -49,7 +46,7 @@ export const LoginForm = () => {
     navigate('/');
   };
 
-  const { login, error: errorOnServer } = useLogin({ onSuccess: onLoginSuccess });
+  const {login, error: errorOnServer} = useLogin({onSuccess: onLoginSuccess});
 
   const onSubmit: SubmitHandler<LoginFormValues> = data => {
     login(data);

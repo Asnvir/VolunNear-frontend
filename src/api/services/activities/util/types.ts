@@ -1,7 +1,10 @@
-import {ActivitiesFiltersType} from '../service/types.ts';
+import {
+  ActivitiesFiltersType,
+  BackendActivitiesFiltersType,
+} from '../service/types.ts';
 
 export type ActivityUtil = {
   filterEmptyFilters: (
-    filters: ActivitiesFiltersType
+    filters: BackendActivitiesFiltersType
   ) => Partial<ActivitiesFiltersType>;
 };
