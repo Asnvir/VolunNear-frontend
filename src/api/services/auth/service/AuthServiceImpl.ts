@@ -6,7 +6,7 @@ import {
   IRegistrationOrganisationRequestDTO,
   IRegistrationVolunteerRequestDTO,
 } from '../../../../data-contracts.ts';
-import {HttpClientService} from '../../http/types.ts';
+import {HttpClient} from '../../../httpClient/types.ts';
 import {AuthMapper} from '../../../mappers/auth/types.ts';
 import {AuthMapperImpl} from '../../../mappers/auth/AuthMapperImpl.ts';
 import {
@@ -23,13 +23,13 @@ import {AuthHelperImpl} from '../helper/AuthHelperImpl.ts';
 import {AuthHelper} from '../helper/types.ts';
 import {RegisterOrgCredentials} from '../../../../hooks/auth/useRegisterOrg/types.ts';
 import {LocalStorageHelperImpl} from '../../../../helpers/LocalStorageHelper.ts';
-import {HttpClientImpl} from '../../http/HttpClientImpl.ts';
+import {HttpClientImpl} from '../../../httpClient/HttpClientImpl.ts';
 
 export class AuthServiceImpl implements AuthService {
   private static instance: AuthServiceImpl | null = null;
   private authMapper: AuthMapper = AuthMapperImpl.getInstance();
   private authHelper: AuthHelper = AuthHelperImpl.getInstance();
-  private httpClient: HttpClientService = HttpClientImpl.getInstance();
+  private httpClient: HttpClient = HttpClientImpl.getInstance();
   private localStorageHelper: LocalStorageHelper =
     LocalStorageHelperImpl.getInstance();
 

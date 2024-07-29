@@ -5,13 +5,13 @@ import {
   ActivitiesService,
 } from '../api/services/activities/service/types.ts';
 import {AuthService} from '../api/services/auth/service/types.ts';
-import {FormService} from '../api/services/form/types.ts';
+import {PlacesService} from '../api/services/places/types.ts';
 
 export type ServiceContextType = {
   activitiesService: ActivitiesService;
   authService: AuthService;
   volunteerService: VolunteerService;
-  formService: FormService;
+  formService: PlacesService;
 };
 
 export type AppStateType = {

@@ -1,10 +1,10 @@
 import axios, {AxiosInstance, AxiosRequestConfig} from 'axios';
-import {LocalStorageHelper} from '../../../helpers/types.ts';
-import {AUTH_TOKEN} from '../../../utils/constants/routes.ts';
-import {HttpClientService, HttpResponse, RequestQueryParams} from './types.ts';
-import {LocalStorageHelperImpl} from '../../../helpers/LocalStorageHelper.ts';
+import {LocalStorageHelper} from '../../helpers/types.ts';
+import {AUTH_TOKEN} from '../../utils/constants/routes.ts';
+import {HttpClient, HttpResponse, RequestQueryParams} from './types.ts';
+import {LocalStorageHelperImpl} from '../../helpers/LocalStorageHelper.ts';
 
-export class HttpClientImpl implements HttpClientService {
+export class HttpClientImpl implements HttpClient {
   private static instance: HttpClientImpl | null = null;
   private axios: AxiosInstance;
   private localStorageHelper: LocalStorageHelper =

@@ -11,7 +11,6 @@ import {
 } from '@chakra-ui/react';
 import {Select, SingleValue} from 'chakra-react-select';
 import {ActivitiesFiltersType} from '../../../api/services/activities/service/types.ts';
-import {ActivitiesFilterProps} from './types.ts';
 import {useGetActivitiesTitles} from '../../../hooks/activities/useGetActivitiesTitles/useGetActivitiesTitles.ts';
 import {useGetActivitiesTypes} from '../../../hooks/activities/useGetActivitiesTypes/useGetActivitiesTypes.ts';
 import {useGetCountriesCities} from '../../../hooks/forms/useGetCountriesCities/useGetCountriesCities.ts';
@@ -22,7 +21,7 @@ import {ActivitiesFilterValidationSchema} from '../../../api/validation/activiti
 import {ActivitiesFilterValues} from '../../../api/validation/activitiesFilter/types.ts';
 import {useActivitiesFiltersContext} from '../../../shared/hooks/useActivitiesFiltersContext.ts';
 
-export const ActivitiesFilter = ({onApply}: ActivitiesFilterProps) => {
+export const ActivitiesFilter = () => {
   const {
     register,
     handleSubmit,
@@ -32,6 +31,7 @@ export const ActivitiesFilter = ({onApply}: ActivitiesFilterProps) => {
   } = useForm<ActivitiesFilterValues>({
     resolver: zodResolver(ActivitiesFilterValidationSchema),
   });
+
   const {setFilters} = useActivitiesFiltersContext();
 
   const [date, setDate] = useState<Date | undefined>(undefined);
@@ -82,15 +82,14 @@ export const ActivitiesFilter = ({onApply}: ActivitiesFilterProps) => {
   }, [selectedCountry, countriesCities]);
 
   useEffect(() => {
-    register('date'); // Register the date field
+    register('date');
   }, [register]);
 
   useEffect(() => {
-    setValue('date', date?.toISOString()); // Update the form value whenever date changes
+    setValue('date', date?.toISOString());
   }, [date, setValue]);
 
   const onSubmit: SubmitHandler<ActivitiesFiltersType> = filters => {
-    onApply(filters);
     setFilters(filters);
   };
 
