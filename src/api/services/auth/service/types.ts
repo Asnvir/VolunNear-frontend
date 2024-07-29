@@ -17,6 +17,7 @@ export type AuthService = {
     registerOrgCredentials: RegisterOrgCredentials
   ) => Promise<void>;
   getCurrentUser: () => User | null;
+  changePassword: (oldPassword: string, newPassword: string) => Promise<void>;
 };
 
 export type Role = typeof ROLE_ORGANISATION | typeof ROLE_VOLUNTEER;

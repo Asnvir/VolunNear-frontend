@@ -1,11 +1,10 @@
 import {AuthHelper} from './types.ts';
-import {JwtToken} from '../../../../providers/types.ts';
 import {jwtDecode} from 'jwt-decode';
-import {Role} from '../types.ts.ts';
 import {
   ROLE_ORGANISATION,
   ROLE_VOLUNTEER,
 } from '../../../../utils/constants/routes.ts';
+import {JwtToken, Role} from '../service/types.ts';
 
 export class AuthHelperImpl implements AuthHelper {
   private static instance: AuthHelperImpl | null = null;

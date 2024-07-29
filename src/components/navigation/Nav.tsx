@@ -8,17 +8,42 @@ import {
   Collapse,
   useColorModeValue,
   useBreakpointValue,
-  useDisclosure,
-} from '@chakra-ui/react'
+  useDisclosure, Avatar, MenuButton, Menu, MenuList, MenuItem, MenuDivider,
+} from '@chakra-ui/react';
 import {
   HamburgerIcon,
   CloseIcon,
 } from '@chakra-ui/icons'
 import DesktopNav from './DesktopNav'
 import MobileNav from './MobileNav'
+import {useNavigate} from 'react-router-dom';
+import {useLoggedIn} from '../../hooks/auth/useLoggedIn/useLoggedIn.ts';
+import {useLoggedOut} from '../../hooks/auth/useLoggedOut/useLoggedOut.ts';
+import {useGetVolunteerProfile} from '../../hooks/volunteer/useGetVolunteerProfile/useGetVolunteerProfile.ts';
+import {useEffect, useState} from 'react';
 
 const Nav = () => {
   const { isOpen, onToggle } = useDisclosure()
+  const navigate = useNavigate();
+  const isLoggedIn = useLoggedIn();
+  const logout = useLoggedOut();
+
+  const [avatarUrl, setAvatarUrl] = useState<string | undefined>(undefined);
+  const {data, refetch} = useGetVolunteerProfile();
+
+  useEffect(() => {
+    if (isLoggedIn) {
+      refetch().then((result) => {
+        if (result.data && result.data.avatarUrl) {
+          setAvatarUrl(result.data.avatarUrl);
+        }
+      });
+    }
+  }, [isLoggedIn, refetch]);
+
+  const handleLogout = () => {
+    logout().then(() => navigate("/login"));
+  }
 
   return (
     <Box>
@@ -61,15 +86,37 @@ const Nav = () => {
           justify={'flex-end'}
           direction='row'
           spacing={6}>
-          <Button as='a' fontSize={'sm'} fontWeight={400} variant={'link'} href={'/login'}>
-            Sign In
-          </Button>
-          <Button variant="primary">
-            Sign Up
-          </Button>
+          {isLoggedIn ? (
+              <Flex alignItems={'center'}>
+                <Menu>
+                  <MenuButton
+                    as={Button}
+                    rounded={'full'}
+                    variant={'link'}
+                    cursor={'pointer'}
+                    minW={0}>
+                    <Avatar
+                      size={'md'}
+                      src={
+                       avatarUrl
+                      }
+                    />
+                  </MenuButton>
+                  <MenuList>
+                    <MenuItem onClick={() =>navigate("/volunteer/profile")}>Profile</MenuItem>
+                    <MenuDivider />
+                    <MenuItem onClick={() => handleLogout()}>Logout</MenuItem>
+                  </MenuList>
+                </Menu>
+              </Flex>
+          ) :
+            <Button variant="primary" onClick={() => navigate("/login")}>
+              Sign In
+            </Button>
+          }
+
         </Stack>
       </Flex>
-
       <Collapse in={isOpen} animateOpacity>
         <MobileNav />
       </Collapse>

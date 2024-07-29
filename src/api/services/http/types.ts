@@ -11,6 +11,11 @@ export type HttpClientService = {
     body: B,
     options?: AxiosRequestConfig
   ) => Promise<HttpResponse<T>>;
+  put: <T, B>(
+    url: string,
+    body: B,
+    options?: AxiosRequestConfig
+  ) => Promise<HttpResponse<T>>;
 };
 
 export type HttpResponse<T> = {

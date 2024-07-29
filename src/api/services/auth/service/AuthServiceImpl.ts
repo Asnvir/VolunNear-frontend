@@ -72,7 +72,10 @@ export class AuthServiceImpl implements AuthService {
     };
   }
 
-  public async logout(): Promise<void> {}
+  public logout(): void {
+    console.log('logout')
+    window.localStorage.removeItem(AUTH_TOKEN);
+  }
 
   public async registerOrganisation(
     orgCredentials: RegisterOrgCredentials
@@ -111,6 +114,17 @@ export class AuthServiceImpl implements AuthService {
       throw new Error('Registration failed');
     }
   }
+
+  public async changePassword(
+    oldPassword: string,
+    newPassword: string
+  ): Promise<void> {
+    const response = await this.httpClient.post<void, {currentPassword: string, newPassword: string}>(API_ENDPOINTS.CHANGE_PASSWORD, {oldPassword, newPassword});
+    if (response.status !== 200) {
+      throw new Error('Password change failed');
+    }
+  }
+
 
   private isTokenExpired = (token: JwtToken) => {
     return token.exp * 1000 <= Date.now();

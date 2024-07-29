@@ -1,10 +1,13 @@
 import {ActivitiesFiltersDTO, VolunteerMapper} from './types.ts';
 import {ActivitiesFiltersType} from '../../../context/types.ts';
+import {UpdateVolunteerInfo} from '../../services/volunteer/types.ts';
+import {IUpdateVolunteerInfoRequestDTO} from '../../../data-contracts.ts';
 
 export class VolunteerMapperImpl implements VolunteerMapper {
   private static instance: VolunteerMapperImpl;
 
-  private constructor() {}
+  private constructor() {
+  }
 
   public static getInstance(): VolunteerMapperImpl {
     if (!VolunteerMapperImpl.instance) {
@@ -23,5 +26,15 @@ export class VolunteerMapperImpl implements VolunteerMapper {
       .map(([key, value]) => `${key}:${value}`);
 
     return {preferences};
+  }
+
+  public updateVolunteerInfoToDTO(
+    updateVolunteerInfo: UpdateVolunteerInfo
+  ): IUpdateVolunteerInfoRequestDTO {
+    return {
+      userName: updateVolunteerInfo.username,
+      realName: updateVolunteerInfo.realName,
+      email: updateVolunteerInfo.email,
+    };
   }
 }
