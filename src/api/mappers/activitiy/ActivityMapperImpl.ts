@@ -10,11 +10,7 @@ import {
   ActivitiesFiltersResponse,
   ActivitiesTitlesResponse,
 } from '../../httpClient/types.ts';
-<<<<<<< Updated upstream
 import {format} from 'date-fns';
-
-=======
->>>>>>> Stashed changes
 
 export class ActivityMapperImpl implements ActivityMapper {
   private static instance: ActivityMapperImpl | null = null;
@@ -94,7 +90,7 @@ export class ActivityMapperImpl implements ActivityMapper {
     filters: ActivitiesFiltersType
   ): BackendActivitiesFiltersType {
     const {type, date, ...rest} = filters;
-    const formattedDate = date ? date : undefined;
+    const formattedDate = date ? format(date, 'yyyy-MM-dd') : undefined;
     console.log(`formattedDate: ${formattedDate}`);
     return {
       ...rest,
