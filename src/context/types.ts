@@ -6,12 +6,14 @@ import {
 } from '../api/services/activities/service/types.ts';
 import {AuthService} from '../api/services/auth/service/types.ts';
 import {FormService} from '../api/services/form/types.ts';
+import {FileUploadService} from '../api/services/files/service/types.ts';
 
 export type ServiceContextType = {
   activitiesService: ActivitiesService;
   authService: AuthService;
   volunteerService: VolunteerService;
   formService: FormService;
+  fileUploadService: FileUploadService;
 };
 
 export type AppStateType = {

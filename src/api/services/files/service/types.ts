@@ -1,5 +1,5 @@
 
 
 export type FileUploadService = {
-  uploadVolunteerAvatar: (file: File) => Promise<string>;
+  uploadVolunteerAvatar: (file: FormData, volunteerId: string) => Promise<string>;
 };

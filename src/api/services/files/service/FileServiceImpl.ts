@@ -1,14 +1,10 @@
 import {FileUploadService} from './types.ts';
 import {VolunteerServiceImpl} from '../../volunteer/VolunteerServiceImpl.ts';
-import {VolunteerMapper} from '../../../mappers/volunteer/types.ts';
-import {VolunteerMapperImpl} from '../../../mappers/volunteer/VolunteerMapper.ts';
 import {HttpClientService} from '../../http/types.ts';
 import {HttpClientImpl} from '../../http/HttpClientImpl.ts';
-import {ActivitiesFiltersType} from '../../activities/service/types.ts';
 import {
   IUpdateVolunteerInfoData,
   IUpdateVolunteerInfoRequestDTO,
-  IVolunteerProfileResponseDTO,
 } from '../../../../data-contracts.ts';
 import {API_ENDPOINTS} from '../../../constants.ts';
 import {UpdateVolunteerInfo} from '../../volunteer/types.ts';
@@ -29,12 +25,6 @@ export class FileUploadServiceImpl implements FileUploadService {
   }
 
 
-  public async getVolunteerProfile(): Promise<IVolunteerProfileResponseDTO> {
-    const {data: volunteerProfileDTO} = await this.httpClient.get<
-      IVolunteerProfileResponseDTO
-    >(API_ENDPOINTS.VOLUNTEER_PROFILE);
-    return volunteerProfileDTO;
-  }
 
   public async updateVolunteerProfile(updateVolunteerInfo: UpdateVolunteerInfo): Promise<IUpdateVolunteerInfoRequestDTO> {
     const updateVolunteerInfoDTO = this.volMapper.updateVolunteerInfoToDTO(updateVolunteerInfo);
@@ -45,7 +35,11 @@ export class FileUploadServiceImpl implements FileUploadService {
     return updateVolunteerInfoDTO;
   }
 
-  uploadVolunteerAvatar(file: File): Promise<string> {
-    return Promise.resolve('');
+  public async uploadVolunteerAvatar(file: FormData, volunteerId: string): Promise<string> {
+    const {data: avatarUrl} = await this.httpClient.post<string, FormData>(
+      API_ENDPOINTS.UPLOAD_VOLUNTEER_AVATAR + "/" + volunteerId,
+      file
+    )
+    return avatarUrl;
   }
 }

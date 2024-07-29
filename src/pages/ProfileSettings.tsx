@@ -23,6 +23,7 @@ import {
 import { ViewIcon, ViewOffIcon, AddIcon } from '@chakra-ui/icons';
 import { useGetVolunteerProfile } from '../hooks/volunteer/useGetVolunteerProfile/useGetVolunteerProfile';
 import { useUpdateVolunteerProfile } from '../hooks/volunteer/useUpdateVolunteerProfile/useUpdateVolunteerProfile';
+import {useUploadVolunteerAvatar} from '../hooks/files/useUploadVolunteerAvatar/useUploadVolunteerAvatar.ts';
 
 const ProfileSettings: React.FC = () => {
   const [initialEmail, setInitialEmail] = useState('');
@@ -33,6 +34,7 @@ const ProfileSettings: React.FC = () => {
   const [email, setEmail] = useState(initialEmail);
   const [username, setUsername] = useState(initialUsername);
   const [realName, setRealName] = useState(initialRealName);
+  const [volunteerId, setVolunteerId] = useState(''); //
 
   const [currentPassword, setCurrentPassword] = useState('');
   const [newPassword, setNewPassword] = useState('');
@@ -43,9 +45,11 @@ const ProfileSettings: React.FC = () => {
   const [showConfirmNewPassword, setShowConfirmNewPassword] = useState(false);
 
   const toast = useToast();
-  const { mutate } = useUpdateVolunteerProfile();
+  const { mutate: updateVolunteerProfile } = useUpdateVolunteerProfile();
 
   const { data: volunteerProfile } = useGetVolunteerProfile();
+
+  const {mutate: uploadVolunteerAvatar} = useUploadVolunteerAvatar();
 
   useEffect(() => {
     if (volunteerProfile) {
@@ -53,6 +57,7 @@ const ProfileSettings: React.FC = () => {
       setEmail(volunteerProfile.email ?? '');
       setUsername(volunteerProfile.username ?? '');
       setRealName(volunteerProfile.realName ?? '');
+      setVolunteerId(volunteerProfile.id ?? '')
       console.log(volunteerProfile.avatarUrl ?? '');
       setAvatarUrl(volunteerProfile.avatarUrl ?? '');
       setInitialEmail(volunteerProfile.email ?? '');
@@ -62,7 +67,7 @@ const ProfileSettings: React.FC = () => {
   }, [volunteerProfile]);
 
   const handleSave = () => {
-    mutate(
+    updateVolunteerProfile(
       { email, username, realName, avatarUrl },
       {
         onSuccess: () => {
@@ -107,16 +112,27 @@ const ProfileSettings: React.FC = () => {
   const handleAvatarChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     if (e.target.files && e.target.files[0]) {
       const reader = new FileReader();
-      reader.onload = (event: any) => {
-        setAvatarUrl(event.target.result);
-      };
       reader.readAsDataURL(e.target.files[0]);
 
-      // Here you would also upload the image to the server
-      // For example:
-      // const formData = new FormData();
-      // formData.append('avatar', e.target.files[0]);
-      // uploadAvatar(formData).then(...);
+      const formData = new FormData();
+      formData.append('file', e.target.files[0]);
+      uploadVolunteerAvatar(
+        { formData, volunteerId },
+        {
+          onSuccess: (data) => {
+            setAvatarUrl(data)
+          },
+          onError: (error) => {
+            toast({
+              title: 'An error occurred',
+              description: error.message,
+              status: 'error',
+              duration: 5000,
+              isClosable: true,
+            });
+          },
+        }
+      );
     }
   };
 
