@@ -16,21 +16,33 @@ import {
 } from '@chakra-ui/icons'
 import DesktopNav from './DesktopNav'
 import MobileNav from './MobileNav'
-import {redirect, useNavigate} from 'react-router-dom';
+import {useNavigate} from 'react-router-dom';
 import {useLoggedIn} from '../../hooks/auth/useLoggedIn/useLoggedIn.ts';
 import {useLoggedOut} from '../../hooks/auth/useLoggedOut/useLoggedOut.ts';
 import {useGetVolunteerProfile} from '../../hooks/volunteer/useGetVolunteerProfile/useGetVolunteerProfile.ts';
+import {useEffect, useState} from 'react';
 
 const Nav = () => {
   const { isOpen, onToggle } = useDisclosure()
   const navigate = useNavigate();
   const isLoggedIn = useLoggedIn();
   const logout = useLoggedOut();
-  const {data} = useGetVolunteerProfile();
+
+  const [avatarUrl, setAvatarUrl] = useState<string | undefined>(undefined);
+  const {data, refetch} = useGetVolunteerProfile();
+
+  useEffect(() => {
+    if (isLoggedIn) {
+      refetch().then((result) => {
+        if (result.data && result.data.avatarUrl) {
+          setAvatarUrl(result.data.avatarUrl);
+        }
+      });
+    }
+  }, [isLoggedIn, refetch]);
 
   const handleLogout = () => {
-    logout();
-    window.location.reload();
+    logout().then(() => navigate("/login"));
   }
 
   return (
@@ -86,7 +98,7 @@ const Nav = () => {
                     <Avatar
                       size={'md'}
                       src={
-                        data?.avatarUrl
+                       avatarUrl
                       }
                     />
                   </MenuButton>

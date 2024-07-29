@@ -6,4 +6,5 @@ export const API_ENDPOINTS = {
   UPDATE_VOLUNTEER_PROFILE: `/api/v1/update/volunteer`,
   UPLOAD_VOLUNTEER_AVATAR: `/api/v1/upload/avatar/volunteer`,
   UPLOAD_ORGANISATION_LOGO: `/api/v1/upload/avatar/organisation`,
+  CHANGE_PASSWORD: `/api/v1/change_password`,
 };

@@ -24,6 +24,7 @@ import { ViewIcon, ViewOffIcon, AddIcon } from '@chakra-ui/icons';
 import { useGetVolunteerProfile } from '../hooks/volunteer/useGetVolunteerProfile/useGetVolunteerProfile';
 import { useUpdateVolunteerProfile } from '../hooks/volunteer/useUpdateVolunteerProfile/useUpdateVolunteerProfile';
 import {useUploadVolunteerAvatar} from '../hooks/files/useUploadVolunteerAvatar/useUploadVolunteerAvatar.ts';
+import {useChangePassword} from '../hooks/auth/useChangePassword/useChangePassword.ts';
 
 const ProfileSettings: React.FC = () => {
   const [initialEmail, setInitialEmail] = useState('');
@@ -36,7 +37,7 @@ const ProfileSettings: React.FC = () => {
   const [realName, setRealName] = useState(initialRealName);
   const [volunteerId, setVolunteerId] = useState(''); //
 
-  const [currentPassword, setCurrentPassword] = useState('');
+  const [oldPassword, setOldPassword] = useState('');
   const [newPassword, setNewPassword] = useState('');
   const [confirmNewPassword, setConfirmNewPassword] = useState('');
 
@@ -50,6 +51,8 @@ const ProfileSettings: React.FC = () => {
   const { data: volunteerProfile } = useGetVolunteerProfile();
 
   const {mutate: uploadVolunteerAvatar} = useUploadVolunteerAvatar();
+
+  const {mutate: changePassword} = useChangePassword();
 
   useEffect(() => {
     if (volunteerProfile) {
@@ -100,15 +103,6 @@ const ProfileSettings: React.FC = () => {
     console.log('Changes reverted');
   };
 
-  const handleChangePassword = () => {
-    if (newPassword !== confirmNewPassword) {
-      alert("New passwords don't match!");
-      return;
-    }
-    // Implement change password logic
-    console.log({ currentPassword, newPassword });
-  };
-
   const handleAvatarChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     if (e.target.files && e.target.files[0]) {
       const reader = new FileReader();
@@ -134,6 +128,64 @@ const ProfileSettings: React.FC = () => {
         }
       );
     }
+  };
+
+  const validatePasswords = () => {
+    if (newPassword !== confirmNewPassword) {
+      toast({
+        title: 'Error',
+        description: "New passwords don't match!",
+        status: 'error',
+        duration: 5000,
+        isClosable: true,
+      });
+      return false;
+    }
+
+    if (newPassword.length < 8) {
+      toast({
+        title: 'Error',
+        description: 'Password must be at least 8 characters long.',
+        status: 'error',
+        duration: 5000,
+        isClosable: true,
+      });
+      return false;
+    }
+
+    return true;
+  };
+
+  const handleChangePassword = () => {
+    if (!validatePasswords()) {
+      return;
+    }
+
+    changePassword(
+      { oldPassword, newPassword },
+      {
+        onSuccess: () => {
+          toast({
+            title: 'Password changed',
+            status: 'success',
+            duration: 5000,
+            isClosable: true,
+          });
+          setOldPassword('');
+          setNewPassword('');
+          setConfirmNewPassword('');
+        },
+        onError: (error) => {
+          toast({
+            title: 'An error occurred',
+            description: error.message,
+            status: 'error',
+            duration: 5000,
+            isClosable: true,
+          });
+        },
+      }
+    );
   };
 
   return (
@@ -208,8 +260,8 @@ const ProfileSettings: React.FC = () => {
                   <InputGroup>
                     <Input
                       type={showCurrentPassword ? 'text' : 'password'}
-                      value={currentPassword}
-                      onChange={(e) => setCurrentPassword(e.target.value)}
+                      value={oldPassword}
+                      onChange={(e) => setOldPassword(e.target.value)}
                     />
                     <InputRightElement>
                       <IconButton

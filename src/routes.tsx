@@ -18,6 +18,7 @@ import {RegistrationVolunteerPage} from './pages/registration/RegistrationVolunt
 import {LoginPage} from './pages/LoginPage.tsx';
 import ErrorPage from './pages/ErrorPage.tsx';
 import ProfileSettings from './pages/ProfileSettings.tsx';
+import ProtectedRoute from './components/navigation/ProtectedRoute.tsx';
 
 // import {EventsList} from './components/EventsList';
 // import {MyEvents} from './components/MyEvents';
@@ -36,7 +37,13 @@ export const router = createBrowserRouter([
         path: 'registration/organization',
         element: <RegistrationOrgPage />,
       },
-      {path: 'volunteer/profile', element: <ProfileSettings />},
+      {
+        path: 'volunteer/profile',
+        element: (<ProtectedRoute>
+            <ProfileSettings />
+          </ProtectedRoute>
+        ),
+      },
       {
         path: '*', element: <ErrorPage />,
       },

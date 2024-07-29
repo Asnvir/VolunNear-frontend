@@ -10,3 +10,4 @@ export const QUERY_KEY_GET_VOLUNTEER_PROFILE = 'getVolunteerProfile' as string;
 export const MUTATION_KEY_UPDATE_VOLUNTEER_PROFILE = 'updateVolunteerProfile' as string;
 
 export const MUTATION_KEY_UPLOAD_VOLUNTEER_AVATAR = 'uploadVolunteerAvatar' as string;
+export const MUTATION_KEY_CHANGE_PASSWORD = 'changePassword' as string;
