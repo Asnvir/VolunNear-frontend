@@ -1,6 +1,6 @@
 import * as z from 'zod';
 
-const RegistrationOrgValidationSchema = z.object({
+export const RegistrationOrgValidationSchema = z.object({
   username: z.string().min(1, {message: 'Username is required'}),
   password: z
     .string()
@@ -13,8 +13,3 @@ const RegistrationOrgValidationSchema = z.object({
   city: z.string().min(1, {message: 'City is required'}),
   address: z.string().min(1, {message: 'Address is required'}),
 });
-
-export type RegistrationOrgFormValues = z.infer<
-  typeof RegistrationOrgValidationSchema
->;
-export {RegistrationOrgValidationSchema};

@@ -1,12 +1,12 @@
 import {AuthMapper} from './types.ts';
 import {LoginCredentials} from '../../../hooks/auth/useLogin/types.ts';
-import {JwtRequest} from '../../services/auth/types.ts';
-import {RegistrationOrgFormValues} from '../../validation/register/RegistrationOrgValidation.ts';
 import {
   IRegistrationOrganisationRequestDTO,
   IRegistrationVolunteerRequestDTO,
 } from '../../../data-contracts.ts';
 import {RegisterVolCredentials} from '../../../hooks/auth/useRegisterVol/types.ts';
+import {RegistrationOrgFormValues} from '../../validation/register/organization/types.ts';
+import {JwtRequest} from '../../services/auth/service/types.ts';
 
 export class AuthMapperImpl implements AuthMapper {
   private static instance: AuthMapperImpl | null = null;

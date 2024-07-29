@@ -1,13 +1,10 @@
 import {SubmitHandler, useForm} from 'react-hook-form';
 import {
-  Alert,
-  AlertIcon,
   Box,
   Button,
   FormControl,
   FormErrorMessage,
   FormLabel,
-  Input,
   SimpleGrid,
   Spinner,
   Text,
@@ -19,6 +16,11 @@ import {useGetActivitiesTitles} from '../../../hooks/activities/useGetActivities
 import {useGetActivitiesTypes} from '../../../hooks/activities/useGetActivitiesTypes/useGetActivitiesTypes.ts';
 import {useGetCountriesCities} from '../../../hooks/forms/useGetCountriesCities/useGetCountriesCities.ts';
 import {useEffect, useState} from 'react';
+import {SingleDatepicker} from 'chakra-dayzed-datepicker';
+import {zodResolver} from '@hookform/resolvers/zod';
+import {ActivitiesFilterValidationSchema} from '../../../api/validation/activitiesFilter/ActivitiesFilterValidation.ts';
+import {ActivitiesFilterValues} from '../../../api/validation/activitiesFilter/types.ts';
+import {useActivitiesFiltersContext} from '../../../shared/hooks/useActivitiesFiltersContext.ts';
 
 export const ActivitiesFilter = ({onApply}: ActivitiesFilterProps) => {
   const {
@@ -27,8 +29,12 @@ export const ActivitiesFilter = ({onApply}: ActivitiesFilterProps) => {
     setValue,
     watch,
     formState: {errors, isSubmitting},
-  } = useForm<ActivitiesFiltersType>();
+  } = useForm<ActivitiesFilterValues>({
+    resolver: zodResolver(ActivitiesFilterValidationSchema),
+  });
+  const {setFilters} = useActivitiesFiltersContext();
 
+  const [date, setDate] = useState<Date | undefined>(undefined);
   const [cities, setCities] = useState<string[]>([]);
   const selectedCountry = watch('country');
 
@@ -75,9 +81,17 @@ export const ActivitiesFilter = ({onApply}: ActivitiesFilterProps) => {
     }
   }, [selectedCountry, countriesCities]);
 
+  useEffect(() => {
+    register('date'); // Register the date field
+  }, [register]);
+
+  useEffect(() => {
+    setValue('date', date?.toISOString()); // Update the form value whenever date changes
+  }, [date, setValue]);
+
   const onSubmit: SubmitHandler<ActivitiesFiltersType> = filters => {
     onApply(filters);
-    // updateFilters(filters);
+    setFilters(filters);
   };
 
   if (isLoadingCountriesCities) {
@@ -100,6 +114,11 @@ export const ActivitiesFilter = ({onApply}: ActivitiesFilterProps) => {
     option: SingleValue<{value: string; label: string}>
   ) => {
     setValue('city', option?.value || '');
+  };
+
+  const handleDateChange = (date: Date) => {
+    console.log(`Chosen date: ${date}`);
+    setDate(date);
   };
 
   return (
@@ -154,7 +173,11 @@ export const ActivitiesFilter = ({onApply}: ActivitiesFilterProps) => {
 
           <FormControl isInvalid={!!errors.date}>
             <FormLabel>Date</FormLabel>
-            <Input placeholder="Date" {...register('date')} />
+            <SingleDatepicker
+              name="date-input"
+              date={date}
+              onDateChange={handleDateChange}
+            />
             <FormErrorMessage>
               {errors.date && errors.date.message}
             </FormErrorMessage>

@@ -2,7 +2,7 @@ import {SubmitHandler, useForm} from 'react-hook-form';
 import {
   RegistrationVolFormValues,
   RegistrationVolValidationSchema,
-} from '../../api/validation/register/RegistrationVolValidation.ts';
+} from '../../api/validation/register/volunteer/RegistrationVolValidation.ts';
 import {zodResolver} from '@hookform/resolvers/zod';
 import {useNavigate} from 'react-router-dom';
 import {useEffect, useState} from 'react';
@@ -11,12 +11,14 @@ import {
   Alert,
   AlertDescription,
   AlertIcon,
-  AlertTitle, Box,
+  AlertTitle,
+  Box,
   Button,
   FormControl,
   Text,
   FormErrorMessage,
-  FormLabel, Heading,
+  FormLabel,
+  Heading,
   IconButton,
   Input,
   InputGroup,
@@ -30,7 +32,7 @@ export const RegistrationVolForm = () => {
     register,
     handleSubmit,
     setError,
-    formState: { errors, isSubmitting },
+    formState: {errors, isSubmitting},
   } = useForm<RegistrationVolFormValues>({
     resolver: zodResolver(RegistrationVolValidationSchema),
   });
@@ -40,7 +42,7 @@ export const RegistrationVolForm = () => {
 
   const handlePasswordVisibility = () => setShowPassword(!showPassword);
 
-  const { registerVol, error: errorOnServer } = useRegisterVol({
+  const {registerVol, error: errorOnServer} = useRegisterVol({
     onSuccess: () => {
       navigate('/login');
     },
@@ -60,7 +62,7 @@ export const RegistrationVolForm = () => {
 
   return (
     <Box
-      maxW="lg"  // Adjust the max width to make the form wider
+      maxW="lg" // Adjust the max width to make the form wider
       w="full"
       p={8}
       borderWidth={1}
@@ -121,7 +123,13 @@ export const RegistrationVolForm = () => {
             <FormErrorMessage>{errors?.realName?.message}</FormErrorMessage>
           </FormControl>
 
-          <Button disabled={isSubmitting} variant="primary" width="full" size="lg" type="submit">
+          <Button
+            disabled={isSubmitting}
+            variant="primary"
+            width="full"
+            size="lg"
+            type="submit"
+          >
             Register
           </Button>
         </VStack>

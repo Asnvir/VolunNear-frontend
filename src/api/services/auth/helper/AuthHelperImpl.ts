@@ -1,7 +1,7 @@
 import {AuthHelper} from './types.ts';
 import {JwtToken} from '../../../../providers/types.ts';
 import {jwtDecode} from 'jwt-decode';
-import {Role} from '../types.ts';
+import {Role} from '../types.ts.ts';
 import {
   ROLE_ORGANISATION,
   ROLE_VOLUNTEER,
