@@ -7,7 +7,7 @@ interface DescriptionProps {
 
 const Description: React.FC<DescriptionProps> = ({ description }) => {
   return (
-    <Box bg="white" p={4} rounded="md" shadow="md">
+    <Box bg="white" p={4} rounded="2xl" shadow="md">
       <Heading as="h3" size="md">Description</Heading>
       <Text mt={2}>{description}</Text>
     </Box>

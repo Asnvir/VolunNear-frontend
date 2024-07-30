@@ -69,11 +69,11 @@ const mockSimilarActivities: Activity[] = [
 
 const SimilarListings: React.FC = () => {
   return (
-    <Box bg="white" p={4} rounded="md" shadow="md">
+    <Box>
       <Heading as="h3" size="md">Similar Volunteer Activities</Heading>
       <SimpleGrid columns={[1, 2, 3, 4]} spacing={4} mt={4}>
         {mockSimilarActivities.map((activity) => (
-          <Box key={activity.activityId} bg="white" rounded="md" shadow="md" overflow="hidden">
+          <Box key={activity.activityId} bg="white" rounded="2xl" shadow="md" overflow="hidden">
             <Image src={activity.activityCoverImage} alt={activity.activityTitle} />
             <VStack p={4} align="start">
               <Text fontWeight="bold">{activity.activityTitle}</Text>

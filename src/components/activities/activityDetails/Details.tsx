@@ -1,5 +1,5 @@
 import React from 'react';
-import { Box, HStack, Text, VStack } from '@chakra-ui/react';
+import {Box, Heading, HStack, Text, VStack} from '@chakra-ui/react';
 import {FaBed, FaBath, FaCar, FaCalendarAlt, FaMapMarkerAlt, FaClock, FaTag} from 'react-icons/fa';
 import {Activity} from '../../../api/types.ts';
 
@@ -9,8 +9,9 @@ interface DetailsProps {
 
 const Details: React.FC<DetailsProps> = ({ activity }) => {
   return (
-    <Box bg="white" p={4} rounded="md" shadow="md">
-      <HStack flex={1} justify={'space-between'}>
+    <Box bg="white" p={4} rounded="2xl" shadow="md">
+      <Heading as="h3" size="md" li>Details</Heading>
+      <HStack flex={1} justify={'space-between'} mt={6}>
         <VStack>
           <FaMapMarkerAlt />
           <Text>{activity.activityCity}, {activity.activityCountry}</Text>
