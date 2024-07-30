@@ -9,6 +9,8 @@ import {
 } from '@chakra-ui/react';
 import {ActivityCard} from './ActivityCard.tsx';
 import {useGetActivities} from '../../hooks/activities/useGetActivities/useGetActivities.ts';
+import {useNavigate} from 'react-router-dom';
+import {Activity} from '../../api/types.ts';
 
 export const ActivitiesList = () => {
   const {
@@ -21,7 +23,13 @@ export const ActivitiesList = () => {
     positionError,
   } = useGetActivities();
 
+  const navigate = useNavigate();
+
   const areActivitiesAvailable = !!(activities && activities.length > 0);
+
+  const handleActivityClick = (activity: Activity) => {
+    navigate(`/activity/${activity.activityId}`, {state: {activity}});
+  }
 
   if (!isGeolocationAvailable) {
     return (
@@ -69,7 +77,7 @@ export const ActivitiesList = () => {
       </Button>
       {areActivitiesAvailable ? (
         activities.map(activity => (
-          <ActivityCard key={activity.activityId} activity={activity} />
+          <ActivityCard key={activity.activityId} activity={activity} onClick={handleActivityClick} />
         ))
       ) : (
         <Box>No activities found</Box>

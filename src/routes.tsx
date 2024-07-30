@@ -19,6 +19,7 @@ import {LoginPage} from './pages/LoginPage.tsx';
 import ErrorPage from './pages/ErrorPage.tsx';
 import ProfileSettings from './pages/ProfileSettings.tsx';
 import ProtectedRoute from './components/navigation/ProtectedRoute.tsx';
+import ActivityDetailsPage from './pages/ActivityDetailsPage.tsx';
 
 // import {EventsList} from './components/EventsList';
 // import {MyEvents} from './components/MyEvents';
@@ -41,6 +42,13 @@ export const router = createBrowserRouter([
         path: 'volunteer/profile',
         element: (<ProtectedRoute>
             <ProfileSettings />
+          </ProtectedRoute>
+        ),
+      },
+      {
+        path: 'activity/:activityId',
+        element: (<ProtectedRoute>
+            <ActivityDetailsPage />
           </ProtectedRoute>
         ),
       },
