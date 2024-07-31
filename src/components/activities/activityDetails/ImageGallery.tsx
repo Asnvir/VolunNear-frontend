@@ -22,7 +22,7 @@ const CustomImageGallery: React.FC<ImageGalleryProps> = ({ galleryImages, coverI
 
   return (
     <Box>
-      <ImageGallery items={images} />
+      <ImageGallery items={images}  showPlayButton={false}/>
     </Box>
   );
 };

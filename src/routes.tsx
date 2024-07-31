@@ -47,9 +47,10 @@ export const router = createBrowserRouter([
       },
       {
         path: 'activity/:activityId',
-        element: (<ProtectedRoute>
+        element: (
+          // <ProtectedRoute>
             <ActivityDetailsPage />
-          </ProtectedRoute>
+          // </ProtectedRoute>
         ),
       },
       {

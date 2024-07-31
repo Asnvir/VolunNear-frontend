@@ -58,4 +58,8 @@ export type ActivitiesService = {
   getActivitiesTitles(): Promise<ActivitiesTitles>;
 
   getActivitiesTypes(): Promise<ActivitiesTypes>;
+
+  addVolunteerToActivity(activityId: string): Promise<void>;
+
+  removeVolunteerFromActivity(activityId: string): Promise<void>;
 };

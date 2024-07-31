@@ -1,6 +1,9 @@
-import { Box, Heading, SimpleGrid, Image, Text, VStack, HStack } from '@chakra-ui/react';
-import {Activity} from '../../../api/types.ts';
+import { Box, Heading, Image, Text, VStack, HStack } from '@chakra-ui/react';
+import Carousel from 'react-multi-carousel';
+import 'react-multi-carousel/lib/styles.css';
+import { Activity } from '../../../api/types';
 import CleanUp from '../../../../resources/cleanup.jpg';
+
 const mockSimilarActivities: Activity[] = [
   {
     activityId: '2',
@@ -46,19 +49,19 @@ const mockSimilarActivities: Activity[] = [
   },
   {
     activityId: '4',
-    activityTitle: 'Food Drive',
-    activityDescription: 'Collect and distribute food to those in need.',
+    activityTitle: 'Beach Cleanup',
+    activityDescription: 'Join us for a beach cleanup event to keep our shores clean.',
     activityCity: 'Los Angeles',
     activityCountry: 'USA',
     activityDateOfPlace: '2023-06-15',
-    activityKind: 'COMMUNITY',
-    activityDistance: 10,
+    activityKind: 'ENVIRONMENT',
+    activityDistance: 15,
     galleryImages: [],
-    organisationAddress: '456 Helping Ave',
-    organisationName: 'Helping Hands',
+    organisationAddress: '789 Ocean Ave',
+    organisationName: 'Blue Oceans',
     organisationCity: 'Los Angeles',
     organisationCountry: 'USA',
-    organisationId: '2',
+    organisationId: '3',
     activityCoverImage: CleanUp,
     activityLocation: {
       latitude: 34.0522,
@@ -67,18 +70,58 @@ const mockSimilarActivities: Activity[] = [
   }
 ];
 
+const responsive = {
+  superLargeDesktop: {
+    breakpoint: { max: 4000, min: 3000 },
+    items: 5
+  },
+  desktop: {
+    breakpoint: { max: 3000, min: 1024 },
+    items: 3
+  },
+  tablet: {
+    breakpoint: { max: 1024, min: 464 },
+    items: 2
+  },
+  mobile: {
+    breakpoint: { max: 464, min: 0 },
+    items: 1
+  }
+};
+
 const SimilarListings: React.FC = () => {
   return (
-    <Box>
-      <Heading as="h3" size="md">Similar Volunteer Activities</Heading>
-      <SimpleGrid columns={[1, 2, 3, 4]} spacing={4} mt={4}>
+    <Box mt={8}>
+      <Heading as="h3" size="md" mb={4}>Similar Volunteer Activities</Heading>
+      <Carousel
+        responsive={responsive}
+        infinite={true}
+        autoPlay={true}
+        autoPlaySpeed={3000}
+        keyBoardControl={true}
+        showDots={true}
+        removeArrowOnDeviceType={["tablet", "mobile"]}
+      >
         {mockSimilarActivities.map((activity) => (
-          <Box key={activity.activityId} bg="white" rounded="2xl" shadow="md" overflow="hidden">
-            <Image src={activity.activityCoverImage} alt={activity.activityTitle} />
-            <VStack p={4} align="start">
-              <Text fontWeight="bold">{activity.activityTitle}</Text>
-              <Text>{activity.activityDescription}</Text>
-              <HStack spacing={2} mt={2}>
+          <Box
+            key={activity.activityId}
+            bg="white"
+            rounded="2xl"
+            shadow="md"
+            overflow="hidden"
+            m={2}
+            width="300px"
+            height="400px"
+            display="flex"
+            flexDirection="column"
+          >
+            <Image src={activity.activityCoverImage} alt={activity.activityTitle} height="200px" width="100%" objectFit="cover" />
+            <VStack p={4} align="start" flex="1" justifyContent="space-between">
+              <Box>
+                <Text fontWeight="bold">{activity.activityTitle}</Text>
+                <Text>{activity.activityDescription}</Text>
+              </Box>
+              <HStack spacing={2}>
                 <Text>{activity.activityCity}</Text>
                 <Text>{activity.activityCountry}</Text>
                 <Text>{new Date(activity.activityDateOfPlace).toLocaleDateString()}</Text>
@@ -86,7 +129,7 @@ const SimilarListings: React.FC = () => {
             </VStack>
           </Box>
         ))}
-      </SimpleGrid>
+      </Carousel>
     </Box>
   );
 };

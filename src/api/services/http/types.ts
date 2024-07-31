@@ -16,6 +16,11 @@ export type HttpClientService = {
     body: B,
     options?: AxiosRequestConfig
   ) => Promise<HttpResponse<T>>;
+
+  delete: <T>(
+    url: string,
+    options?: AxiosRequestConfig
+  ) => Promise<HttpResponse<T>>;
 };
 
 export type HttpResponse<T> = {
