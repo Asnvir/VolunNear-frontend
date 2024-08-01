@@ -62,7 +62,7 @@ export const RegistrationVolForm = () => {
 
   return (
     <Box
-      maxW="lg" // Adjust the max width to make the form wider
+      maxW="lg" // Adjust the max width to make the places wider
       w="full"
       p={8}
       borderWidth={1}

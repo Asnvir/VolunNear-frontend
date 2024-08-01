@@ -1,5 +1,5 @@
 import {FormMapper} from './types.ts';
-import {CountriesCitiesResponse} from '../../services/http/types.ts';
+import {CountriesCitiesResponse} from '../../httpClient/types.ts';
 import {MappedCountryData} from '../../types.ts';
 
 export class FormMapperImpl implements FormMapper {

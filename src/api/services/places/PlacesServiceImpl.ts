@@ -1,22 +1,22 @@
 import {FormMapperImpl} from '../../mappers/form/FormMapperImpl.ts';
 import {FormMapper} from '../../mappers/form/types.ts';
-import {FormService} from './types.ts';
+import {PlacesService} from './types.ts';
 import {MappedCountryData} from '../../types.ts';
-import {CountriesCitiesResponse, HttpClientService} from '../http/types.ts';
-import {HttpClientImpl} from '../http/HttpClientImpl.ts';
+import {CountriesCitiesResponse, HttpClient} from '../../httpClient/types.ts';
+import {HttpClientImpl} from '../../httpClient/HttpClientImpl.ts';
 
-export class FormServiceImpl implements FormService {
-  private static instance: FormServiceImpl | null = null;
+export class PlacesServiceImpl implements PlacesService {
+  private static instance: PlacesServiceImpl | null = null;
   private formMapper: FormMapper = FormMapperImpl.getInstance();
-  private httpClient: HttpClientService = HttpClientImpl.getInstance();
+  private httpClient: HttpClient = HttpClientImpl.getInstance();
 
   private constructor() {}
 
-  public static getInstance(): FormServiceImpl {
-    if (!FormServiceImpl.instance) {
-      FormServiceImpl.instance = new FormServiceImpl();
+  public static getInstance(): PlacesServiceImpl {
+    if (!PlacesServiceImpl.instance) {
+      PlacesServiceImpl.instance = new PlacesServiceImpl();
     }
-    return FormServiceImpl.instance;
+    return PlacesServiceImpl.instance;
   }
 
   public async getCountriesData(): Promise<MappedCountryData[]> {

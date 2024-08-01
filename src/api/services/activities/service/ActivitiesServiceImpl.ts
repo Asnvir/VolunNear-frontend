@@ -13,18 +13,18 @@ import {
   ActivitiesFiltersRequest,
   ActivitiesFiltersResponse,
   ActivitiesTitlesResponse,
-  HttpClientService,
-} from '../../http/types.ts';
+  HttpClient,
+} from '../../../httpClient/types.ts';
 import {ActivityUtil} from '../util/types.ts';
 import {ActivityUtilImpl} from '../util/ActivityUtilImpl.ts';
-import {HttpClientImpl} from '../../http/HttpClientImpl.ts';
+import {HttpClientImpl} from '../../../httpClient/HttpClientImpl.ts';
 import {API_ENDPOINTS} from '../../../constants.ts';
 
 export class ActivitiesServiceImpl implements ActivitiesService {
   private static instance: ActivitiesServiceImpl | null = null;
   private activityMapper: ActivityMapper = ActivityMapperImpl.getInstance();
   private activityUtil: ActivityUtil = ActivityUtilImpl.getInstance();
-  private httpClient: HttpClientService = HttpClientImpl.getInstance();
+  private httpClient: HttpClient = HttpClientImpl.getInstance();
 
   private constructor() {}
 

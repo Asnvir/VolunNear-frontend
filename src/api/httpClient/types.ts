@@ -1,7 +1,7 @@
 import {AxiosRequestConfig} from 'axios';
-import {CountryDataDTO} from '../../types.ts';
+import {CountryDataDTO} from '../types.ts';
 
-export type HttpClientService = {
+export type HttpClient = {
   get: <T>(
     url: string,
     params?: RequestQueryParams

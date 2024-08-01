@@ -37,6 +37,7 @@ export enum ActivityType {
 export type ActivitiesTypes = ActivityType[];
 
 export type ActivitiesQueryParams = ActivitiesFiltersType & {
+  isMyActivities: boolean;
   sortOrder: SortOrder;
 } & Coordinates;
 

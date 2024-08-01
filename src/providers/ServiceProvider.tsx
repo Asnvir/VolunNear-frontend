@@ -9,6 +9,8 @@ import {AuthService} from '../api/services/auth/service/types.ts';
 import {FormServiceImpl} from '../api/services/form/FormServiceImpl.ts';
 import {FormService} from '../api/services/form/types.ts';
 import {FileUploadServiceImpl} from '../api/services/files/service/FileServiceImpl.ts';
+import {PlacesServiceImpl} from '../api/services/places/PlacesServiceImpl.ts';
+import {PlacesService} from '../api/services/places/types.ts';
 
 type ServiceProviderProps = {
   children: React.ReactNode;
@@ -21,7 +23,7 @@ const initServices = () => {
 
   const volunteerService: VolunteerService = VolunteerServiceImpl.getInstance();
 
-  const formService: FormService = FormServiceImpl.getInstance();
+  const formService: PlacesService = PlacesServiceImpl.getInstance();
 
   const fileUploadService = FileUploadServiceImpl.getInstance();
 

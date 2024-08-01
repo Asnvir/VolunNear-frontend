@@ -1,20 +1,23 @@
 import {UpdateVolunteerInfo, VolunteerService} from './types.ts';
 import {HttpClientService} from '../http/types.ts';
+import {VolunteerService} from './types.ts';
+import {HttpClient} from '../../httpClient/types.ts';
 import {ActivitiesFiltersType} from '../../../context/types.ts';
 import {VolunteerMapperImpl} from '../../mappers/volunteer/VolunteerMapper.ts';
 import {VolunteerMapper} from '../../mappers/volunteer/types.ts';
-import {HttpClientImpl} from '../http/HttpClientImpl.ts';
+
 import {API_ENDPOINTS} from '../../constants.ts';
 import {
   IUpdateVolunteerInfoData,
   IUpdateVolunteerInfoRequestDTO,
   IVolunteerProfileResponseDTO,
 } from '../../../data-contracts.ts';
+import {HttpClientImpl} from '../../httpClient/HttpClientImpl.ts';
 
 export class VolunteerServiceImpl implements VolunteerService {
   private static instance: VolunteerServiceImpl | null = null;
   private volMapper: VolunteerMapper = VolunteerMapperImpl.getInstance();
-  private httpClient: HttpClientService = HttpClientImpl.getInstance();
+  private httpClient: HttpClient = HttpClientImpl.getInstance();
 
   private constructor() {
   }

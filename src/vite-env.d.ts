@@ -1,4 +1,4 @@
-/// <reference types.ts="vite/client" />
+// <reference types.ts="vite/client" />
 interface ImportMetaEnv {
   readonly VITE_FRONTEND_PORT: string;
   readonly VITE_BACKEND_URL: string;

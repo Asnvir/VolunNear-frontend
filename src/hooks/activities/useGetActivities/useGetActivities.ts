@@ -3,8 +3,9 @@ import {useQuery} from '@tanstack/react-query';
 import {QUERY_KEY_GET_FILTERED_ACTIVITIES} from '../../../utils/constants/reactQueryKeys.ts';
 import {useGeolocated} from 'react-geolocated';
 import {useActivitiesFiltersContext} from '../../../shared/hooks/useActivitiesFiltersContext.ts';
+import {UseGetActivitiesProps} from './types.ts';
 
-export const useGetActivities = () => {
+export const useGetActivities = ({isMyActivities}: UseGetActivitiesProps) => {
   const {activitiesService} = useServiceContext();
   const {filters} = useActivitiesFiltersContext();
 
@@ -23,6 +24,7 @@ export const useGetActivities = () => {
       if (coords) {
         return activitiesService.getActivities({
           ...filters,
+          isMyActivities,
           sortOrder: 'ASC',
           latitude: coords.latitude,
           longitude: coords.longitude,
