@@ -41,12 +41,21 @@ export class VolunteerServiceImpl implements VolunteerService {
     return volunteerProfileDTO;
   }
 
+  public async isVolunteerActivityJoined(activityId: string): Promise<boolean> {
+    console.log("Into isVolunteerActivityJoined activityId: ", activityId)
+    const {data: isJoined} = await this.httpClient.get<boolean>(
+      API_ENDPOINTS.IS_VOLUNTEER_JOINED + activityId
+    );
+    return isJoined;
+  }
+
+
   public async updateVolunteerProfile(updateVolunteerInfo: UpdateVolunteerInfo): Promise<IUpdateVolunteerInfoRequestDTO> {
     const updateVolunteerInfoDTO = this.volMapper.updateVolunteerInfoToDTO(updateVolunteerInfo);
     const {data: updatedVolunteerInfoDTO} = await this.httpClient.put<
       IUpdateVolunteerInfoData,
       IUpdateVolunteerInfoRequestDTO
     >(API_ENDPOINTS.UPDATE_VOLUNTEER_PROFILE, updateVolunteerInfoDTO);
-    return updateVolunteerInfoDTO;
+    return updatedVolunteerInfoDTO;
   }
 }

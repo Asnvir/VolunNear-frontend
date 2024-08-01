@@ -3,7 +3,10 @@ import Carousel from 'react-multi-carousel';
 import 'react-multi-carousel/lib/styles.css';
 import { Activity } from '../../../api/types';
 import CleanUp from '../../../../resources/cleanup.jpg';
+import NoImage from '../../../../resources/No_image_available.png';
 
+
+//TODO: fetch similar activities from the backend
 const mockSimilarActivities: Activity[] = [
   {
     activityId: '2',
@@ -62,7 +65,7 @@ const mockSimilarActivities: Activity[] = [
     organisationCity: 'Los Angeles',
     organisationCountry: 'USA',
     organisationId: '3',
-    activityCoverImage: CleanUp,
+    activityCoverImage: '',
     activityLocation: {
       latitude: 34.0522,
       longitude: -118.2437
@@ -115,7 +118,7 @@ const SimilarListings: React.FC = () => {
             display="flex"
             flexDirection="column"
           >
-            <Image src={activity.activityCoverImage} alt={activity.activityTitle} height="200px" width="100%" objectFit="cover" />
+            <Image src={activity.activityCoverImage || NoImage} alt={activity.activityTitle} height="200px" width="100%" objectFit="crop" />
             <VStack p={4} align="start" flex="1" justifyContent="space-between">
               <Box>
                 <Text fontWeight="bold">{activity.activityTitle}</Text>

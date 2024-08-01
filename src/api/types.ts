@@ -11,6 +11,7 @@ export type ActivityDTO = {
   distance: number;
   locationDTO: LocationDTO;
   coverImage: string;
+  galleryImages: string[];
 };
 
 export type LocationDTO = {
@@ -44,6 +45,7 @@ export type Activity = {
   activityDistance: number;
   activityLocation: LocationDTO;
   activityCoverImage: string;
+  activityGalleryImages: string[];
   organisationId: string;
   organisationName: string;
   organisationCountry: string;

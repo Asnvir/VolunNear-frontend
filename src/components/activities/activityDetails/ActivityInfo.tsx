@@ -1,27 +1,29 @@
-import React, {useEffect, useState} from 'react';
+import React from 'react';
 import {Box, Heading, Text, VStack, Flex, Avatar, HStack, Button, useToast} from '@chakra-ui/react';
 import { Activity } from '../../../api/types';
 
-import CleanUp from '../../../../resources/cleanup.jpg';
 import CustomImageGallery from './ImageGallery.tsx';
 
 import {useLeaveActivity} from '../../../hooks/activities/useLeaveActivity/useLeaveActivity.ts';
 import {useJoinToActivity} from '../../../hooks/activities/useJoinToActivity/useJoinToActivity.ts';
+import {
+  useVolunteerActivityJoined
+} from '../../../hooks/volunteer/useVolunteerActivityJoined/useVolunteerActivityJoined.ts';
 
 interface ActivityInfoProps {
   activity: Activity;
 }
 
 const ActivityInfo: React.FC<ActivityInfoProps> = ({ activity }) => {
-  const [isJoined, setIsJoined] = useState(false);
   const toast = useToast();
+
+  const { data: isJoined, isLoading } = useVolunteerActivityJoined(activity.activityId);
 
   const {mutate: joinToActivity} =  useJoinToActivity();
   const {mutate: leaveActivity} = useLeaveActivity();
 
   const handleJoinActivity = () => {
     // Add logic to join the activity
-    setIsJoined(true);
     joinToActivity(activity.activityId,
       {
         onSuccess: () => {
@@ -48,7 +50,6 @@ const ActivityInfo: React.FC<ActivityInfoProps> = ({ activity }) => {
   };
 
   const handleCancelActivity = () => {
-    setIsJoined(false);
     leaveActivity(activity.activityId,
       {
         onSuccess: () => {
@@ -74,12 +75,6 @@ const ActivityInfo: React.FC<ActivityInfoProps> = ({ activity }) => {
     );
   };
 
-
-  const images = {
-    galleryImages: [CleanUp, CleanUp, CleanUp, CleanUp],
-    coverImage: CleanUp,
-  };
-
   return (
     <Box bg="white" p={4} rounded="md" shadow="md">
       <Flex direction={{ base: 'column', md: 'row' }} spacing={4}>
@@ -95,6 +90,7 @@ const ActivityInfo: React.FC<ActivityInfoProps> = ({ activity }) => {
               <Text>{activity.organisationAddress}</Text>
             </VStack>
           </HStack>
+          {!isLoading &&
           <Box mt={4}>
             {isJoined ? (
               <Button colorScheme="red" onClick={handleCancelActivity}>
@@ -106,9 +102,10 @@ const ActivityInfo: React.FC<ActivityInfoProps> = ({ activity }) => {
               </Button>
             )}
           </Box>
+          }
         </VStack>
         <Box flex="0.7" p={4} maxW={{ base: '100%', md: '700px' }} maxH="600px">
-          <CustomImageGallery galleryImages={images.galleryImages} coverImage={images.coverImage} />
+          <CustomImageGallery galleryImages={activity.activityGalleryImages} coverImage={activity.activityCoverImage} />
         </Box>
       </Flex>
     </Box>
