@@ -1,9 +1,10 @@
-import {Alert, AlertIcon, Box, Spinner, Text, VStack} from '@chakra-ui/react';
+import {Alert, AlertIcon, Box, Heading, SimpleGrid, Spinner, Text, VStack} from '@chakra-ui/react';
 import {ActivityCard} from '../ActivityCard.tsx';
 import {useGetActivities} from '../../../hooks/activities/useGetActivities/useGetActivities.ts';
 import {ActivitiesListProps} from './types.ts';
 import {useNavigate} from 'react-router-dom';
-import {Activity} from '../../api/types.ts';
+import {Activity} from '../../../api/types.ts';
+
 
 export const ActivitiesList = ({isMyActivities}: ActivitiesListProps) => {
   const {
@@ -63,17 +64,17 @@ export const ActivitiesList = ({isMyActivities}: ActivitiesListProps) => {
   }
 
   return (
-    <VStack spacing={4} width="100%">
-      {/*<Button onClick={() => refetchActivities()} colorScheme="teal">*/}
-      {/*  Reload Activities*/}
-      {/*</Button>*/}
-      {areActivitiesAvailable ? (
-        activities.map(activity => (
-          <ActivityCard key={activity.activityId} activity={activity} onClick={handleActivityClick} />
-        ))
-      ) : (
-        <Box>No activities found</Box>
-      )}
-    </VStack>
+    <Box p={4}>
+      <Heading as="h2" size="lg" mb="4">All Activities</Heading>
+      <SimpleGrid columns={{ base: 1, sm: 2, md: 3, lg: 4 }} spacing={6}>
+        {areActivitiesAvailable ? (
+          activities.map((activity,index) => (
+            <ActivityCard key={index} activity={activity} onClick={handleActivityClick} />
+          ))
+        ) : (
+          <Box>No activities found</Box>
+        )}
+      </SimpleGrid>
+    </Box>
   );
 };
