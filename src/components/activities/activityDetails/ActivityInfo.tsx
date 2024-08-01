@@ -84,9 +84,9 @@ const ActivityInfo: React.FC<ActivityInfoProps> = ({ activity }) => {
           <Text fontSize="2xl" fontWeight="bold">{new Date(activity.activityDateOfPlace).toLocaleDateString()}</Text>
           <Text>Type: {activity.activityKind}</Text>
           <HStack spacing={4} mt={4}>
-            <Avatar src={activity.organisationAvatarImage} size="md" />
+            <Avatar src={activity.organisationAvatarImage} size="xl" />
             <VStack align="start">
-              <Text fontWeight="bold">{activity.organisationName}</Text>
+              <Text fontWeight="bold" fontSize={24}>{activity.organisationName}</Text>
               <Text>{activity.organisationAddress}</Text>
             </VStack>
           </HStack>

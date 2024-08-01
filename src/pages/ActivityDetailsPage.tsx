@@ -1,12 +1,13 @@
 import React from 'react';
-import { useLocation, useParams } from 'react-router-dom';
+import { useLocation} from 'react-router-dom';
 import { Box, VStack, Alert, AlertIcon } from '@chakra-ui/react';
 import { Activity } from '../api/types';
 import ActivityInfo from '../components/activities/activityDetails/ActivityInfo.tsx';
 import Details from '../components/activities/activityDetails/Details.tsx';
 import Description from '../components/activities/activityDetails/Description.tsx';
 import SimilarListings from '../components/activities/activityDetails/SimilarListings.tsx';
-import MapComponent from '../components/MapComponent.tsx';
+import MapComponent from '../components/activities/activityDetails/MapComponent.tsx';
+
 
 interface LocationState {
   activity: Activity;
@@ -32,7 +33,7 @@ const ActivityDetailsPage: React.FC = () => {
         <ActivityInfo activity={activity} />
         <Details activity={activity} />
         <Description description={activity.activityDescription} />
-        <MapComponent latitude={activity.activityLocation.latitude} longitude={activity.activityLocation.longitude} activityName={activity.activityName} />
+        <MapComponent latitude={activity.activityLocation.latitude} longitude={activity.activityLocation.longitude} />
         <SimilarListings />
       </VStack>
     </Box>
