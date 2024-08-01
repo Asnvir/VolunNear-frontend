@@ -1,125 +1,33 @@
-import {SubmitHandler, useForm} from 'react-hook-form';
 import {
   Box,
   Button,
+  Flex,
   FormControl,
   FormErrorMessage,
-  FormLabel,
-  SimpleGrid,
-  Spinner,
+  InputGroup,
+  InputLeftElement,
   Text,
 } from '@chakra-ui/react';
-import {Select, SingleValue} from 'chakra-react-select';
-import {ActivitiesFiltersType} from '../../../api/services/activities/service/types.ts';
-import {useGetActivitiesTitles} from '../../../hooks/activities/useGetActivitiesTitles/useGetActivitiesTitles.ts';
-import {useGetActivitiesTypes} from '../../../hooks/activities/useGetActivitiesTypes/useGetActivitiesTypes.ts';
-import {useGetCountriesCities} from '../../../hooks/forms/useGetCountriesCities/useGetCountriesCities.ts';
-import {useEffect, useState} from 'react';
+import {Select} from 'chakra-react-select';
 import {SingleDatepicker} from 'chakra-dayzed-datepicker';
-import {zodResolver} from '@hookform/resolvers/zod';
-import {ActivitiesFilterValidationSchema} from '../../../api/validation/activitiesFilter/ActivitiesFilterValidation.ts';
-import {ActivitiesFilterValues} from '../../../api/validation/activitiesFilter/types.ts';
-import {useActivitiesFiltersContext} from '../../../shared/hooks/useActivitiesFiltersContext.ts';
+import {useActivitiesFilterForm} from '../../../hooks/activities/useActivitiesFilterForm/useActivitiesFilterForm.tsx';
+import {Controller} from 'react-hook-form';
 
 export const ActivitiesFilter = () => {
   const {
-    register,
-    handleSubmit,
-    setValue,
-    watch,
-    formState: {errors, isSubmitting},
-  } = useForm<ActivitiesFilterValues>({
-    resolver: zodResolver(ActivitiesFilterValidationSchema),
-  });
+    activitiesTitleOptions,
+    activitiesTypeOptions,
+    selectedCountry,
+    activitiesCountryOption,
+    activitiesCityOptions,
+    date,
+    handleReset,
+    handleFormSubmit,
+    control,
+    formState: {errors, isSubmitting}, // Nested destructuring
+  } = useActivitiesFilterForm();
 
-  const {setFilters} = useActivitiesFiltersContext();
-
-  const [date, setDate] = useState<Date | undefined>(undefined);
-  const [cities, setCities] = useState<string[]>([]);
-  const selectedCountry = watch('country');
-
-  const {
-    data: activitiesTitles,
-    isLoading: isLoadingTitles,
-    error: errorTitles,
-  } = useGetActivitiesTitles();
-
-  const titleOptions = activitiesTitles?.map((title: string) => ({
-    label: title,
-    value: title,
-  }));
-
-  const {
-    data: activitiesTypes,
-    isLoading: isLoadingTypes,
-    error: errorTypes,
-  } = useGetActivitiesTypes();
-
-  const typeOptions = activitiesTypes?.map((type: string) => ({
-    label: type,
-    value: type,
-  }));
-
-  const {
-    data: countriesCities,
-    isLoading: isLoadingCountriesCities,
-    error: errorCountriesCities,
-  } = useGetCountriesCities();
-
-  useEffect(() => {
-    if (selectedCountry && countriesCities) {
-      const countryData = countriesCities.find(
-        country => country.country === selectedCountry
-      );
-      if (countryData) {
-        setCities(countryData.cities);
-      } else {
-        setCities([]);
-      }
-    } else {
-      setCities([]);
-    }
-  }, [selectedCountry, countriesCities]);
-
-  useEffect(() => {
-    register('date');
-  }, [register]);
-
-  useEffect(() => {
-    setValue('date', date?.toISOString());
-  }, [date, setValue]);
-
-  const onSubmit: SubmitHandler<ActivitiesFiltersType> = filters => {
-    setFilters(filters);
-  };
-
-  if (isLoadingCountriesCities) {
-    return <Spinner />;
-  }
-
-  if (errorCountriesCities) {
-    return (
-      <Text color="red.500">Failed to load countries and cities data</Text>
-    );
-  }
-
-  const handleCountryChange = (
-    option: SingleValue<{value: string; label: string}>
-  ) => {
-    setValue('country', option?.value || '');
-  };
-
-  const handleCityChange = (
-    option: SingleValue<{value: string; label: string}>
-  ) => {
-    setValue('city', option?.value || '');
-  };
-
-  const handleDateChange = (date: Date) => {
-    console.log(`Chosen date: ${date}`);
-    setDate(date);
-  };
-
+  console.log(activitiesCityOptions);
   return (
     <Box
       w="full"
@@ -128,100 +36,145 @@ export const ActivitiesFilter = () => {
       borderColor="orange.400"
       borderRadius="md"
     >
-      <form onSubmit={handleSubmit(onSubmit)}>
-        <SimpleGrid columns={6} spacing={4}>
-          <FormControl isInvalid={!!errors.title} p={4}>
-            <FormLabel>Title</FormLabel>
-            {isLoadingTitles ? (
-              <Select placeholder="Loading..." isDisabled />
-            ) : errorTitles ? (
-              <Select placeholder="Error loading titles" isDisabled />
-            ) : (
-              <Select
-                placeholder="Select title"
-                options={titleOptions}
-                onChange={(
-                  option: SingleValue<{label: string; value: string}>
-                ) => setValue('title', option?.value || '')}
-              />
-            )}
+      <form onSubmit={handleFormSubmit}>
+        <Flex justify="space-between" wrap="wrap" gap={4}>
+          <FormControl isInvalid={!!errors.title} flex="1">
+            <Controller
+              name="title"
+              control={control}
+              render={({field}) => (
+                <Select
+                  {...field}
+                  placeholder="Select title"
+                  options={activitiesTitleOptions}
+                />
+              )}
+            />
+
             <FormErrorMessage>
               {errors.title && errors.title.message}
             </FormErrorMessage>
           </FormControl>
 
-          <FormControl isInvalid={!!errors.type}>
-            <FormLabel>Type</FormLabel>
-            {isLoadingTypes ? (
-              <Select placeholder="Loading..." isDisabled />
-            ) : errorTypes ? (
-              <Select placeholder="Error loading types" isDisabled />
-            ) : (
-              <Select
-                placeholder="Select type"
-                options={typeOptions}
-                onChange={(
-                  option: SingleValue<{label: string; value: string}>
-                ) => setValue('type', option?.value || '')}
-              />
-            )}
+          <FormControl isInvalid={!!errors.type} flex="1">
+            <Controller
+              name="type"
+              control={control}
+              render={({field}) => (
+                <Select
+                  {...field}
+                  placeholder="Select type"
+                  options={activitiesTypeOptions}
+                  // onChange={handleTypeChange}
+                />
+              )}
+            />
+
             <FormErrorMessage>
               {errors.type && errors.type.message}
             </FormErrorMessage>
           </FormControl>
 
-          <FormControl isInvalid={!!errors.date}>
-            <FormLabel>Date</FormLabel>
-            <SingleDatepicker
-              name="date-input"
-              date={date}
-              onDateChange={handleDateChange}
-            />
+          <FormControl isInvalid={!!errors.date} flex="1">
+            <InputGroup width="100%">
+              {!date && (
+                <InputLeftElement pointerEvents="none" color="gray.400">
+                  <Text>Select date</Text>
+                </InputLeftElement>
+              )}
+              <Box width="100%">
+                <Controller
+                  name="date"
+                  control={control}
+                  render={({field: {ref, ...field}}) => (
+                    <SingleDatepicker
+                      {...field}
+                      date={field.value}
+                      onDateChange={field.onChange}
+                      usePortal={true}
+                    />
+                  )}
+                />
+              </Box>
+            </InputGroup>
             <FormErrorMessage>
               {errors.date && errors.date.message}
             </FormErrorMessage>
           </FormControl>
 
-          <FormControl isInvalid={!!errors.country}>
-            <FormLabel>Country</FormLabel>
-            <Select
-              options={countriesCities?.map(country => ({
-                value: country.country,
-                label: country.country,
-              }))}
-              placeholder="Select country"
-              onChange={handleCountryChange}
+          <FormControl isInvalid={!!errors.country} flex="1">
+            <Controller
+              name="country"
+              control={control}
+              render={({field}) => (
+                <Select
+                  {...field}
+                  placeholder="Select country"
+                  options={activitiesCountryOption}
+                />
+              )}
             />
+
             <FormErrorMessage>
               {errors.country && errors.country.message}
             </FormErrorMessage>
           </FormControl>
-        </SimpleGrid>
 
-        <FormControl isInvalid={!!errors.city} isDisabled={!selectedCountry}>
-          <FormLabel>City</FormLabel>
-          <Select
-            options={cities.map(city => ({
-              value: city,
-              label: city,
-            }))}
-            placeholder="Select city"
-            onChange={handleCityChange}
+          <FormControl
+            isInvalid={!!errors.city}
+            flex="1"
             isDisabled={!selectedCountry}
-          />
-          <FormErrorMessage>
-            {errors.city && errors.city.message}
-          </FormErrorMessage>
-        </FormControl>
+          >
+            <Controller
+              name="city"
+              control={control}
+              render={({field}) => (
+                <Select
+                  {...field}
+                  placeholder="Select city"
+                  options={activitiesCityOptions}
+                  isDisabled={!selectedCountry}
+                />
+              )}
+            />
 
-        <Button
-          type="submit"
-          colorScheme="teal"
-          mt={4}
-          isLoading={isSubmitting}
-        >
-          Apply
-        </Button>
+            <FormErrorMessage>
+              {errors.city && errors.city.message}
+            </FormErrorMessage>
+          </FormControl>
+        </Flex>
+
+        <Flex justify="center" mt={4}>
+          <Button
+            type="submit"
+            bg="orange.400"
+            color="white"
+            borderColor="orange.400"
+            borderWidth="2px" // Ensures the border is visible
+            mr={4}
+            isLoading={isSubmitting}
+            _hover={{
+              bg: 'orange.500', // Darker shade on hover
+              borderColor: 'orange.500',
+            }}
+          >
+            Search
+          </Button>
+          <Button
+            onClick={handleReset}
+            bg="gray.200"
+            color="black"
+            borderColor="gray.400"
+            borderWidth="2px"
+            isDisabled={isSubmitting}
+            _hover={{
+              bg: 'gray.300',
+              borderColor: 'gray.500',
+            }}
+          >
+            Reset
+          </Button>
+        </Flex>
       </form>
     </Box>
   );

@@ -1,18 +1,19 @@
 import {FileUploadService} from './types.ts';
 import {VolunteerServiceImpl} from '../../volunteer/VolunteerServiceImpl.ts';
-import {HttpClientService} from '../../http/types.ts';
-import {HttpClientImpl} from '../../http/HttpClientImpl.ts';
+
 import {
   IUpdateVolunteerInfoData,
   IUpdateVolunteerInfoRequestDTO,
 } from '../../../../data-contracts.ts';
 import {API_ENDPOINTS} from '../../../constants.ts';
 import {UpdateVolunteerInfo} from '../../volunteer/types.ts';
+import { HttpClientImpl } from '../../../httpClient/HttpClientImpl.ts';
+import { HttpClient } from '../../../httpClient/types.ts';
 
 
 export class FileUploadServiceImpl implements FileUploadService {
   private static instance: FileUploadServiceImpl | null = null;
-  private httpClient: HttpClientService = HttpClientImpl.getInstance();
+  private httpClient: HttpClient = HttpClientImpl.getInstance();
 
   private constructor() {
   }

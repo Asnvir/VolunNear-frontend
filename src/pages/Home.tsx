@@ -27,7 +27,6 @@ export const Home = () => {
   const isLoggedIn = useLoggedIn();
   const {isOpen, onOpen, onClose} = useDisclosure();
 
-
   const cards = [
     // {
     //   name: 'Location 1',
@@ -53,7 +52,6 @@ export const Home = () => {
     <Flex direction="column" minHeight="100vh" width="full">
       {isLoggedIn ? (
         <Flex flex="1" bg={bgColor} color={textColor} width="full">
-
           <VStack
             w="20%"
             p={4}
@@ -73,7 +71,7 @@ export const Home = () => {
           </VStack>
           <VStack w="80%" p={4} spacing={4}>
             <ActivitiesFilter onApply={filters => console.log(filters)} />
-            <MapComponent cards={cards} />
+            {/*<MapComponent cards={cards} />*/}
             <ActivitiesList isMyActivities={false} />
             {/*<VStack w="full" spacing={4}>*/}
             {/*  */}
