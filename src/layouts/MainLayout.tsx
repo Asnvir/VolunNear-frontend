@@ -9,7 +9,7 @@ export const MainLayout = () => {
   return (
     <Box display="flex" flexDirection="column" minHeight="100vh">
       <Nav />
-      <Box as="main" flex="1" display="flex" flexDirection="column">
+      <Box as="main" flex="1" display="flex" flexDirection="column" py={8} bg="gray.100">
         <Outlet />
       </Box>
       <Footer />

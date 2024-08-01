@@ -2,6 +2,8 @@ import {Alert, AlertIcon, Box, Spinner, Text, VStack} from '@chakra-ui/react';
 import {ActivityCard} from '../ActivityCard.tsx';
 import {useGetActivities} from '../../../hooks/activities/useGetActivities/useGetActivities.ts';
 import {ActivitiesListProps} from './types.ts';
+import {useNavigate} from 'react-router-dom';
+import {Activity} from '../../api/types.ts';
 
 export const ActivitiesList = ({isMyActivities}: ActivitiesListProps) => {
   const {
@@ -13,7 +15,13 @@ export const ActivitiesList = ({isMyActivities}: ActivitiesListProps) => {
     positionError,
   } = useGetActivities({isMyActivities});
 
+  const navigate = useNavigate();
+
   const areActivitiesAvailable = !!(activities && activities.length > 0);
+
+  const handleActivityClick = (activity: Activity) => {
+    navigate(`/activity/${activity.activityId}`, {state: {activity}});
+  }
 
   if (!isGeolocationAvailable) {
     return (
@@ -61,7 +69,7 @@ export const ActivitiesList = ({isMyActivities}: ActivitiesListProps) => {
       {/*</Button>*/}
       {areActivitiesAvailable ? (
         activities.map(activity => (
-          <ActivityCard key={activity.activityId} activity={activity} />
+          <ActivityCard key={activity.activityId} activity={activity} onClick={handleActivityClick} />
         ))
       ) : (
         <Box>No activities found</Box>

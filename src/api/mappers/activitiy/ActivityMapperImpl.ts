@@ -39,11 +39,16 @@ export class ActivityMapperImpl implements ActivityMapper {
       activityDescription: activity.description,
       activityTitle: activity.title,
       activityKind: activity.kindOfActivity,
+      activityDistance: activity.distance,
+      activityLocation: activity.locationDTO,
+      activityCoverImage: activity.coverImage,
+      activityGalleryImages: activity.galleryImages,
       organisationId: organization.id,
       organisationName: organization.nameOfOrganisation,
       organisationCountry: organization.country,
       organisationCity: organization.city,
       organisationAddress: organization.address,
+      organisationAvatarImage: organization.avatarUrl,
     };
   }
 

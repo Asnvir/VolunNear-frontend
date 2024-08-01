@@ -3,9 +3,10 @@ import {Activity} from '../../api/types.ts';
 
 type ActivityCardProps = {
   activity: Activity;
+  onClick: () => void;
 };
 
-export const ActivityCard = ({activity}: ActivityCardProps) => {
+export const ActivityCard = ({activity, onClick}) => {
   return (
     <Box
       borderWidth="1px"
@@ -15,6 +16,8 @@ export const ActivityCard = ({activity}: ActivityCardProps) => {
       boxShadow="lg"
       width="100%"
       maxW="100%"
+      cursor="pointer"
+      onClick={() => onClick(activity)}
     >
       <Heading as="h3" size="md" mb="2">
         {activity.activityTitle}

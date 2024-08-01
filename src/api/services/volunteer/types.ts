@@ -7,6 +7,7 @@ export type VolunteerService = {
   ): Promise<ActivitiesFiltersType>;
   getVolunteerProfile(): Promise<IVolunteerProfileResponseDTO>;
   updateVolunteerProfile(updateVolunteerInfo: UpdateVolunteerInfo): Promise<IUpdateVolunteerInfoRequestDTO>;
+  isVolunteerActivityJoined(activityId: string): Promise<boolean>;
 };
 
 

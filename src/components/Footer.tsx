@@ -11,7 +11,7 @@ const Footer = () => {
       bg="orange.400"
       color="white"
     >
-      <Flex justify="space-between" align="center" wrap="wrap" maxW="2000px" mx="auto">
+      <Flex justify="space-between" align="center" wrap="wrap" mx="auto" >
         <Flex align="center">
           <Link href="/" title="Chakra UI Home Page" display="flex" alignItems="center">
             <Text ml="2" fontSize="lg" fontWeight="bold">

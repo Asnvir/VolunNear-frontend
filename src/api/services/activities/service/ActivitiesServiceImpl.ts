@@ -18,6 +18,7 @@ import {
 import {ActivityUtil} from '../util/types.ts';
 import {ActivityUtilImpl} from '../util/ActivityUtilImpl.ts';
 import {HttpClientImpl} from '../../../httpClient/HttpClientImpl.ts';
+import {API_ENDPOINTS} from '../../../constants.ts';
 
 export class ActivitiesServiceImpl implements ActivitiesService {
   private static instance: ActivitiesServiceImpl | null = null;
@@ -57,6 +58,17 @@ export class ActivitiesServiceImpl implements ActivitiesService {
         })
       )
     );
+  }
+
+  public async addVolunteerToActivity(activityId: string): Promise<void> {
+    await this.httpClient.post<void, void>(
+      API_ENDPOINTS.JOIN_ACTIVITY + activityId
+    );
+  }
+
+  public async removeVolunteerFromActivity(activityId: string): Promise<void> {
+    await this.httpClient.delete<void, void>(
+      API_ENDPOINTS.LEAVE_ACTIVITY + activityId);
   }
 
   public async setActivitiesFilters(

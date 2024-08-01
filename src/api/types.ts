@@ -8,7 +8,17 @@ export type ActivityDTO = {
   description: string;
   title: string;
   kindOfActivity: string;
+  distance: number;
+  locationDTO: LocationDTO;
+  coverImage: string;
+  galleryImages: string[];
 };
+
+export type LocationDTO = {
+  latitude: number;
+  longitude: number;
+};
+
 
 export type OrganisationDTO = {
   id: string;
@@ -16,6 +26,7 @@ export type OrganisationDTO = {
   country: string;
   city: string;
   address: string;
+  avatarUrl: string;
 };
 
 export type ActivitiesResponse = {
@@ -31,11 +42,16 @@ export type Activity = {
   activityDescription: string;
   activityTitle: string;
   activityKind: string;
+  activityDistance: number;
+  activityLocation: LocationDTO;
+  activityCoverImage: string;
+  activityGalleryImages: string[];
   organisationId: string;
   organisationName: string;
   organisationCountry: string;
   organisationCity: string;
   organisationAddress: string;
+  organisationAvatarImage: string;
 };
 
 export type User = {
