@@ -1,25 +1,17 @@
-import {
-  Alert,
-  AlertIcon,
-  Box,
-  Button,
-  Spinner,
-  Text,
-  VStack,
-} from '@chakra-ui/react';
-import {ActivityCard} from './ActivityCard.tsx';
-import {useGetActivities} from '../../hooks/activities/useGetActivities/useGetActivities.ts';
+import {Alert, AlertIcon, Box, Spinner, Text, VStack} from '@chakra-ui/react';
+import {ActivityCard} from '../ActivityCard.tsx';
+import {useGetActivities} from '../../../hooks/activities/useGetActivities/useGetActivities.ts';
+import {ActivitiesListProps} from './types.ts';
 
-export const ActivitiesList = () => {
+export const ActivitiesList = ({isMyActivities}: ActivitiesListProps) => {
   const {
     data: activities,
     isLoading: isLoadingActivities,
     error: errorActivities,
-    refetch: refetchActivities,
     isGeolocationAvailable,
     isGeolocationEnabled,
     positionError,
-  } = useGetActivities();
+  } = useGetActivities({isMyActivities});
 
   const areActivitiesAvailable = !!(activities && activities.length > 0);
 
@@ -64,9 +56,9 @@ export const ActivitiesList = () => {
 
   return (
     <VStack spacing={4} width="100%">
-      <Button onClick={() => refetchActivities()} colorScheme="teal">
-        Reload Activities
-      </Button>
+      {/*<Button onClick={() => refetchActivities()} colorScheme="teal">*/}
+      {/*  Reload Activities*/}
+      {/*</Button>*/}
       {areActivitiesAvailable ? (
         activities.map(activity => (
           <ActivityCard key={activity.activityId} activity={activity} />

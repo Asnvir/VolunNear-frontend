@@ -8,7 +8,7 @@ import {
   ActivitiesFiltersRequest,
   ActivitiesFiltersResponse,
   ActivitiesTitlesResponse,
-} from '../../services/http/types.ts';
+} from '../../httpClient/types.ts';
 
 export type ActivityMapper = {
   fromDTO({

@@ -1,5 +1,5 @@
 import {MappedCountryData} from '../../types.ts';
 
-export type FormService = {
+export type PlacesService = {
   getCountriesData(): Promise<MappedCountryData[]>;
 };

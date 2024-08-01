@@ -9,12 +9,11 @@ import {
   ActivitiesFiltersRequest,
   ActivitiesFiltersResponse,
   ActivitiesTitlesResponse,
-} from '../../services/http/types.ts';
+} from '../../httpClient/types.ts';
 import {format} from 'date-fns';
 
 export class ActivityMapperImpl implements ActivityMapper {
   private static instance: ActivityMapperImpl | null = null;
-
 
   private constructor() {}
 

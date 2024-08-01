@@ -21,7 +21,7 @@ import ProfileSettings from './pages/ProfileSettings.tsx';
 import ProtectedRoute from './components/navigation/ProtectedRoute.tsx';
 
 // import {EventsList} from './components/EventsList';
-// import {MyEvents} from './components/MyEvents';
+// import {MyActivities} from './components/MyActivities';
 // import {OrganizationsList} from './components/OrganizationsList';
 // import {ProfilePage} from './pages/ProfilePage';
 
@@ -119,7 +119,7 @@ export const router = createBrowserRouter([
       //     path: 'my-events',
       //     element: (
       //         <ProtectedRoute roles={['USER']}>
-      //             <MyEvents />
+      //             <MyActivities />
       //         </ProtectedRoute>
       //     ),
       // },
