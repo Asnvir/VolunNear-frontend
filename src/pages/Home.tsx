@@ -2,7 +2,6 @@
 import {
   Button,
   Flex,
-  Heading,
   useColorModeValue,
   useDisclosure,
   VStack,
@@ -19,10 +18,8 @@ import JourneyOfVolunNearSection from '../components/home/JourneyVolunNearSectio
 import Testimonials from '../components/home/Testimonials.tsx';
 import {ActivitiesMapComponent} from '../components/activities/map/ActivitiesMapComponent.tsx';
 import {ActivitiesFiltersType} from '../api/services/activities/service/types.ts';
-import {useEffect, useState} from 'react';
+import {useState} from 'react';
 import {emptyFilters} from '../hooks/activities/useActivitiesFilterForm/useActivitiesFilterForm.tsx';
-import {Activity} from '../api/types.ts';
-import {useGetActivities} from '../hooks/activities/useGetActivities/useGetActivities.ts';
 
 export const Home = () => {
   const bgColor = useColorModeValue('gray.100', 'gray.900');
@@ -63,7 +60,6 @@ export const Home = () => {
     <Flex direction="column" minHeight="100vh" width="full">
       {isLoggedIn ? (
         <Flex flex="1" bg={bgColor} color={textColor} width="full">
-
           <VStack
             w="20%"
             p={4}

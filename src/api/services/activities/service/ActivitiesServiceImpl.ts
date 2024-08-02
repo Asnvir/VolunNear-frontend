@@ -68,7 +68,8 @@ export class ActivitiesServiceImpl implements ActivitiesService {
 
   public async removeVolunteerFromActivity(activityId: string): Promise<void> {
     await this.httpClient.delete<void, void>(
-      API_ENDPOINTS.LEAVE_ACTIVITY + activityId);
+      API_ENDPOINTS.LEAVE_ACTIVITY + activityId
+    );
   }
 
   public async setActivitiesFilters(
