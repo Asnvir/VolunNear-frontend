@@ -15,6 +15,7 @@ import {
 export class ActivityMapperImpl implements ActivityMapper {
   private static instance: ActivityMapperImpl | null = null;
 
+
   private constructor() {}
 
   public static getInstance(): ActivityMapperImpl {

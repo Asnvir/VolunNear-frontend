@@ -72,7 +72,6 @@ export const ActivitiesFilter = ({onApply}: ActivitiesFilterProps) => {
                   {...field}
                   placeholder="Select type"
                   options={activitiesTypeOptions}
-                  // onChange={handleTypeChange}
                 />
               )}
             />

@@ -63,6 +63,7 @@ export const Home = () => {
     <Flex direction="column" minHeight="100vh" width="full">
       {isLoggedIn ? (
         <Flex flex="1" bg={bgColor} color={textColor} width="full">
+
           <VStack
             w="20%"
             p={4}

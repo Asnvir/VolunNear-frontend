@@ -19,6 +19,7 @@ import {LoginPage} from './pages/LoginPage.tsx';
 import ErrorPage from './pages/ErrorPage.tsx';
 import ProfileSettings from './pages/ProfileSettings.tsx';
 import ProtectedRoute from './components/navigation/ProtectedRoute.tsx';
+import ActivityDetailsPage from './pages/ActivityDetailsPage.tsx';
 
 // import {EventsList} from './components/EventsList';
 // import {MyActivities} from './components/MyActivities';
@@ -42,6 +43,14 @@ export const router = createBrowserRouter([
         element: (<ProtectedRoute>
             <ProfileSettings />
           </ProtectedRoute>
+        ),
+      },
+      {
+        path: 'activity/:activityId',
+        element: (
+          // <ProtectedRoute>
+            <ActivityDetailsPage />
+          // </ProtectedRoute>
         ),
       },
       {

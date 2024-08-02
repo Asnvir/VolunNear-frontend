@@ -69,4 +69,11 @@ export class HttpClientImpl implements HttpClient {
       ...options,
     });
   }
+
+  delete<T>(
+    url: string,
+    options: AxiosRequestConfig = {}
+  ): Promise<HttpResponse<T>> {
+    return this.axios.delete<T>(url, options);
+  }
 }
