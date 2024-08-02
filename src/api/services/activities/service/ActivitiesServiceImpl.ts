@@ -61,13 +61,14 @@ export class ActivitiesServiceImpl implements ActivitiesService {
   }
 
   public async addVolunteerToActivity(activityId: string): Promise<void> {
-    await this.httpClient.post<void, void>(
-      API_ENDPOINTS.JOIN_ACTIVITY + activityId
+    await this.httpClient.post<void, Record<string, never>>(
+      API_ENDPOINTS.JOIN_ACTIVITY + activityId,
+      {}
     );
   }
 
   public async removeVolunteerFromActivity(activityId: string): Promise<void> {
-    await this.httpClient.delete<void, void>(
+    await this.httpClient.delete<void>(
       API_ENDPOINTS.LEAVE_ACTIVITY + activityId
     );
   }

@@ -1,4 +1,5 @@
 import {SubmitHandler, useForm} from 'react-hook-form';
+import {format} from 'date-fns';
 import {ActivitiesFilterValues} from '../../../api/validation/activitiesFilter/types.ts';
 import {zodResolver} from '@hookform/resolvers/zod';
 import {ActivitiesFilterValidationSchema} from '../../../api/validation/activitiesFilter/ActivitiesFilterValidation.ts';
@@ -88,10 +89,17 @@ export const useActivitiesFilterForm = () => {
   };
 
   const onSubmit: SubmitHandler<ActivitiesFilterValues> = filters => {
+    console.log('Filters being set:\n', {
+      title: filters.title?.value || '',
+      type: filters.type?.value || '',
+      date: filters.date ? format(filters.date, 'yyyy-MM-dd') : '',
+      country: filters.country?.value || '',
+      city: filters.city?.value || '',
+    });
     setFilters({
       title: filters.title?.value || '',
       type: filters.type?.value || '',
-      date: filters.date ? filters.date.toISOString().split('T')[0] : '',
+      date: filters.date ? format(filters.date, 'yyyy-MM-dd') : '',
       country: filters.country?.value || '',
       city: filters.city?.value || '',
     });
