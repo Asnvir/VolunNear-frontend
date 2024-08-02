@@ -1,11 +1,39 @@
-import {MapContainer, Marker, Popup, TileLayer} from 'react-leaflet';
+import {MapContainer, Marker, Popup, TileLayer, useMap} from 'react-leaflet';
 import 'leaflet/dist/leaflet.css';
 import {useGeolocated} from 'react-geolocated';
 import {LatLngExpression} from 'leaflet';
 import {useEffect, useState} from 'react';
-import {Center, Link, Spinner} from '@chakra-ui/react';
+import {Center, IconButton, Link, Spinner} from '@chakra-ui/react';
+import {FaMapMarkerAlt} from 'react-icons/fa';
 import {ActivitiesMapComponentProps} from './types.ts';
 import {useGetActivities} from '../../../hooks/activities/useGetActivities/useGetActivities.ts';
+
+const LocateButton = ({coords}: {coords: LatLngExpression | undefined}) => {
+  const map = useMap();
+
+  const handleClick = () => {
+    if (coords) {
+      map.setView(coords, 13); // Recenter the map to the user's location
+    }
+  };
+
+  return (
+    <IconButton
+      position="absolute"
+      bottom="10px" // Positioning at the bottom
+      left="10px" // Positioning at the left
+      zIndex="1000"
+      aria-label="Center map on your location"
+      icon={<FaMapMarkerAlt />}
+      onClick={handleClick}
+      size="sm"
+      borderRadius="full"
+      bg="black" // Set the background color to black
+      color="white" // Set the icon color to white
+      _hover={{bg: 'gray.700'}} // Darker gray on hover
+    />
+  );
+};
 
 export const ActivitiesMapComponent = ({
   isMyActivities,
@@ -76,6 +104,11 @@ export const ActivitiesMapComponent = ({
           </Popup>
         </Marker>
       ))}
+      <LocateButton
+        coords={
+          coords ? {lat: coords.latitude, lng: coords.longitude} : undefined
+        }
+      />
     </MapContainer>
   );
 };

@@ -1,4 +1,5 @@
 import {SubmitHandler, useForm} from 'react-hook-form';
+import {format} from 'date-fns';
 import {ActivitiesFilterValues} from '../../../api/validation/activitiesFilter/types.ts';
 import {zodResolver} from '@hookform/resolvers/zod';
 import {ActivitiesFilterValidationSchema} from '../../../api/validation/activitiesFilter/ActivitiesFilterValidation.ts';
@@ -8,7 +9,6 @@ import {useGetActivitiesTypes} from '../useGetActivitiesTypes/useGetActivitiesTy
 import {useGetCountriesCities} from '../../forms/useGetCountriesCities/useGetCountriesCities.ts';
 import {MappedCountryData} from '../../../api/types.ts';
 import {ActivitiesFiltersType} from '../../../api/services/activities/service/types.ts';
-import {format} from 'date-fns';
 
 const createActivityTitleOption = (title: string) => ({
   label: title,
@@ -92,7 +92,7 @@ export const useActivitiesFilterForm = () => {
     setFilters({
       title: filters.title?.value || '',
       type: filters.type?.value || '',
-      date: filters.date ? format(filters.date, 'yyyy-MM-dd'): '',
+      date: filters.date ? format(filters.date, 'yyyy-MM-dd') : '',
       country: filters.country?.value || '',
       city: filters.city?.value || '',
     });

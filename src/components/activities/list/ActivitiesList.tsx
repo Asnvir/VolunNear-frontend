@@ -25,7 +25,7 @@ export const ActivitiesList = ({
 
   const handleActivityClick = (activity: Activity) => {
     navigate(`/activity/${activity.activityId}`, {state: {activity}});
-  }
+  };
 
   if (!isGeolocationAvailable) {
     return (
