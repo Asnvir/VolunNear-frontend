@@ -1,23 +1,23 @@
-import React, { useEffect } from 'react';
+import {useEffect} from 'react';
 import {
   Box,
   Button,
+  Divider,
   Flex,
   FormControl,
   FormErrorMessage,
-  Icon, Divider, Input,
+  Icon,
 } from '@chakra-ui/react';
-import { Select } from 'chakra-react-select';
-import { Controller } from 'react-hook-form';
-import { useActivitiesFilterForm } from '../../../hooks/activities/useActivitiesFilterForm/useActivitiesFilterForm';
-import { ActivitiesFilterProps } from './types';
-import {MdSearch} from 'react-icons/md';
+import {Select} from 'chakra-react-select';
+import {Controller} from 'react-hook-form';
+import {useActivitiesFilterForm} from '../../../hooks/activities/useActivitiesFilterForm/useActivitiesFilterForm';
+import {ActivitiesFilterProps} from './types';
+import {MdClear, MdSearch} from 'react-icons/md';
 import 'react-datepicker/dist/react-datepicker.css';
 import DatePicker from 'react-datepicker';
 import CustomDateInput from './CustomDateInput.tsx';
 
-
-export const ActivitiesFilter = ({ onApply }: ActivitiesFilterProps) => {
+export const ActivitiesFilter = ({onApply}: ActivitiesFilterProps) => {
   const {
     activitiesTitleOptions,
     activitiesTypeOptions,
@@ -25,8 +25,9 @@ export const ActivitiesFilter = ({ onApply }: ActivitiesFilterProps) => {
     activitiesCountryOption,
     activitiesCityOptions,
     handleFormSubmit,
+    handleReset,
     control,
-    formState: { errors, isSubmitting },
+    formState: {errors, isSubmitting},
     filters,
   } = useActivitiesFilterForm();
 
@@ -34,7 +35,13 @@ export const ActivitiesFilter = ({ onApply }: ActivitiesFilterProps) => {
     onApply(filters);
   }, [filters, onApply]);
 
-
+  const isAnyFilterSet = !!(
+    filters.title ||
+    filters.type ||
+    filters.date ||
+    filters.country ||
+    filters.city
+  );
 
   return (
     <Box
@@ -54,13 +61,13 @@ export const ActivitiesFilter = ({ onApply }: ActivitiesFilterProps) => {
             <Controller
               name="title"
               control={control}
-              render={({ field }) => (
+              render={({field}) => (
                 <Select
                   {...field}
                   placeholder="Title"
                   options={activitiesTitleOptions}
                   menuPortalTarget={document.body}
-                  styles={{ menuPortal: base => ({ ...base, zIndex: 9999 }) }}
+                  styles={{menuPortal: base => ({...base, zIndex: 9999})}}
                 />
               )}
             />
@@ -75,13 +82,13 @@ export const ActivitiesFilter = ({ onApply }: ActivitiesFilterProps) => {
             <Controller
               name="type"
               control={control}
-              render={({ field }) => (
+              render={({field}) => (
                 <Select
                   {...field}
                   placeholder="Type"
                   options={activitiesTypeOptions}
                   menuPortalTarget={document.body}
-                  styles={{ menuPortal: base => ({ ...base, zIndex: 9999 }) }}
+                  styles={{menuPortal: base => ({...base, zIndex: 9999})}}
                 />
               )}
             />
@@ -96,15 +103,17 @@ export const ActivitiesFilter = ({ onApply }: ActivitiesFilterProps) => {
             <Controller
               name="date"
               control={control}
-              render={({ field }) => (
+              render={({field}) => (
                 <DatePicker
                   selected={field.value}
-                  onChange={(date) => { console.log(date); field.onChange(date); }} // Ensure the form state is updated
+                  onChange={date => {
+                    console.log(date);
+                    field.onChange(date);
+                  }}
                   minDate={new Date()}
                   customInput={
-                    <CustomDateInput
-                      onClear={() => field.onChange(null)}
-                    />}
+                    <CustomDateInput onClear={() => field.onChange(null)} />
+                  }
                   popperPlacement="bottom-start"
                   popperModifiers={{
                     offset: {
@@ -131,13 +140,13 @@ export const ActivitiesFilter = ({ onApply }: ActivitiesFilterProps) => {
             <Controller
               name="country"
               control={control}
-              render={({ field }) => (
+              render={({field}) => (
                 <Select
                   {...field}
                   placeholder="Country"
                   options={activitiesCountryOption}
                   menuPortalTarget={document.body}
-                  styles={{ menuPortal: base => ({ ...base, zIndex: 9999 }) }}
+                  styles={{menuPortal: base => ({...base, zIndex: 9999})}}
                 />
               )}
             />
@@ -148,18 +157,23 @@ export const ActivitiesFilter = ({ onApply }: ActivitiesFilterProps) => {
 
           <Divider orientation="vertical" height="30px" />
 
-          <FormControl isInvalid={!!errors.city} flex="1" ml={2} isDisabled={!selectedCountry}>
+          <FormControl
+            isInvalid={!!errors.city}
+            flex="1"
+            ml={2}
+            isDisabled={!selectedCountry}
+          >
             <Controller
               name="city"
               control={control}
-              render={({ field }) => (
+              render={({field}) => (
                 <Select
                   {...field}
                   placeholder="City"
                   options={activitiesCityOptions}
                   isDisabled={!selectedCountry}
                   menuPortalTarget={document.body}
-                  styles={{ menuPortal: base => ({ ...base, zIndex: 9999 }) }}
+                  styles={{menuPortal: base => ({...base, zIndex: 9999})}}
                 />
               )}
             />
@@ -179,6 +193,22 @@ export const ActivitiesFilter = ({ onApply }: ActivitiesFilterProps) => {
           >
             <Icon as={MdSearch} w={6} h={6} />
           </Button>
+
+          {isAnyFilterSet && (
+            <Button
+              type="button"
+              variant="outline"
+              color="black"
+              borderRadius="full"
+              ml={4}
+              bg="gray.200"
+              _hover={{bg: 'gray.400'}}
+              onClick={handleReset}
+              p={4}
+            >
+              <Icon as={MdClear} w={6} h={6} />
+            </Button>
+          )}
         </Flex>
       </form>
     </Box>

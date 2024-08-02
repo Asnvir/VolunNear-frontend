@@ -89,6 +89,13 @@ export const useActivitiesFilterForm = () => {
   };
 
   const onSubmit: SubmitHandler<ActivitiesFilterValues> = filters => {
+    console.log('Filters being set:\n', {
+      title: filters.title?.value || '',
+      type: filters.type?.value || '',
+      date: filters.date ? format(filters.date, 'yyyy-MM-dd') : '',
+      country: filters.country?.value || '',
+      city: filters.city?.value || '',
+    });
     setFilters({
       title: filters.title?.value || '',
       type: filters.type?.value || '',
