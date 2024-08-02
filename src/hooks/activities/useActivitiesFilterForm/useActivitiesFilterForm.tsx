@@ -2,12 +2,12 @@ import {SubmitHandler, useForm} from 'react-hook-form';
 import {ActivitiesFilterValues} from '../../../api/validation/activitiesFilter/types.ts';
 import {zodResolver} from '@hookform/resolvers/zod';
 import {ActivitiesFilterValidationSchema} from '../../../api/validation/activitiesFilter/ActivitiesFilterValidation.ts';
-import {useActivitiesFiltersContext} from '../../../shared/hooks/useActivitiesFiltersContext.ts';
 import {useState} from 'react';
 import {useGetActivitiesTitles} from '../useGetActivitiesTitles/useGetActivitiesTitles.ts';
 import {useGetActivitiesTypes} from '../useGetActivitiesTypes/useGetActivitiesTypes.ts';
 import {useGetCountriesCities} from '../../forms/useGetCountriesCities/useGetCountriesCities.ts';
 import {MappedCountryData} from '../../../api/types.ts';
+import {ActivitiesFiltersType} from '../../../api/services/activities/service/types.ts';
 
 const createActivityTitleOption = (title: string) => ({
   label: title,
@@ -28,7 +28,6 @@ const createCityOptions = (
   selectedCountry: {value: string; label: string} | null | undefined,
   activitiesCountriesCities: MappedCountryData[]
 ) => {
-  console.log(selectedCountry, activitiesCountriesCities);
   if (!selectedCountry || !activitiesCountriesCities) {
     return [];
   }
@@ -45,6 +44,22 @@ const createCityOptions = (
     : [];
 };
 
+const emptyFormData = {
+  title: null,
+  type: null,
+  date: undefined,
+  country: null,
+  city: null,
+};
+
+export const emptyFilters = {
+  title: '',
+  type: '',
+  date: '',
+  country: '',
+  city: '',
+};
+
 export const useActivitiesFilterForm = () => {
   const {
     handleSubmit,
@@ -56,7 +71,7 @@ export const useActivitiesFilterForm = () => {
     resolver: zodResolver(ActivitiesFilterValidationSchema),
   });
 
-  const {setFilters} = useActivitiesFiltersContext();
+  const [filters, setFilters] = useState<ActivitiesFiltersType>(emptyFilters);
 
   const {data: activitiesTitles = []} = useGetActivitiesTitles();
 
@@ -73,19 +88,10 @@ export const useActivitiesFilterForm = () => {
   };
 
   const onSubmit: SubmitHandler<ActivitiesFilterValues> = filters => {
-    console.log({
-      ...filters,
-      title: filters.title?.value || '',
-      type: filters.type?.value || '',
-      date: filters.date ? filters.date.toISOString() : '',
-      country: filters.country?.value || '',
-      city: filters.city?.value || '',
-    });
     setFilters({
-      ...filters,
       title: filters.title?.value || '',
       type: filters.type?.value || '',
-      date: filters.date ? filters.date.toISOString() : '',
+      date: filters.date ? filters.date.toISOString().split('T')[0] : '',
       country: filters.country?.value || '',
       city: filters.city?.value || '',
     });
@@ -93,22 +99,9 @@ export const useActivitiesFilterForm = () => {
 
   const handleFormSubmit = handleSubmit(onSubmit);
 
-  //todo outside hook emptyFormData ={};
   const handleReset = () => {
-    reset({
-      title: null,
-      type: null,
-      date: undefined,
-      country: null,
-      city: null,
-    });
-    onSubmit({
-      title: null,
-      type: null,
-      date: undefined,
-      country: null,
-      city: null,
-    });
+    reset(emptyFormData);
+    onSubmit(emptyFormData);
   };
 
   return {
@@ -129,5 +122,6 @@ export const useActivitiesFilterForm = () => {
       errors,
       isSubmitting,
     },
+    filters,
   };
 };

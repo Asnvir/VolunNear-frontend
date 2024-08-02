@@ -3,7 +3,10 @@ import {ActivityCard} from '../ActivityCard.tsx';
 import {useGetActivities} from '../../../hooks/activities/useGetActivities/useGetActivities.ts';
 import {ActivitiesListProps} from './types.ts';
 
-export const ActivitiesList = ({isMyActivities}: ActivitiesListProps) => {
+export const ActivitiesList = ({
+  isMyActivities,
+  filters,
+}: ActivitiesListProps) => {
   const {
     data: activities,
     isLoading: isLoadingActivities,
@@ -11,7 +14,7 @@ export const ActivitiesList = ({isMyActivities}: ActivitiesListProps) => {
     isGeolocationAvailable,
     isGeolocationEnabled,
     positionError,
-  } = useGetActivities({isMyActivities});
+  } = useGetActivities({isMyActivities, filters});
 
   const areActivitiesAvailable = !!(activities && activities.length > 0);
 

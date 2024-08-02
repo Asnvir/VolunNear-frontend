@@ -10,7 +10,7 @@ import {
   ActivitiesFiltersResponse,
   ActivitiesTitlesResponse,
 } from '../../httpClient/types.ts';
-import {format} from 'date-fns';
+// import {format} from 'date-fns';
 
 export class ActivityMapperImpl implements ActivityMapper {
   private static instance: ActivityMapperImpl | null = null;
@@ -33,17 +33,38 @@ export class ActivityMapperImpl implements ActivityMapper {
   }): Activity {
     return {
       activityId: activity.id,
-      activityCity: activity.city,
-      activityCountry: activity.country,
-      activityDateOfPlace: activity.dateOfPlace,
-      activityDescription: activity.description,
       activityTitle: activity.title,
+      activityDescription: activity.description,
+      activityCountry: activity.country,
+      activityCity: activity.city,
       activityKind: activity.kindOfActivity,
+      activityDateOfPlace: activity.dateOfPlace,
+      activityLatitude: activity.locationDTO.latitude,
+      activityLongitude: activity.locationDTO.longitude,
+      activityDistance: activity.distance,
+      activityCoverImage: activity.coverImage,
+      activityGalleryImages: activity.galleryImages.map(image => ({
+        id: image.id,
+        imageUrl: image.imageUrl,
+        nestedActivityId: image.activity.id,
+        nestedActivityTitle: image.activity.title,
+        nestedActivityDescription: image.activity.description,
+        nestedActivityCountry: image.activity.country,
+        nestedActivityCity: image.activity.city,
+        nestedActivityStreet: image.activity.street,
+        nestedActivityNumberOfHouse: image.activity.numberOfHouse,
+        nestedActivityKind: image.activity.kindOfActivity,
+        nestedActivityDateOfPlace: image.activity.dateOfPlace,
+        nestedActivityLatitude: image.activity.latitude,
+        nestedActivityLongitude: image.activity.longitude,
+        nestedActivityCoverImageUrl: image.activity.coverImageUrl,
+      })),
       organisationId: organization.id,
       organisationName: organization.nameOfOrganisation,
       organisationCountry: organization.country,
       organisationCity: organization.city,
       organisationAddress: organization.address,
+      organisationAvatarUrl: organization.avatarUrl,
     };
   }
 
@@ -90,11 +111,11 @@ export class ActivityMapperImpl implements ActivityMapper {
     filters: ActivitiesFiltersType
   ): BackendActivitiesFiltersType {
     const {type, date, ...rest} = filters;
-    const formattedDate = date ? format(date, 'yyyy-MM-dd') : undefined;
-    console.log(`formattedDate: ${formattedDate}`);
+    // const formattedDate = date ? format(date, 'yyyy-MM-dd') : undefined;
+    // console.log(`formattedDate: ${formattedDate}`);
     return {
       ...rest,
-      dateOfPlace: formattedDate,
+      dateOfPlace: date,
       kindOfActivity: type,
     };
   }

@@ -12,8 +12,10 @@ import {Select} from 'chakra-react-select';
 import {SingleDatepicker} from 'chakra-dayzed-datepicker';
 import {useActivitiesFilterForm} from '../../../hooks/activities/useActivitiesFilterForm/useActivitiesFilterForm.tsx';
 import {Controller} from 'react-hook-form';
+import {ActivitiesFilterProps} from './types.ts';
+import {useEffect} from 'react';
 
-export const ActivitiesFilter = () => {
+export const ActivitiesFilter = ({onApply}: ActivitiesFilterProps) => {
   const {
     activitiesTitleOptions,
     activitiesTypeOptions,
@@ -24,10 +26,14 @@ export const ActivitiesFilter = () => {
     handleReset,
     handleFormSubmit,
     control,
-    formState: {errors, isSubmitting}, // Nested destructuring
+    formState: {errors, isSubmitting},
+    filters,
   } = useActivitiesFilterForm();
 
-  console.log(activitiesCityOptions);
+  useEffect(() => {
+    onApply(filters);
+  }, [filters, onApply]);
+
   return (
     <Box
       w="full"
@@ -35,6 +41,7 @@ export const ActivitiesFilter = () => {
       border="1px solid"
       borderColor="orange.400"
       borderRadius="md"
+      zIndex="2"
     >
       <form onSubmit={handleFormSubmit}>
         <Flex justify="space-between" wrap="wrap" gap={4}>

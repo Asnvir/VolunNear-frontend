@@ -17,7 +17,12 @@ import DescriptionBoxes from '../components/home/DescriptionBoxes.tsx';
 import AboutUs from '../components/home/AboutUs.tsx';
 import JourneyOfVolunNearSection from '../components/home/JourneyVolunNearSection.tsx';
 import Testimonials from '../components/home/Testimonials.tsx';
-import {MapComponent} from '../components/activities/map/MapComponent.tsx';
+import {ActivitiesMapComponent} from '../components/activities/map/ActivitiesMapComponent.tsx';
+import {ActivitiesFiltersType} from '../api/services/activities/service/types.ts';
+import {useEffect, useState} from 'react';
+import {emptyFilters} from '../hooks/activities/useActivitiesFilterForm/useActivitiesFilterForm.tsx';
+import {Activity} from '../api/types.ts';
+import {useGetActivities} from '../hooks/activities/useGetActivities/useGetActivities.ts';
 
 export const Home = () => {
   const bgColor = useColorModeValue('gray.100', 'gray.900');
@@ -26,6 +31,7 @@ export const Home = () => {
   const navigate = useNavigate();
   const isLoggedIn = useLoggedIn();
   const {isOpen, onOpen, onClose} = useDisclosure();
+  const [filters, setFilters] = useState<ActivitiesFiltersType>(emptyFilters);
 
   const cards = [
     // {
@@ -47,6 +53,11 @@ export const Home = () => {
       longitude: 34.855155,
     },
   ];
+
+  const handleFiltersChange = (filters: ActivitiesFiltersType) => {
+    console.log(`Filters changed:\n ${JSON.stringify(filters)}`);
+    setFilters(filters);
+  };
 
   return (
     <Flex direction="column" minHeight="100vh" width="full">
@@ -70,13 +81,9 @@ export const Home = () => {
             </Button>
           </VStack>
           <VStack w="80%" p={4} spacing={4}>
-            <ActivitiesFilter onApply={filters => console.log(filters)} />
-            {/*<MapComponent cards={cards} />*/}
-            <ActivitiesList isMyActivities={false} />
-            {/*<VStack w="full" spacing={4}>*/}
-            {/*  */}
-            {/* */}
-            {/*</VStack>*/}
+            <ActivitiesFilter onApply={handleFiltersChange} />
+            <ActivitiesMapComponent isMyActivities={false} filters={filters} />
+            <ActivitiesList isMyActivities={false} filters={filters} />
           </VStack>
         </Flex>
       ) : (
