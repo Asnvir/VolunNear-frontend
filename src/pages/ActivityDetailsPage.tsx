@@ -7,6 +7,7 @@ import Details from '../components/activities/activityDetails/Details.tsx';
 import Description from '../components/activities/activityDetails/Description.tsx';
 import SimilarListings from '../components/activities/activityDetails/SimilarListings.tsx';
 import MapComponent from '../components/activities/activityDetails/MapComponent.tsx';
+import CustomImageGallery from '../components/activities/activityDetails/ImageGallery.tsx';
 
 
 interface LocationState {
@@ -30,6 +31,7 @@ const ActivityDetailsPage: React.FC = () => {
   return (
     <Box p={4}>
       <VStack spacing={8} align="stretch" maxW="1000px" mx="auto">
+        <CustomImageGallery galleryImages={activity.activityGalleryImages} coverImage={activity.activityCoverImage} />
         <ActivityInfo activity={activity} />
         <Details activity={activity} />
         <Description description={activity.activityDescription} />

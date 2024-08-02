@@ -38,7 +38,6 @@ export const ActivityCard: React.FC<ActivityCardProps> = ({ activity, onClick })
           alt={activity.activityTitle}
           borderTopRadius="lg"
           mb="4"
-          objectFit="cover"
           height="200px"
           width="100%"
           objectFit="crop"
