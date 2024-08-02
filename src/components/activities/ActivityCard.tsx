@@ -43,7 +43,7 @@ export const ActivityCard: React.FC<ActivityCardProps> = ({ activity, onClick })
           objectFit="crop"
           onClick={() => onClick(activity)}
         />
-        <Box p="6">
+        <Box px ={6} pb={6}>
           <Heading as="h3" size="md" mb="2" isTruncated>
             {activity.activityTitle}
           </Heading>

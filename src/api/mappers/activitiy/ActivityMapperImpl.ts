@@ -38,6 +38,8 @@ export class ActivityMapperImpl implements ActivityMapper {
       activityDescription: activity.description,
       activityCountry: activity.country,
       activityCity: activity.city,
+      activityStreet: activity.street,
+      activityNumberOfHouse: activity.numberOfHouse,
       activityKind: activity.kindOfActivity,
       activityDateOfPlace: activity.dateOfPlace,
       activityLatitude: activity.locationDTO.latitude,

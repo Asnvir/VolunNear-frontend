@@ -42,6 +42,8 @@ export type ActivityDTO = {
   description: string;
   country: string;
   city: string;
+  street: string;
+  numberOfHouse: string;
   kindOfActivity: string;
   dateOfPlace: string;
   locationDTO: LocationDTO;
@@ -69,6 +71,8 @@ export type Activity = {
   activityId: string;
   activityCity: string;
   activityCountry: string;
+  activityStreet: string;
+  activityNumberOfHouse: string;
   activityDateOfPlace: string;
   activityDescription: string;
   activityTitle: string;

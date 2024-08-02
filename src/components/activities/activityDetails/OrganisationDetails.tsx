@@ -7,7 +7,6 @@ interface OrganizationReviewsProps {
   name: string;
   numberOfReviews: number;
   rating: number;
-  testimonials: string;
 }
 //TODO: Get reviews and rating from backend
 const OrganisationDetails: React.FC<OrganizationReviewsProps> = ({

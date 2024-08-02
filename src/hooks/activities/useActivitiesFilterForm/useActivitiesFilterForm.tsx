@@ -8,6 +8,7 @@ import {useGetActivitiesTypes} from '../useGetActivitiesTypes/useGetActivitiesTy
 import {useGetCountriesCities} from '../../forms/useGetCountriesCities/useGetCountriesCities.ts';
 import {MappedCountryData} from '../../../api/types.ts';
 import {ActivitiesFiltersType} from '../../../api/services/activities/service/types.ts';
+import {format} from 'date-fns';
 
 const createActivityTitleOption = (title: string) => ({
   label: title,
@@ -91,7 +92,7 @@ export const useActivitiesFilterForm = () => {
     setFilters({
       title: filters.title?.value || '',
       type: filters.type?.value || '',
-      date: filters.date ? filters.date.toISOString().split('T')[0] : '',
+      date: filters.date ? format(filters.date, 'yyyy-MM-dd'): '',
       country: filters.country?.value || '',
       city: filters.city?.value || '',
     });

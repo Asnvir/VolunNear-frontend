@@ -25,7 +25,6 @@ import {Activity} from '../api/types.ts';
 import {useGetActivities} from '../hooks/activities/useGetActivities/useGetActivities.ts';
 
 export const Home = () => {
-  const bgColor = useColorModeValue('gray.100', 'gray.900');
   const borderColor = useColorModeValue('gray.300', 'gray.700');
   const textColor = useColorModeValue('gray.800', 'white');
   const navigate = useNavigate();
@@ -62,7 +61,7 @@ export const Home = () => {
   return (
     <Flex direction="column" minHeight="100vh" width="full">
       {isLoggedIn ? (
-        <Flex flex="1" bg={bgColor} color={textColor} width="full">
+        <Flex flex="1" color={textColor} width="full" px={8}>
 
           <VStack
             w="20%"

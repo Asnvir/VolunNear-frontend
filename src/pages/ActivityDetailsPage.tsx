@@ -82,9 +82,10 @@ const ActivityDetailsPage: React.FC = () => {
         </Flex>
         <Heading as="h3" size="lg">Location</Heading>
         <Box>
-          <Text fontSize="lg" fontWeight="bold">{activity.activityCountry}, {activity.activityCity} , {activity.nestedActivityStreet}, {activity.nestedActivityNumberOfHouse}</Text>
+          <Text fontSize="lg" fontWeight="bold">{activity.activityCountry}, {activity.activityCity} , {activity.activityStreet}, {activity.activityNumberOfHouse}</Text>
         </Box>
         <MapComponent latitude={activity.activityLatitude} longitude={activity.activityLongitude} />
+        <Divider my={4} />
         <SimilarListings />
       </VStack>
     </Box>
