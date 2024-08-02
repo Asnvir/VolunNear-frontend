@@ -1,5 +1,5 @@
 import React from 'react';
-import { Box, Heading, Text, Image, HStack, Flex, Link } from '@chakra-ui/react';
+import { Box, Heading, Text, Image, HStack} from '@chakra-ui/react';
 import NoImage from '../../../resources/No_image_available.png';
 interface ActivityCardProps {
   activity: {
@@ -38,13 +38,12 @@ export const ActivityCard: React.FC<ActivityCardProps> = ({ activity, onClick })
           alt={activity.activityTitle}
           borderTopRadius="lg"
           mb="4"
-          objectFit="cover"
           height="200px"
           width="100%"
           objectFit="crop"
           onClick={() => onClick(activity)}
         />
-        <Box p="6">
+        <Box px ={6} pb={6}>
           <Heading as="h3" size="md" mb="2" isTruncated>
             {activity.activityTitle}
           </Heading>

@@ -94,7 +94,7 @@ const responsive = {
 
 const SimilarListings: React.FC = () => {
   return (
-    <Box mt={8}>
+    <Box>
       <Heading as="h3" size="md" mb={4}>Similar Volunteer Activities</Heading>
       <Carousel
         responsive={responsive}
