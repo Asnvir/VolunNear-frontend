@@ -102,7 +102,7 @@ const Nav = () => {
                       }
                     />
                   </MenuButton>
-                  <MenuList>
+                  <MenuList zIndex={10000000}>
                     <MenuItem onClick={() =>navigate("/volunteer/profile")}>Profile</MenuItem>
                     <MenuDivider />
                     <MenuItem onClick={() => handleLogout()}>Logout</MenuItem>
