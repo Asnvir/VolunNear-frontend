@@ -1,17 +1,10 @@
-import {
-  Alert,
-  AlertIcon,
-  Box,
-  Heading,
-  SimpleGrid,
-  Spinner,
-  Text,
-} from '@chakra-ui/react';
+import {Alert, AlertIcon, Box, Heading, SimpleGrid, Spinner, Text} from '@chakra-ui/react';
 import {ActivityCard} from '../ActivityCard.tsx';
 import {useGetActivities} from '../../../hooks/activities/useGetActivities/useGetActivities.ts';
 import {ActivitiesListProps} from './types.ts';
 import {useNavigate} from 'react-router-dom';
 import {Activity} from '../../../api/types.ts';
+
 
 export const ActivitiesList = ({
   isMyActivities,
@@ -75,22 +68,16 @@ export const ActivitiesList = ({
 
   return (
     <Box p={4}>
-      <Heading as="h2" size="lg" mb="4">
-        All Activities
-      </Heading>
-      <SimpleGrid columns={{base: 1, sm: 2, md: 3, lg: 4}} spacing={6}>
-        {areActivitiesAvailable ? (
-          activities.map((activity, index) => (
-            <ActivityCard
-              key={index}
-              activity={activity}
-              onClick={handleActivityClick}
-            />
-          ))
-        ) : (
-          <Box>No activities found</Box>
-        )}
-      </SimpleGrid>
+      {areActivitiesAvailable && (
+        <>
+          <Heading as="h2" size="lg" mb="4">All Activities</Heading>
+          <SimpleGrid columns={{ base: 1, sm: 2, md: 3, lg: 4 }} spacing={6}>
+            {activities.map((activity, index) => (
+              <ActivityCard key={index} activity={activity} onClick={handleActivityClick} />
+            ))}
+          </SimpleGrid>
+        </>
+      )}
     </Box>
   );
 };
