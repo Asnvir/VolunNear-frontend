@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useEffect} from 'react';
 import { Box } from '@chakra-ui/react';
 import ImageGallery from 'react-image-gallery';
 import 'react-image-gallery/styles/css/image-gallery.css';
@@ -23,6 +23,19 @@ const CustomImageGallery: React.FC<ImageGalleryProps> = ({ galleryImages, coverI
       }))
       : [{ original: NoImage, thumbnail: NoImage }]),
   ];
+
+  useEffect(() => {
+    const gallerySlides = document.querySelectorAll('.image-gallery-slide img');
+    const galleryThumbnails = document.querySelectorAll('.image-gallery-thumbnail img');
+
+    gallerySlides.forEach(img => {
+      img.style.borderRadius = '15px'; // Adjust the radius as needed
+    });
+
+    galleryThumbnails.forEach(img => {
+      img.style.borderRadius = '5px'; // Adjust the radius for thumbnails as needed
+    });
+  }, [images]);
 
   return (
     <Box>

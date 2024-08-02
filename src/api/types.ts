@@ -47,7 +47,7 @@ export type ActivityDTO = {
   locationDTO: LocationDTO;
   distance: number;
   coverImage: string;
-  galleryImages: GalleryImageDTO[];
+  galleryImages: string[];
   appUser?: AppUserDTO;
 };
 
@@ -83,22 +83,7 @@ export type Activity = {
   activityLongitude: number;
   activityDistance: number;
   activityCoverImage: string;
-  activityGalleryImages: {
-    id: string;
-    imageUrl: string;
-    nestedActivityId: string;
-    nestedActivityTitle: string;
-    nestedActivityDescription: string;
-    nestedActivityCountry: string;
-    nestedActivityCity: string;
-    nestedActivityStreet?: string;
-    nestedActivityNumberOfHouse?: string;
-    nestedActivityKind: string;
-    nestedActivityDateOfPlace: string;
-    nestedActivityLatitude?: number;
-    nestedActivityLongitude?: number;
-    nestedActivityCoverImageUrl?: string;
-  }[];
+  activityGalleryImages: string[];
 };
 
 export type User = {

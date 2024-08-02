@@ -7,9 +7,11 @@ interface DescriptionProps {
 
 const Description: React.FC<DescriptionProps> = ({ description }) => {
   return (
-    <Box bg="white" p={4} rounded="2xl" shadow="md">
-      <Heading as="h3" size="md">Description</Heading>
-      <Text mt={2}>{description}</Text>
+    <Box mt={4}>
+      <Heading as="h2" size="lg" mb={2}>Description</Heading>
+      <Text mb={4}>
+        {description}
+      </Text>
     </Box>
   );
 };

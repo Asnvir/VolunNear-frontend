@@ -1,5 +1,5 @@
 import React from 'react';
-import { Box, Heading, Text, Image, HStack, Flex, Link } from '@chakra-ui/react';
+import { Box, Heading, Text, Image, HStack} from '@chakra-ui/react';
 import NoImage from '../../../resources/No_image_available.png';
 interface ActivityCardProps {
   activity: {
