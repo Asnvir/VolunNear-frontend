@@ -25,36 +25,30 @@ import {emptyFilters} from '../hooks/activities/useActivitiesFilterForm/useActiv
 export const Home = () => {
   const borderColor = useColorModeValue('gray.300', 'gray.700');
   const textColor = useColorModeValue('gray.800', 'white');
-  const navigate = useNavigate();
   const isLoggedIn = useLoggedIn();
-  const {isOpen, onOpen, onClose} = useDisclosure();
   const [filters, setFilters] = useState<ActivitiesFiltersType>(emptyFilters);
+  const [activeButton, setActiveButton] = useState<string | null>('allEvents');
 
-  const cards = [
-    // {
-    //   name: 'Location 1',
-    //   description: 'Description 1',
-    //   latitude: 51.505,
-    //   longitude: -0.09,
-    // },
-    // {
-    //   name: 'Location 2',
-    //   description: 'Description 2',
-    //   latitude: 51.515,
-    //   longitude: -0.1,
-    // },
-    {
-      name: 'Location 3',
-      description: 'Description 3',
-      latitude: 32.324898,
-      longitude: 34.855155,
-    },
-  ];
 
   const handleFiltersChange = (filters: ActivitiesFiltersType) => {
     console.log(`Filters changed:\n ${JSON.stringify(filters)}`);
     setFilters(filters);
   };
+
+  const handleButtonClick = (button: string) => {
+    setActiveButton(button);
+  };
+
+
+  const buttonStyle = (button: string) => ({
+    bg: activeButton === button ? '#FF7A00' : 'transparent',
+    opacity: activeButton === button ? 1 : 0.5,
+    color: activeButton === button ? 'white' : 'black',
+    _hover: {
+      bg: 'orange.300',
+      color: 'white',
+    },
+  });
 
   return (
     <Flex direction="column" minHeight="100vh" width="full">
@@ -68,13 +62,28 @@ export const Home = () => {
             borderColor={borderColor}
             alignItems="flex-start"
           >
-            <Button w="full" variant="ghost">
+            <Button
+              w="full"
+              variant="ghost"
+              {...buttonStyle('allEvents')}
+              onClick={() => handleButtonClick('allEvents')}
+            >
               All Events
             </Button>
-            <Button w="full" variant="ghost">
+            <Button
+              w="full"
+              variant="ghost"
+              {...buttonStyle('myEvents')}
+              onClick={() => handleButtonClick('myEvents')}
+            >
               My Events
             </Button>
-            <Button w="full" variant="ghost">
+            <Button
+              w="full"
+              variant="ghost"
+              {...buttonStyle('organizationsList')}
+              onClick={() => handleButtonClick('organizationsList')}
+            >
               Organizations List
             </Button>
           </VStack>
@@ -93,7 +102,6 @@ export const Home = () => {
           <Testimonials />
         </Flex>
       )}
-      <RegistrationTypeModal isOpen={isOpen} onClose={onClose} />
     </Flex>
   );
 };
