@@ -1,14 +1,11 @@
 // Home.jsx
 import {
+  Box,
   Button,
   Flex,
-  Heading,
   useColorModeValue,
-  useDisclosure,
   VStack,
 } from '@chakra-ui/react';
-import {useNavigate} from 'react-router-dom';
-import {RegistrationTypeModal} from '../components/modals/RegistrationTypeModal.tsx';
 import {useLoggedIn} from '../hooks/auth/useLoggedIn/useLoggedIn.ts';
 import {ActivitiesList} from '../components/activities/list/ActivitiesList.tsx';
 import {ActivitiesFilter} from '../components/activities/filter/ActivitiesFilter.tsx';
@@ -51,10 +48,9 @@ export const Home = () => {
   });
 
   return (
-    <Flex direction="column" minHeight="100vh" width="full">
+    <Flex direction="column" flex="1" alignItems="center" justifyContent="center" width="full">
       {isLoggedIn ? (
-        <Flex flex="1" color={textColor} width="full" px={8}>
-
+        <Flex flex="1" color={textColor} width="full"  height="100vh">
           <VStack
             w="20%"
             p={4}
@@ -87,12 +83,27 @@ export const Home = () => {
               Organizations List
             </Button>
           </VStack>
-          <VStack w="80%" p={4} spacing={4}>
+          <VStack
+            w="80%"
+            p={8}
+            pt={0}
+            spacing={4}
+            maxHeight='calc(100vh - 110px - 110px)'
+            overflowY='auto'
+            sx={{
+              '::-webkit-scrollbar': { display: 'none' },
+              '-ms-overflow-style': 'none',
+              'scrollbar-width': 'none',
+            }}
+          >
             <ActivitiesFilter onApply={handleFiltersChange} />
+            <Box w="full">
             <ActivitiesMapComponent isMyActivities={false} filters={filters} />
+            </Box>
             <ActivitiesList isMyActivities={false} filters={filters} />
           </VStack>
         </Flex>
+
       ) : (
         <Flex direction="column" minHeight="100vh" width="full">
           <Banner />
