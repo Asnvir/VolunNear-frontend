@@ -17,7 +17,7 @@ import {
   Input,
   InputGroup,
   InputRightElement,
-  VStack,
+  VStack, useToast,
 } from '@chakra-ui/react';
 import {ViewIcon, ViewOffIcon} from '@chakra-ui/icons';
 import {useRegisterOrg} from '../../hooks/auth/useRegisterOrg/useRegisterOrg.ts';
@@ -35,6 +35,7 @@ export const RegistrationOrgForm = () => {
   } = useForm<RegistrationOrgFormValues>({
     resolver: zodResolver(RegistrationOrgValidationSchema),
   });
+  const toast = useToast();
   const navigate = useNavigate();
   const [showPassword, setShowPassword] = useState(false);
 
@@ -43,6 +44,13 @@ export const RegistrationOrgForm = () => {
   const {registerOrg, error: errorOnServer} = useRegisterOrg({
     onSuccess: () => {
       navigate('/login');
+      toast({
+        title: 'Registration successful',
+        description: 'You can now login to your account',
+        status: 'success',
+        duration: 5000,
+        isClosable: true,
+      })
     },
   });
 

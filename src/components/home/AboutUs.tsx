@@ -1,5 +1,5 @@
 import {Box, Flex, Text, Heading, Image, VStack} from '@chakra-ui/react';
-// import AboutUsImage from '../../../resources/About us.svg';
+ import AboutUsImage from '../../../resources/About us.png';
 
 const AboutUsSection = () => {
   return (
@@ -35,7 +35,7 @@ const AboutUsSection = () => {
       </Box>
       <Flex justifyContent="center" my={8}>
         <Image
-          // src={AboutUsImage}
+           src={AboutUsImage}
           alt="A Future Filled with Hope"
           borderRadius="24px"
           boxShadow="md"

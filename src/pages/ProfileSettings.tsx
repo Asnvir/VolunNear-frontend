@@ -189,8 +189,8 @@ const ProfileSettings: React.FC = () => {
   };
 
   return (
-    <Flex direction="column" flex="1" alignItems="center" justifyContent="center" width="full" bg="gray.100">
-      <Box bg="white" p={6} rounded="md" shadow="md" maxW="600px" w="full">
+    <Flex direction="column" flex="1" alignItems="center" justifyContent="center" width="full">
+      <Box bg="white" p={6} rounded="md" boxShadow="xl" maxW="600px" w="full">
         <VStack spacing={8} align="stretch">
           <Flex justify="center" position="relative">
             <Avatar size="xl" src={avatarUrl} />
