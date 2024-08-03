@@ -90,6 +90,20 @@ export type Activity = {
   activityGalleryImages: string[];
 };
 
+export type CreateActivityRequest = {
+  title: string;
+  description: string;
+  country: string;
+  city: string;
+  street: string;
+  numberOfHouse: string;
+  kindOfActivity: string;
+  dateOfPlace: string;
+  coverImage: string;
+  galleryImages: string[];
+};
+
+
 export type User = {
   username: string;
   role: Role;

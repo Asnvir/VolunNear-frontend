@@ -1,12 +1,5 @@
 import {FileUploadService} from './types.ts';
-import {VolunteerServiceImpl} from '../../volunteer/VolunteerServiceImpl.ts';
-
-import {
-  IUpdateVolunteerInfoData,
-  IUpdateVolunteerInfoRequestDTO,
-} from '../../../../data-contracts.ts';
 import {API_ENDPOINTS} from '../../../constants.ts';
-import {UpdateVolunteerInfo} from '../../volunteer/types.ts';
 import { HttpClientImpl } from '../../../httpClient/HttpClientImpl.ts';
 import { HttpClient } from '../../../httpClient/types.ts';
 
@@ -18,7 +11,7 @@ export class FileUploadServiceImpl implements FileUploadService {
   private constructor() {
   }
 
-  public static getInstance(): VolunteerServiceImpl {
+  public static getInstance(): FileUploadServiceImpl {
     if (!FileUploadServiceImpl.instance) {
       FileUploadServiceImpl.instance = new FileUploadServiceImpl();
     }
@@ -26,21 +19,35 @@ export class FileUploadServiceImpl implements FileUploadService {
   }
 
 
-
-  public async updateVolunteerProfile(updateVolunteerInfo: UpdateVolunteerInfo): Promise<IUpdateVolunteerInfoRequestDTO> {
-    const updateVolunteerInfoDTO = this.volMapper.updateVolunteerInfoToDTO(updateVolunteerInfo);
-    const {data: updatedVolunteerInfoDTO} = await this.httpClient.put<
-      IUpdateVolunteerInfoData,
-      IUpdateVolunteerInfoRequestDTO
-    >(API_ENDPOINTS.UPDATE_VOLUNTEER_PROFILE, updateVolunteerInfoDTO);
-    return updateVolunteerInfoDTO;
-  }
-
   public async uploadVolunteerAvatar(file: FormData, volunteerId: string): Promise<string> {
     const {data: avatarUrl} = await this.httpClient.post<string, FormData>(
       API_ENDPOINTS.UPLOAD_VOLUNTEER_AVATAR + "/" + volunteerId,
       file
     )
     return avatarUrl;
+  }
+
+  public async uploadOrganisationAvatar(file: FormData, organisationId: string): Promise<string> {
+    const {data: avatarUrl} = await this.httpClient.post<string, FormData>(
+      API_ENDPOINTS.UPLOAD_ORGANISATION_AVATAR + "/" + organisationId,
+      file
+    )
+    return avatarUrl;
+  }
+
+  public async uploadActivityCoverImage(file: FormData, activityId: string): Promise<string> {
+    const {data: imageUrl} = await this.httpClient.post<string, FormData>(
+      API_ENDPOINTS.UPLOAD_ACTIVITY_COVER_IMAGE + "/" + activityId,
+      file
+    )
+    return imageUrl;
+  }
+
+  public async uploadActivityGalleryImages(file: FormData, activityId: string): Promise<string[]> {
+    const {data: imageUrls} = await this.httpClient.post<string[], FormData>(
+      API_ENDPOINTS.UPLOAD_ACTIVITY_GALLERY_IMAGES + "/" + activityId,
+      file
+    )
+    return imageUrls;
   }
 }

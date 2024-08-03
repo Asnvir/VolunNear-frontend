@@ -1,4 +1,4 @@
-import {Activity, ActivityDTO, OrganisationDTO} from '../../types.ts';
+import {Activity, ActivityDTO, CreateActivityRequest, OrganisationDTO} from '../../types.ts';
 import {
   ActivitiesFiltersType,
   ActivitiesTitles,
@@ -9,6 +9,7 @@ import {
   ActivitiesFiltersResponse,
   ActivitiesTitlesResponse,
 } from '../../httpClient/types.ts';
+import {IAddActivityRequestDTO} from '../../../data-contracts.ts';
 
 export type ActivityMapper = {
   fromDTO({
@@ -18,6 +19,8 @@ export type ActivityMapper = {
     activity: ActivityDTO;
     organization: OrganisationDTO;
   }): Activity;
+
+  toDto(activity: CreateActivityRequest): IAddActivityRequestDTO;
 
   filtersToDTO(filters: ActivitiesFiltersType): ActivitiesFiltersRequest;
 

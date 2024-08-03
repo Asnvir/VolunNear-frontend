@@ -1,4 +1,4 @@
-import {Activity, ActivityDTO, OrganisationDTO} from '../../types.ts';
+import {Activity, ActivityDTO, CreateActivityRequest, OrganisationDTO} from '../../types.ts';
 import {ActivityMapper} from './types.ts';
 import {
   ActivitiesFiltersType,
@@ -10,6 +10,7 @@ import {
   ActivitiesFiltersResponse,
   ActivitiesTitlesResponse,
 } from '../../httpClient/types.ts';
+import {IAddActivityRequestDTO} from '../../../data-contracts.ts';
 // import {format} from 'date-fns';
 
 export class ActivityMapperImpl implements ActivityMapper {
@@ -23,6 +24,19 @@ export class ActivityMapperImpl implements ActivityMapper {
       ActivityMapperImpl.instance = new ActivityMapperImpl();
     }
     return ActivityMapperImpl.instance;
+  }
+
+  public toDto(activity: CreateActivityRequest): IAddActivityRequestDTO {
+    return {
+      title: activity.title,
+      description: activity.description,
+      country: activity.country,
+      city: activity.city,
+      street: activity.street,
+      houseNumber: activity.numberOfHouse,
+      kindOfActivity: activity.kindOfActivity,
+      dateOfPlace: activity.dateOfPlace,
+    };
   }
 
   public fromDTO({

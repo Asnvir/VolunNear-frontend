@@ -133,7 +133,7 @@ export const Home = () => {
             p={8}
             pt={0}
             spacing={4}
-            maxHeight="calc(100vh - 110px)"
+            maxHeight="calc(100vh - 220px)"
             overflowY="auto"
             sx={{
               '::-webkit-scrollbar': { display: 'none' },

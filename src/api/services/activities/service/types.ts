@@ -1,4 +1,5 @@
-import {Activity} from '../../../types.ts';
+import {Activity, CreateActivityRequest} from '../../../types.ts';
+import {ICreatedActivityDTO} from '../../../../data-contracts.ts';
 
 export type SortOrder = 'ASC' | 'DESC';
 
@@ -63,4 +64,8 @@ export type ActivitiesService = {
   addVolunteerToActivity(activityId: string): Promise<void>;
 
   removeVolunteerFromActivity(activityId: string): Promise<void>;
+
+  createActivity(activity: CreateActivityRequest): Promise<ICreatedActivityDTO>;
+
+  deleteActivity(activityId: string): Promise<void>;
 };

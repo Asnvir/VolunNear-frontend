@@ -5,7 +5,6 @@ import {HttpClient} from '../../httpClient/types.ts';
 import {ActivitiesFiltersType} from '../../../context/types.ts';
 import {VolunteerMapperImpl} from '../../mappers/volunteer/VolunteerMapper.ts';
 import {VolunteerMapper} from '../../mappers/volunteer/types.ts';
-
 import {API_ENDPOINTS} from '../../constants.ts';
 import {
   IUpdateVolunteerInfoData,
