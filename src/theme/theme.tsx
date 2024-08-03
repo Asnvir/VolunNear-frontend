@@ -31,7 +31,7 @@ export const theme = extendTheme({
     },
     colors: {
       primary: {
-        400: 'orange.400',
+        400: '#FF7A00',
         300: 'orange.300',
       },
       secondary: {
