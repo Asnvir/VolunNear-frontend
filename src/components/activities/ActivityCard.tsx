@@ -1,6 +1,9 @@
 import React from 'react';
 import { Box, Heading, Text, Image, HStack} from '@chakra-ui/react';
 import NoImage from '../../../resources/No_image_available.png';
+import {stripHtmlTags} from '../../utils/stripHtmlTags.ts';
+import {beautifyActivityType} from '../../utils/kindToButyType.ts';
+import {formatDateWithoutSeconds} from '../../utils/formatDateWithoutSeconds.ts';
 interface ActivityCardProps {
   activity: {
     activityTitle: string;
@@ -10,6 +13,7 @@ interface ActivityCardProps {
     activityDateOfPlace: string;
     activityKind: string;
     activityCoverImage: string; // Optional image URL
+    activityDistance: number;
   };
   onClick: (activity: any) => void;
 }
@@ -47,15 +51,16 @@ export const ActivityCard: React.FC<ActivityCardProps> = ({ activity, onClick })
           <Heading as="h3" size="md" mb="2" isTruncated>
             {activity.activityTitle}
           </Heading>
-          <Text mb="2" noOfLines={2}>
-            {activity.activityDescription}
+          <Text mb="4" noOfLines={2}>
+            {stripHtmlTags(activity.activityDescription)}
           </Text>
-          <HStack mb="2">
+          <HStack mb="4">
             <Text fontWeight="bold">{activity.activityCity}</Text>
             <Text>, {activity.activityCountry}</Text>
           </HStack>
-          <Text mb="2">{new Date(activity.activityDateOfPlace).toLocaleString()}</Text>
-          <Text>Type: {activity.activityKind}</Text>
+          <Text mb="2">{formatDateWithoutSeconds(new Date(activity.activityDateOfPlace))}</Text>
+          <Text mb="4">Type: {beautifyActivityType(activity.activityKind)}</Text>
+          <Text>Distance: {activity.activityDistance.toFixed(2)} km</Text>
         </Box>
       </Box>
     </Box>

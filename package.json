@@ -26,6 +26,7 @@
     "chakra-react-select": "^4.9.1",
     "date-fns": "^3.6.0",
     "dayzed": "^3.2.3",
+    "dompurify": "^3.1.6",
     "dotenv": "^16.4.5",
     "eslint-config-prettier": "^9.1.0",
     "eslint-plugin-prettier": "^5.1.3",
