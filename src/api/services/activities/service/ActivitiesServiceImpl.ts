@@ -1,5 +1,5 @@
 import {ActivityMapperImpl} from '../../../mappers/activitiy/ActivityMapperImpl.ts';
-import {ActivitiesResponse, Activity} from '../../../types.ts';
+import {ActivitiesResponse, Activity, CreateActivityRequest} from '../../../types.ts';
 import {ActivityMapper} from '../../../mappers/activitiy/types.ts';
 import {
   ActivitiesFiltersType,
@@ -19,6 +19,7 @@ import {ActivityUtil} from '../util/types.ts';
 import {ActivityUtilImpl} from '../util/ActivityUtilImpl.ts';
 import {HttpClientImpl} from '../../../httpClient/HttpClientImpl.ts';
 import {API_ENDPOINTS} from '../../../constants.ts';
+import {ICreatedActivityDTO} from '../../../../data-contracts.ts';
 
 export class ActivitiesServiceImpl implements ActivitiesService {
   private static instance: ActivitiesServiceImpl | null = null;
@@ -65,6 +66,19 @@ export class ActivitiesServiceImpl implements ActivitiesService {
       API_ENDPOINTS.JOIN_ACTIVITY + activityId,
       {}
     );
+  }
+
+  public async createActivity(activity: CreateActivityRequest): Promise<ICreatedActivityDTO> {
+    const activityDTO = this.activityMapper.toDto(activity);
+    const {data: activityResponseDTO} = await this.httpClient.post<ICreatedActivityDTO, CreateActivityRequest>(
+      API_ENDPOINTS.CREATE_ACTIVITY,
+      activityDTO
+    );
+    return activityResponseDTO
+  }
+
+  public async deleteActivity(activityId: string): Promise<void> {
+    await this.httpClient.delete<void>(API_ENDPOINTS.DELETE_ACTIVITY + activityId);
   }
 
   public async removeVolunteerFromActivity(activityId: string): Promise<void> {

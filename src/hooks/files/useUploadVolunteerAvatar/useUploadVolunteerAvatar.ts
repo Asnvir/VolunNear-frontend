@@ -1,5 +1,5 @@
 import {useServiceContext} from '../../../shared/hooks/useServiceContext.ts';
-import {useMutation, useQuery} from '@tanstack/react-query';
+import {useMutation} from '@tanstack/react-query';
 import {
   MUTATION_KEY_UPLOAD_VOLUNTEER_AVATAR,
 } from '../../../utils/constants/reactQueryKeys.ts';

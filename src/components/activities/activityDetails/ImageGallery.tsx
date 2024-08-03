@@ -25,6 +25,7 @@ const CustomImageGallery: React.FC<ImageGalleryProps> = ({ galleryImages, coverI
   ];
 
   useEffect(() => {
+    console.log('CustomImageGallery useEffect', images)
     const gallerySlides = document.querySelectorAll('.image-gallery-slide img');
     const galleryThumbnails = document.querySelectorAll('.image-gallery-thumbnail img');
 
@@ -33,7 +34,7 @@ const CustomImageGallery: React.FC<ImageGalleryProps> = ({ galleryImages, coverI
     });
 
     galleryThumbnails.forEach(img => {
-      img.style.borderRadius = '5px'; // Adjust the radius for thumbnails as needed
+      img.style.borderRadius = '15px'; // Adjust the radius for thumbnails as needed
     });
   }, [images]);
 

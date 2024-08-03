@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useEffect} from 'react';
 import { useLocation} from 'react-router-dom';
 import {
   Box,
@@ -7,7 +7,6 @@ import {
   AlertIcon,
   Divider,
   Heading,
-  Icon,
   Text,
  Flex,
 } from '@chakra-ui/react';
@@ -39,11 +38,15 @@ const ActivityDetailsPage: React.FC = () => {
     );
   }
 
+  useEffect(() => {
+    console.log('ActivityDetailsPage useEffect',activity)
+  },[])
+
   return (
     <Box p={4}>
       <VStack spacing={8} align="stretch" maxW="1000px" mx="auto">
         <Heading as="h1" size="2xl" mb="4" textAlign="start">{activity.activityTitle}</Heading>
-        <CustomImageGallery galleryImages={activity.galleryImages} coverImage={activity.coverImage} />
+        <CustomImageGallery galleryImages={activity.activityGalleryImages} coverImage={activity.activityCoverImage} />
         <Flex direction={{ base: 'column', md: 'row' }} gap={6} align="flex-start">
           <Box flex="1" maxW={{ base: '100%', md: '60%' }}>
             <VStack align="flex-start" spacing={4}>

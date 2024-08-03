@@ -46,19 +46,24 @@ export interface IAddActivityRequestDTO {
   description?: string;
   country?: string;
   city?: string;
+  street?: string;
+  houseNumber?: string;
   kindOfActivity?: string;
+  dateOfPlace?: string;
 }
 
-export interface IActivityDTO {
+export interface ICreatedActivityDTO {
   /** @format uuid */
   id?: string;
-  city?: string;
+  title?: string;
+  description?: string;
   country?: string;
+  city?: string;
+  street?: string;
+  numberOfHouse?: string;
+  kindOfActivity?: string;
   /** @format date-time */
   dateOfPlace?: string;
-  description?: string;
-  title?: string;
-  kindOfActivity?: string;
 }
 
 export interface IFeedbackRequest {
@@ -91,7 +96,7 @@ export interface IRegistrationOrganisationRequestDTO {
 }
 
 export interface IActivitiesDTO {
-  activities?: IActivityDTO[];
+  activities?: ICreatedActivityDTO[];
   organisationResponseDTO?: IOrganisationResponseDTO;
 }
 
@@ -139,7 +144,7 @@ export interface IUpdateActivityInformationParams {
   idOfActivity: string;
 }
 
-export type IUpdateActivityInformationData = IActivityDTO;
+export type IUpdateActivityInformationData = ICreatedActivityDTO;
 
 export interface IUpdateFeedbackInfoForCurrentOrganisationParams {
   /** @format uuid */
