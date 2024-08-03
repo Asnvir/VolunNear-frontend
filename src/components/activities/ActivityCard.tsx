@@ -30,24 +30,24 @@ export const ActivityCard: React.FC<ActivityCardProps> = ({ activity, onClick })
       width="100%"
       maxW="100%"
       cursor="pointer"
-      bg = "white"
+      bg="white"
       onClick={() => onClick(activity)}
       display="flex"
       flexDirection="column"
       justifyContent="space-between"
     >
       <Box>
-        <Image
-          src={activity.activityCoverImage || NoImage}
-          alt={activity.activityTitle}
-          borderTopRadius="lg"
-          mb="4"
-          height="200px"
-          width="100%"
-          objectFit="crop"
-          onClick={() => onClick(activity)}
-        />
-        <Box px ={6} pb={6}>
+        <Box width="100%" height="200px" overflow="hidden" mb={6}>
+          <Image
+            src={activity.activityCoverImage || NoImage}
+            alt={activity.activityTitle}
+            width="100%"
+            height="100%"
+            objectFit="cover"
+
+          />
+        </Box>
+        <Box px={6} pb={6}>
           <Heading as="h3" size="md" mb="2" isTruncated>
             {activity.activityTitle}
           </Heading>
