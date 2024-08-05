@@ -1,5 +1,9 @@
 import {ActivityMapperImpl} from '../../../mappers/activitiy/ActivityMapperImpl.ts';
-import {ActivitiesResponse, Activity, CreateActivityRequest} from '../../../types.ts';
+import {
+  ActivitiesResponse,
+  Activity,
+  CreateActivityRequest,
+} from '../../../types.ts';
 import {ActivityMapper} from '../../../mappers/activitiy/types.ts';
 import {
   ActivitiesFiltersType,
@@ -42,14 +46,11 @@ export class ActivitiesServiceImpl implements ActivitiesService {
     const backendFilters =
       this.activityMapper.mapFrontendToBackendFilters(queryParams);
     const filteredParams = this.activityUtil.filterEmptyFilters(backendFilters);
-    console.log(`filteredParamsAfterEmpty: ${JSON.stringify(filteredParams)}`);
     const {data: organizationsDTO} =
       await this.httpClient.get<ActivitiesResponse>(
         '/api/v1/organisation/activities',
         filteredParams
       );
-
-    console.log(`filteredParams: ${JSON.stringify(filteredParams)}`);
 
     return organizationsDTO.flatMap(({activities, organisationResponseDTO}) =>
       activities.map(activity =>
@@ -68,17 +69,21 @@ export class ActivitiesServiceImpl implements ActivitiesService {
     );
   }
 
-  public async createActivity(activity: CreateActivityRequest): Promise<ICreatedActivityDTO> {
+  public async createActivity(
+    activity: CreateActivityRequest
+  ): Promise<ICreatedActivityDTO> {
     const activityDTO = this.activityMapper.toDto(activity);
-    const {data: activityResponseDTO} = await this.httpClient.post<ICreatedActivityDTO, CreateActivityRequest>(
-      API_ENDPOINTS.CREATE_ACTIVITY,
-      activityDTO
-    );
-    return activityResponseDTO
+    const {data: activityResponseDTO} = await this.httpClient.post<
+      ICreatedActivityDTO,
+      CreateActivityRequest
+    >(API_ENDPOINTS.CREATE_ACTIVITY, activityDTO);
+    return activityResponseDTO;
   }
 
   public async deleteActivity(activityId: string): Promise<void> {
-    await this.httpClient.delete<void>(API_ENDPOINTS.DELETE_ACTIVITY + activityId);
+    await this.httpClient.delete<void>(
+      API_ENDPOINTS.DELETE_ACTIVITY + activityId
+    );
   }
 
   public async removeVolunteerFromActivity(activityId: string): Promise<void> {

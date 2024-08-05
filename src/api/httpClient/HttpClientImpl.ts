@@ -20,6 +20,10 @@ export class HttpClientImpl implements HttpClient {
         if (token) {
           config.headers.Authorization = `Bearer ${token}`;
         }
+
+        const fullURL = `${config.baseURL || ''}${config.url}${config.params ? `?${new URLSearchParams(config.params).toString()}` : ''}`;
+        console.log('Request URL:', fullURL);
+
         return config;
       },
       error => {
@@ -49,7 +53,8 @@ export class HttpClientImpl implements HttpClient {
   ): Promise<HttpResponse<T>> {
     return this.axios.post<T>(url, body, {
       headers: {
-        'Content-Type': body instanceof FormData ? 'multipart/form-data' : 'application/json',
+        'Content-Type':
+          body instanceof FormData ? 'multipart/form-data' : 'application/json',
         ...options.headers,
       },
       ...options,

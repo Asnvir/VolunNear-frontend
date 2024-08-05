@@ -5,7 +5,7 @@ import {Home} from './pages/Home';
 // import {ProfileVolunteer} from './pages/ProfileVolunteer';
 // import {ProfileOrganization} from './pages/ProfileOrganization';
 // import {Events} from './pages/Events';
-// import {Organizations} from './pages/Organizations';
+// import {OrganizationsPage} from './pages/OrganizationsPage';
 // import {Activities} from './pages/Activities';
 // import {Feedbacks} from './pages/Feedbacks';
 // import {Recommendations} from './pages/Recommendations';
@@ -20,6 +20,9 @@ import ErrorPage from './pages/ErrorPage.tsx';
 import ProfileSettings from './pages/ProfileSettings.tsx';
 import ProtectedRoute from './components/navigation/ProtectedRoute.tsx';
 import ActivityDetailsPage from './pages/ActivityDetailsPage.tsx';
+import {AllEvents} from './pages/AllEvents.tsx';
+import {OrganizationsPage} from './pages/OrganizationsPage.tsx';
+import {SidebarLayout} from './layouts/SidebarLayout.tsx';
 
 // import {EventsList} from './components/EventsList';
 // import {MyActivities} from './components/MyActivities';
@@ -39,8 +42,31 @@ export const router = createBrowserRouter([
         element: <RegistrationOrgPage />,
       },
       {
+        path: '/',
+        element: <SidebarLayout />,
+        children: [
+          {
+            path: 'all-events',
+            element: (
+              <ProtectedRoute>
+                <AllEvents />
+              </ProtectedRoute>
+            ),
+          },
+          {
+            path: 'organizations-list',
+            element: (
+              <ProtectedRoute>
+                <OrganizationsPage />
+              </ProtectedRoute>
+            ),
+          },
+        ],
+      },
+      {
         path: 'volunteer/profile',
-        element: (<ProtectedRoute>
+        element: (
+          <ProtectedRoute>
             <ProfileSettings />
           </ProtectedRoute>
         ),
@@ -49,12 +75,13 @@ export const router = createBrowserRouter([
         path: 'activity/:activityId',
         element: (
           // <ProtectedRoute>
-            <ActivityDetailsPage />
+          <ActivityDetailsPage />
           // </ProtectedRoute>
         ),
       },
       {
-        path: '*', element: <ErrorPage />,
+        path: '*',
+        element: <ErrorPage />,
       },
       // {
       //     path: 'profile',
@@ -80,7 +107,7 @@ export const router = createBrowserRouter([
       //     path: 'organizations',
       //     element: (
       //         <ProtectedRoute>
-      //             <Organizations />
+      //             <OrganizationsPage />
       //         </ProtectedRoute>
       //     ),
       // },
