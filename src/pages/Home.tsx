@@ -1,47 +1,31 @@
-// Home.jsx
-import {
-  Box,
-  Button,
-  Flex,
-  useColorModeValue,
-  VStack,
-} from '@chakra-ui/react';
+import {Button, Flex, useColorModeValue, VStack} from '@chakra-ui/react';
 import {useLoggedIn} from '../hooks/auth/useLoggedIn/useLoggedIn.ts';
-import {ActivitiesList} from '../components/activities/list/ActivitiesList.tsx';
-import {ActivitiesFilter} from '../components/activities/filter/ActivitiesFilter.tsx';
 import Banner from '../components/home/Banner.tsx';
 import DescriptionBoxes from '../components/home/DescriptionBoxes.tsx';
 import AboutUs from '../components/home/AboutUs.tsx';
 import JourneyOfVolunNearSection from '../components/home/JourneyVolunNearSection.tsx';
 import Testimonials from '../components/home/Testimonials.tsx';
-import {ActivitiesMapComponent} from '../components/activities/map/ActivitiesMapComponent.tsx';
-import {ActivitiesFiltersType} from '../api/services/activities/service/types.ts';
 import {useState} from 'react';
-import {emptyFilters} from '../hooks/activities/useActivitiesFilterForm/useActivitiesFilterForm.tsx';
 import {ROLE_VOLUNTEER} from '../utils/constants/routes.ts';
 import AddActivityForm from '../components/activities/addActivity/AddActivityForm.tsx';
 import useGetUserRole from '../hooks/auth/useGetUserRole/useGetUserRole.ts';
+import {AllEvents} from './AllEvents.tsx';
+import {useNavigate} from 'react-router-dom';
 
 export const Home = () => {
   const borderColor = useColorModeValue('gray.300', 'gray.700');
   const textColor = useColorModeValue('gray.800', 'white');
   const isLoggedIn = useLoggedIn();
-  const [filters, setFilters] = useState<ActivitiesFiltersType>(emptyFilters);
   const userRole = useGetUserRole();
-  const [activeButton, setActiveButton] = useState<string | null>(userRole === ROLE_VOLUNTEER ? 'allEvents' : 'addActivity');
+  const [activeButton, setActiveButton] = useState<string | null>(
+    userRole === ROLE_VOLUNTEER ? 'allEvents' : 'addActivity'
+  );
+  const navigate = useNavigate();
 
-
-  const handleFiltersChange = (filters: ActivitiesFiltersType) => {
-    console.log(`Filters changed:\n ${JSON.stringify(filters)}`);
-    setFilters(filters);
-  };
-
-
-
-  const handleButtonClick = (button: string) => {
+  const handleButtonClick = (button: string, route: string) => {
     setActiveButton(button);
+    navigate(route);
   };
-
 
   const buttonStyle = (button: string) => ({
     bg: activeButton === button ? '#FF7A00' : 'transparent',
@@ -54,7 +38,13 @@ export const Home = () => {
   });
 
   return (
-    <Flex direction="column" flex="1" alignItems="center" justifyContent="center" width="full">
+    <Flex
+      direction="column"
+      flex="1"
+      alignItems="center"
+      justifyContent="center"
+      width="full"
+    >
       {isLoggedIn ? (
         <Flex flex="1" color={textColor} width="full" height="100vh">
           <VStack
@@ -70,23 +60,25 @@ export const Home = () => {
                   w="full"
                   variant="ghost"
                   {...buttonStyle('allEvents')}
-                  onClick={() => handleButtonClick('allEvents')}
+                  onClick={() => handleButtonClick('allEvents', 'all-events')}
                 >
-                  All Events
+                  Events
                 </Button>
-                <Button
-                  w="full"
-                  variant="ghost"
-                  {...buttonStyle('myEvents')}
-                  onClick={() => handleButtonClick('myEvents')}
-                >
-                  My Events
-                </Button>
+                {/*<Button*/}
+                {/*  w="full"*/}
+                {/*  variant="ghost"*/}
+                {/*  {...buttonStyle('myEvents')}*/}
+                {/*  onClick={() => handleButtonClick('myEvents')}*/}
+                {/*>*/}
+                {/*  My Events*/}
+                {/*</Button>*/}
                 <Button
                   w="full"
                   variant="ghost"
                   {...buttonStyle('organizationsList')}
-                  onClick={() => handleButtonClick('organizationsList')}
+                  onClick={() =>
+                    handleButtonClick('organizationsList', 'organizations-list')
+                  }
                 >
                   Organizations List
                 </Button>
@@ -97,7 +89,7 @@ export const Home = () => {
                   w="full"
                   variant="ghost"
                   {...buttonStyle('addActivity')}
-                  onClick={() => handleButtonClick('addActivity')}
+                  onClick={() => handleButtonClick('addActivity', '')}
                 >
                   Add Activity
                 </Button>
@@ -105,7 +97,7 @@ export const Home = () => {
                   w="full"
                   variant="ghost"
                   {...buttonStyle('myActivities')}
-                  onClick={() => handleButtonClick('myActivities')}
+                  onClick={() => handleButtonClick('myActivities', '')}
                 >
                   My Activities
                 </Button>
@@ -113,7 +105,7 @@ export const Home = () => {
                   w="full"
                   variant="ghost"
                   {...buttonStyle('chat')}
-                  onClick={() => handleButtonClick('chat')}
+                  onClick={() => handleButtonClick('chat', '')}
                 >
                   Chat
                 </Button>
@@ -121,7 +113,7 @@ export const Home = () => {
                   w="full"
                   variant="ghost"
                   {...buttonStyle('notifications')}
-                  onClick={() => handleButtonClick('notifications')}
+                  onClick={() => handleButtonClick('notifications', '')}
                 >
                   Notifications
                 </Button>
@@ -136,25 +128,15 @@ export const Home = () => {
             maxHeight="calc(100vh - 220px)"
             overflowY="auto"
             sx={{
-              '::-webkit-scrollbar': { display: 'none' },
-              '-ms-overflow-style': 'none',
-              'scrollbar-width': 'none',
+              '::-webkit-scrollbar': {display: 'none'}, // This is a pseudo-element and remains in kebab-case
+              msOverflowStyle: 'none', // Corrected from '-ms-overflow-style' to 'msOverflowStyle'
+              scrollbarWidth: 'none', // Corrected from 'scrollbar-width' to 'scrollbarWidth'
             }}
           >
             {userRole === ROLE_VOLUNTEER ? (
-              <>
-                <ActivitiesFilter onApply={handleFiltersChange} />
-                <Box w="full">
-                  <ActivitiesMapComponent isMyActivities={false} filters={filters} />
-                </Box>
-                <ActivitiesList isMyActivities={false} filters={filters} />
-              </>
+              <AllEvents />
             ) : (
-              <>
-                { activeButton === 'addActivity' && (
-              <AddActivityForm/>
-                  )}
-              </>
+              <>{activeButton === 'addActivity' && <AddActivityForm />}</>
             )}
           </VStack>
         </Flex>

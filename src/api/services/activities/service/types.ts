@@ -14,6 +14,7 @@ export type ActivitiesFiltersType = {
   type?: string;
   city?: string;
   country?: string;
+  isMyActivities?: string;
 };
 
 export type ActivitiesTitles = string[];
@@ -38,7 +39,6 @@ export enum ActivityType {
 export type ActivitiesTypes = ActivityType[];
 
 export type ActivitiesQueryParams = ActivitiesFiltersType & {
-  isMyActivities: boolean;
   sortOrder: SortOrder;
 } & Coordinates;
 

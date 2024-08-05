@@ -51,6 +51,7 @@ const emptyFormData = {
   date: undefined,
   country: null,
   city: null,
+  isMyActivities: null,
 };
 
 export const emptyFilters = {
@@ -59,6 +60,7 @@ export const emptyFilters = {
   date: '',
   country: '',
   city: '',
+  isMyActivities: '',
 };
 
 export const useActivitiesFilterForm = () => {
@@ -95,13 +97,16 @@ export const useActivitiesFilterForm = () => {
       date: filters.date ? format(filters.date, 'yyyy-MM-dd') : '',
       country: filters.country?.value || '',
       city: filters.city?.value || '',
+      isMyActivities: filters.isMyActivities || '',
     });
+
     setFilters({
       title: filters.title?.value || '',
       type: filters.type?.value || '',
       date: filters.date ? format(filters.date, 'yyyy-MM-dd') : '',
       country: filters.country?.value || '',
       city: filters.city?.value || '',
+      isMyActivities: filters.isMyActivities || '',
     });
   };
 

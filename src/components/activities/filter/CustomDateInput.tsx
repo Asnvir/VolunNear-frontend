@@ -1,8 +1,14 @@
-import {IconButton, Input, InputGroup, InputLeftElement} from '@chakra-ui/react';
+import {
+  IconButton,
+  Input,
+  InputGroup,
+  InputLeftElement,
+} from '@chakra-ui/react';
 import React from 'react';
 import {CalendarIcon, CloseIcon} from '@chakra-ui/icons';
 
-const CustomDateInput = React.forwardRef(({ value, onClick, onClear }, ref) => (
+// eslint-disable-next-line react/display-name
+const CustomDateInput = React.forwardRef(({value, onClick, onClear}, ref) => (
   <InputGroup width="100%" height="40px">
     <InputLeftElement height="40px">
       {!value ? (
