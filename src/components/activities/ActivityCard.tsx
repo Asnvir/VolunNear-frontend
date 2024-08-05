@@ -1,5 +1,5 @@
 import React from 'react';
-import { Box, Heading, Text, Image, HStack} from '@chakra-ui/react';
+import {Box, Heading, Text, Image, HStack} from '@chakra-ui/react';
 import NoImage from '../../../resources/No_image_available.png';
 import {stripHtmlTags} from '../../utils/stripHtmlTags.ts';
 import {beautifyActivityType} from '../../utils/kindToButyType.ts';
@@ -12,21 +12,27 @@ interface ActivityCardProps {
     activityCountry: string;
     activityDateOfPlace: string;
     activityKind: string;
-    activityCoverImage: string; // Optional image URL
+    activityCoverImage: string;
     activityDistance: number;
   };
   onClick: (activity: any) => void;
 }
 
-
-export const ActivityCard: React.FC<ActivityCardProps> = ({ activity, onClick }) => {
+export const ActivityCard: React.FC<ActivityCardProps> = ({
+  activity,
+  onClick,
+}) => {
   return (
     <Box
       borderWidth="1px"
       borderRadius="lg"
       overflow="hidden"
       boxShadow="md"
-      _hover={{ boxShadow: 'lg', transform: 'translateY(-16px)', transition: 'all 0.2s' }}
+      _hover={{
+        boxShadow: 'lg',
+        transform: 'translateY(-16px)',
+        transition: 'all 0.2s',
+      }}
       width="100%"
       maxW="100%"
       cursor="pointer"
@@ -44,7 +50,6 @@ export const ActivityCard: React.FC<ActivityCardProps> = ({ activity, onClick })
             width="100%"
             height="100%"
             objectFit="cover"
-
           />
         </Box>
         <Box px={6} pb={6}>
@@ -58,12 +63,15 @@ export const ActivityCard: React.FC<ActivityCardProps> = ({ activity, onClick })
             <Text fontWeight="bold">{activity.activityCity}</Text>
             <Text>, {activity.activityCountry}</Text>
           </HStack>
-          <Text mb="2">{formatDateWithoutSeconds(new Date(activity.activityDateOfPlace))}</Text>
-          <Text mb="4">Type: {beautifyActivityType(activity.activityKind)}</Text>
+          <Text mb="2">
+            {formatDateWithoutSeconds(new Date(activity.activityDateOfPlace))}
+          </Text>
+          <Text mb="4">
+            Type: {beautifyActivityType(activity.activityKind)}
+          </Text>
           <Text>Distance: {activity.activityDistance.toFixed(2)} km</Text>
         </Box>
       </Box>
     </Box>
   );
 };
-

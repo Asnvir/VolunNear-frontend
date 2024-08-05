@@ -14,7 +14,10 @@ export const useGetOrganizationsTitles = ({
   const query = useQuery({
     queryKey: ['QUERY_KEY_GET_ORGANIZATIONS_TITLES', filters],
     queryFn: () => {
-      return organizationService.getOrganizationsTitles(filters);
+      return organizationService.getOrganizationsTitles({
+        ...filters,
+        sortOrder: 'ASC',
+      });
     },
   });
 

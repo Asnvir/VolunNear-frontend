@@ -1,5 +1,4 @@
 import {createBrowserRouter} from 'react-router-dom';
-import {Home} from './pages/Home';
 // import {Login} from './pages/Login';
 // import {Profile} from './pages/Profile';
 // import {ProfileVolunteer} from './pages/ProfileVolunteer';
@@ -34,13 +33,36 @@ export const router = createBrowserRouter([
     path: '/',
     element: <MainLayout />,
     children: [
-      {path: '/', element: <Home />},
-      {path: '/login', element: <LoginPage />},
+      {
+        path: '/',
+        element: <SidebarLayout />,
+        children: [
+          {
+            index: true,
+            path: 'all-events',
+            element: (
+              <ProtectedRoute>
+                <AllEvents />
+              </ProtectedRoute>
+            ),
+          },
+          {
+            path: 'organizations-list',
+            element: (
+              <ProtectedRoute>
+                <OrganizationsPage />
+              </ProtectedRoute>
+            ),
+          },
+        ],
+      },
+      {path: 'login', element: <LoginPage />},
       {path: 'registration/volunteer', element: <RegistrationVolunteerPage />},
       {
         path: 'registration/organization',
         element: <RegistrationOrgPage />,
       },
+
       {
         path: '/',
         element: <SidebarLayout />,

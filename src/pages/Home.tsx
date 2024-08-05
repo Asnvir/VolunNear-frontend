@@ -64,14 +64,7 @@ export const Home = () => {
                 >
                   Events
                 </Button>
-                {/*<Button*/}
-                {/*  w="full"*/}
-                {/*  variant="ghost"*/}
-                {/*  {...buttonStyle('myEvents')}*/}
-                {/*  onClick={() => handleButtonClick('myEvents')}*/}
-                {/*>*/}
-                {/*  My Events*/}
-                {/*</Button>*/}
+
                 <Button
                   w="full"
                   variant="ghost"

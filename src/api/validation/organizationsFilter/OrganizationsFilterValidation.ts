@@ -7,6 +7,10 @@ export const OrganizationsFilterValidationSchema = z.object({
     .optional()
     .nullable(),
   city: z.object({label: z.string(), value: z.string()}).optional().nullable(),
+  sortOrder: z
+    .object({label: z.string(), value: z.string()})
+    .optional()
+    .nullable(),
 });
 
 export type OrganizationsFilterValues = z.infer<

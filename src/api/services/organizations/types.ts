@@ -2,6 +2,7 @@ export type OrganizationFiltersType = {
   nameOfOrganisation?: string;
   country?: string;
   city?: string;
+  sortOrder?: string;
 };
 
 export type Organization = {
