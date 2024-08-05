@@ -107,6 +107,9 @@ export interface IOrganisationResponseDTO {
   country?: string;
   city?: string;
   address?: string;
+  avatarUrl?: string;
+  email?: string;
+  username?: string;
 }
 
 export interface IVolunteerProfileResponseDTO {

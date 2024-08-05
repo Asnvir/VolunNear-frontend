@@ -26,7 +26,7 @@ import { useUpdateVolunteerProfile } from '../hooks/volunteer/useUpdateVolunteer
 import {useUploadVolunteerAvatar} from '../hooks/files/useUploadVolunteerAvatar/useUploadVolunteerAvatar.ts';
 import {useChangePassword} from '../hooks/auth/useChangePassword/useChangePassword.ts';
 
-const ProfileSettings: React.FC = () => {
+const VolunteerProfileSettings: React.FC = () => {
   const [initialEmail, setInitialEmail] = useState('');
   const [initialUsername, setInitialUsername] = useState('');
   const [initialRealName, setInitialRealName] = useState('');
@@ -321,4 +321,4 @@ const ProfileSettings: React.FC = () => {
   );
 };
 
-export default ProfileSettings;
+export default VolunteerProfileSettings;

@@ -16,12 +16,13 @@ import {RegistrationOrgPage} from './pages/registration/RegistrationOrgPage.tsx'
 import {RegistrationVolunteerPage} from './pages/registration/RegistrationVolunteerPage.tsx';
 import {LoginPage} from './pages/LoginPage.tsx';
 import ErrorPage from './pages/ErrorPage.tsx';
-import ProfileSettings from './pages/ProfileSettings.tsx';
+import VolunteerProfileSettings from './pages/VolunteerProfileSettings.tsx';
 import ProtectedRoute from './components/navigation/ProtectedRoute.tsx';
 import ActivityDetailsPage from './pages/ActivityDetailsPage.tsx';
 import {AllEvents} from './pages/AllEvents.tsx';
 import {OrganizationsPage} from './pages/OrganizationsPage.tsx';
 import {SidebarLayout} from './layouts/SidebarLayout.tsx';
+import OrganisationProfileSettings from './pages/OrganisationProfileSettings.tsx';
 
 // import {EventsList} from './components/EventsList';
 // import {MyActivities} from './components/MyActivities';
@@ -92,16 +93,24 @@ export const router = createBrowserRouter([
         path: 'volunteer/profile',
         element: (
           <ProtectedRoute>
-            <ProfileSettings />
+            <VolunteerProfileSettings />
+          </ProtectedRoute>
+        ),
+      },
+      {
+        path: 'organization/profile',
+        element: (
+          <ProtectedRoute>
+            <OrganisationProfileSettings />
           </ProtectedRoute>
         ),
       },
       {
         path: 'activity/:activityId',
         element: (
-          // <ProtectedRoute>
+           <ProtectedRoute>
           <ActivityDetailsPage />
-          // </ProtectedRoute>
+           </ProtectedRoute>
         ),
       },
       {
