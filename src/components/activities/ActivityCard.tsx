@@ -71,3 +71,4 @@ export const ActivityCard = ({activity, onClick}: ActivityCardProps) => {
     </Box>
   );
 };
+

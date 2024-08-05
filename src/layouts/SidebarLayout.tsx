@@ -11,6 +11,7 @@ import {useLoggedIn} from '../hooks/auth/useLoggedIn/useLoggedIn.ts';
 import {Button, Flex, useColorModeValue, VStack} from '@chakra-ui/react';
 
 export const SidebarLayout = () => {
+  const navigate = useNavigate();
   const borderColor = useColorModeValue('gray.300', 'gray.700');
   const textColor = useColorModeValue('gray.800', 'white');
   const isLoggedIn = useLoggedIn();
