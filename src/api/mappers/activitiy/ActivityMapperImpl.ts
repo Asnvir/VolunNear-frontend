@@ -1,4 +1,9 @@
-import {Activity, ActivityDTO, CreateActivityRequest, OrganisationDTO} from '../../types.ts';
+import {
+  Activity,
+  ActivityDTO,
+  CreateActivityRequest,
+  OrganisationDTO,
+} from '../../types.ts';
 import {ActivityMapper} from './types.ts';
 import {
   ActivitiesFiltersType,
@@ -15,7 +20,6 @@ import {IAddActivityRequestDTO} from '../../../data-contracts.ts';
 
 export class ActivityMapperImpl implements ActivityMapper {
   private static instance: ActivityMapperImpl | null = null;
-
 
   private constructor() {}
 
@@ -112,13 +116,22 @@ export class ActivityMapperImpl implements ActivityMapper {
   public mapFrontendToBackendFilters(
     filters: ActivitiesFiltersType
   ): BackendActivitiesFiltersType {
-    const {type, date, ...rest} = filters;
+    const {type, date, isMyActivities, ...rest} = filters;
     // const formattedDate = date ? format(date, 'yyyy-MM-dd') : undefined;
     // console.log(`formattedDate: ${formattedDate}`);
     return {
       ...rest,
+      myActivities: isMyActivities === 'true',
       dateOfPlace: date,
       kindOfActivity: type,
     };
+  }
+
+  public convertToQueryParams(
+    backendFilters: Partial<BackendActivitiesFiltersType>
+  ): Record<string, string> {
+    return Object.fromEntries(
+      Object.entries(backendFilters).map(([key, value]) => [key, String(value)])
+    );
   }
 }

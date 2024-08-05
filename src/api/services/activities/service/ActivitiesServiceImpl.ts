@@ -46,10 +46,22 @@ export class ActivitiesServiceImpl implements ActivitiesService {
     const backendFilters =
       this.activityMapper.mapFrontendToBackendFilters(queryParams);
     const filteredParams = this.activityUtil.filterEmptyFilters(backendFilters);
+
+    // Convert all parameters to strings
+    const queryParamsAsString =
+      this.activityMapper.convertToQueryParams(filteredParams);
+
+    // Create URLSearchParams object and convert to string
+    const queryParamsString = new URLSearchParams(
+      queryParamsAsString
+    ).toString();
+
+    console.log(`queryParamsString: ${queryParamsString}`);
+
+    // Include queryParamsString directly in the URL
     const {data: organizationsDTO} =
       await this.httpClient.get<ActivitiesResponse>(
-        '/api/v1/organisation/activities',
-        filteredParams
+        `/api/v1/organisation/activities?${queryParamsString}`
       );
 
     return organizationsDTO.flatMap(({activities, organisationResponseDTO}) =>

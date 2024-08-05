@@ -1,6 +1,6 @@
-import {Outlet, useNavigate} from 'react-router-dom';
+import {Outlet, useLocation, useNavigate} from 'react-router-dom';
 import useGetUserRole from '../hooks/auth/useGetUserRole/useGetUserRole.ts';
-import {useState} from 'react';
+import {useEffect, useState} from 'react';
 import {ROLE_VOLUNTEER} from '../utils/constants/routes.ts';
 import Banner from '../components/home/Banner.tsx';
 import DescriptionBoxes from '../components/home/DescriptionBoxes.tsx';
@@ -15,15 +15,16 @@ export const SidebarLayout = () => {
   const textColor = useColorModeValue('gray.800', 'white');
   const isLoggedIn = useLoggedIn();
   const userRole = useGetUserRole();
+  const location = useLocation();
   const [activeButton, setActiveButton] = useState<string | null>(
     userRole === ROLE_VOLUNTEER ? 'allEvents' : 'addActivity'
   );
   const navigate = useNavigate();
 
-  const handleButtonClick = (button: string, route: string) => {
-    setActiveButton(button);
-    navigate(route);
-  };
+  // const handleButtonClick = (button: string, route: string) => {
+  //   setActiveButton(button);
+  //   navigate(route);
+  // };
 
   const buttonStyle = (button: string) => ({
     bg: activeButton === button ? '#FF7A00' : 'transparent',
@@ -34,6 +35,15 @@ export const SidebarLayout = () => {
       color: 'white',
     },
   });
+
+  useEffect(() => {
+    if (location.pathname === '/all-events') {
+      setActiveButton('allEvents');
+    } else if (location.pathname === '/organizations-list') {
+      setActiveButton('organizationsList');
+    }
+  }, [location.pathname]);
+
   return (
     <Flex
       direction="column"
@@ -57,7 +67,7 @@ export const SidebarLayout = () => {
                   w="full"
                   variant="ghost"
                   {...buttonStyle('allEvents')}
-                  onClick={() => handleButtonClick('allEvents', 'all-events')}
+                  onClick={() => navigate('all-events')}
                 >
                   Events
                 </Button>
@@ -66,9 +76,7 @@ export const SidebarLayout = () => {
                   w="full"
                   variant="ghost"
                   {...buttonStyle('organizationsList')}
-                  onClick={() =>
-                    handleButtonClick('organizationsList', 'organizations-list')
-                  }
+                  onClick={() => navigate('organizations-list')}
                 >
                   Organizations List
                 </Button>
@@ -79,7 +87,6 @@ export const SidebarLayout = () => {
                   w="full"
                   variant="ghost"
                   {...buttonStyle('addActivity')}
-                  onClick={() => handleButtonClick('addActivity', '')}
                 >
                   Add Activity
                 </Button>
@@ -87,7 +94,6 @@ export const SidebarLayout = () => {
                   w="full"
                   variant="ghost"
                   {...buttonStyle('myActivities')}
-                  onClick={() => handleButtonClick('myActivities', '')}
                 >
                   My Activities
                 </Button>
@@ -95,7 +101,7 @@ export const SidebarLayout = () => {
                   w="full"
                   variant="ghost"
                   {...buttonStyle('chat')}
-                  onClick={() => handleButtonClick('chat', '')}
+                  // onClick={() => handleButtonClick('chat', '')}
                 >
                   Chat
                 </Button>
@@ -103,7 +109,7 @@ export const SidebarLayout = () => {
                   w="full"
                   variant="ghost"
                   {...buttonStyle('notifications')}
-                  onClick={() => handleButtonClick('notifications', '')}
+                  // onClick={() => handleButtonClick('notifications', '')}
                 >
                   Notifications
                 </Button>
