@@ -20,7 +20,6 @@ export const SidebarLayout = () => {
   const [activeButton, setActiveButton] = useState<string | null>(
     userRole === ROLE_VOLUNTEER ? 'allEvents' : 'addActivity'
   );
-  const navigate = useNavigate();
 
   // const handleButtonClick = (button: string, route: string) => {
   //   setActiveButton(button);
