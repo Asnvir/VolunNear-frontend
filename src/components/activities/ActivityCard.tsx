@@ -1,4 +1,3 @@
-import React from 'react';
 import {Box, Heading, Text, Image, HStack} from '@chakra-ui/react';
 import NoImage from '../../../resources/No_image_available.png';
 import {stripHtmlTags} from '../../utils/stripHtmlTags.ts';
@@ -18,10 +17,7 @@ interface ActivityCardProps {
   onClick: (activity: any) => void;
 }
 
-export const ActivityCard: React.FC<ActivityCardProps> = ({
-  activity,
-  onClick,
-}) => {
+export const ActivityCard = ({activity, onClick}: ActivityCardProps) => {
   return (
     <Box
       borderWidth="1px"
@@ -75,3 +71,4 @@ export const ActivityCard: React.FC<ActivityCardProps> = ({
     </Box>
   );
 };
+

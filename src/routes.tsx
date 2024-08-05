@@ -1,4 +1,4 @@
-import {createBrowserRouter} from 'react-router-dom';
+import {createBrowserRouter, Navigate} from 'react-router-dom';
 // import {Login} from './pages/Login';
 // import {Profile} from './pages/Profile';
 // import {ProfileVolunteer} from './pages/ProfileVolunteer';
@@ -39,6 +39,9 @@ export const router = createBrowserRouter([
         children: [
           {
             index: true,
+            element: <Navigate to="all-events" replace />,
+          },
+          {
             path: 'all-events',
             element: (
               <ProtectedRoute>

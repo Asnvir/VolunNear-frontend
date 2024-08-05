@@ -7,6 +7,7 @@ import {Center, IconButton, Link, Spinner} from '@chakra-ui/react';
 import {FaMapMarkerAlt} from 'react-icons/fa';
 import {ActivitiesMapComponentProps} from './types.ts';
 import {useGetActivities} from '../../../hooks/activities/useGetActivities/useGetActivities.ts';
+import {useNavigate} from 'react-router-dom';
 
 const LocateButton = ({coords}: {coords: LatLngExpression | undefined}) => {
   const map = useMap();
@@ -50,6 +51,7 @@ export const ActivitiesMapComponent = ({
   const defaultCenter: LatLngExpression = {lat: 51.505, lng: -0.09};
   const [center, setCenter] = useState<LatLngExpression | undefined>(undefined);
   const [loadingGeoPosition, setLoadingGeoPosition] = useState(true);
+  const navigate = useNavigate();
 
   const {
     data: activities,
@@ -98,7 +100,19 @@ export const ActivitiesMapComponent = ({
         >
           <Popup>
             {activity.activityTitle} <br />
-            <Link href="https://google.com" isExternal={true}>
+            <Link
+              as="button" // Makes the Link act as a button
+              onClick={() =>
+                navigate(`/activity/${activity.activityId}`, {
+                  state: {activity},
+                })
+              }
+              color="blue.500" // Set the text color to blue
+              textDecoration="underline" // Underline the text to make it look like a link
+              background="none" // Remove the background
+              _hover={{textDecoration: 'none', color: 'blue.700'}} // Add hover effect
+              _focus={{boxShadow: 'none'}} // Remove focus outline
+            >
               Read more...
             </Link>
           </Popup>

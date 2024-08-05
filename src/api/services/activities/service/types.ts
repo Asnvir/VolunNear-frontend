@@ -44,10 +44,11 @@ export type ActivitiesQueryParams = ActivitiesFiltersType & {
 
 export type BackendActivitiesFiltersType = Omit<
   ActivitiesFiltersType,
-  'type' | 'date'
+  'type' | 'date' | 'isMyActivities'
 > & {
   kindOfActivity?: string;
   dateOfPlace?: string;
+  myActivities?: boolean;
 };
 
 export type ActivitiesService = {

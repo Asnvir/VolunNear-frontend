@@ -1,4 +1,9 @@
-import {Activity, ActivityDTO, CreateActivityRequest, OrganisationDTO} from '../../types.ts';
+import {
+  Activity,
+  ActivityDTO,
+  CreateActivityRequest,
+  OrganisationDTO,
+} from '../../types.ts';
 import {
   ActivitiesFiltersType,
   ActivitiesTitles,
@@ -30,4 +35,8 @@ export type ActivityMapper = {
   mapFrontendToBackendFilters: (
     filters: ActivitiesFiltersType
   ) => BackendActivitiesFiltersType;
+
+  convertToQueryParams: (
+    backendFilters: Partial<BackendActivitiesFiltersType>
+  ) => Record<string, string>;
 };
