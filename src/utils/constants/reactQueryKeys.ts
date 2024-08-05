@@ -6,8 +6,11 @@ export const QUERY_KEY_GET_ACTIVITIES_TYPES = 'getActivitiesTypes' as string;
 export const QUERY_KEY_GET_COUNTIRES_CITIES = 'getCountriesCities' as string;
 
 export const QUERY_KEY_GET_VOLUNTEER_PROFILE = 'getVolunteerProfile' as string;
+export const QUERY_KEY_GET_AVATAR = 'getAvatar' as string;
+export const QUERY_KEY_GET_ORGANISATION_PROFILE = 'getOrganisationProfile' as string;
 
 export const MUTATION_KEY_UPDATE_VOLUNTEER_PROFILE = 'updateVolunteerProfile' as string;
+export const MUTATION_KEY_UPDATE_ORGANISATION_PROFILE = 'updateOrganisationProfile' as string;
 
 export const MUTATION_KEY_UPLOAD_VOLUNTEER_AVATAR = 'uploadVolunteerAvatar' as string;
 export const MUTATION_KEY_UPLOAD_ACTIVITY_COVER_IMAGE = 'uploadActivityCoverImage' as string;

@@ -1,19 +1,19 @@
 import {useServiceContext} from '../../../shared/hooks/useServiceContext.ts';
 import {useQuery} from '@tanstack/react-query';
 import {
-  QUERY_KEY_GET_VOLUNTEER_PROFILE,
+  QUERY_KEY_GET_ORGANISATION_PROFILE,
 } from '../../../utils/constants/reactQueryKeys.ts';
 
-export const useGetVolunteerProfile = () => {
-  const {volunteerService} = useServiceContext();
+export const useGetOrganizationProfile = () => {
+  const {organizationService} = useServiceContext();
 
 
 
   const query = useQuery({
-    queryKey: [QUERY_KEY_GET_VOLUNTEER_PROFILE],
+    queryKey: [QUERY_KEY_GET_ORGANISATION_PROFILE],
     queryFn: () => {
-      return volunteerService.getVolunteerProfile();
-  }});
+      return organizationService.getOrganisationProfile();
+    }});
 
   return {
     data: query.data,
