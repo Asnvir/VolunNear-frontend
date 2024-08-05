@@ -25,6 +25,7 @@ export class OrganizationServiceImpl implements OrganizationService {
     filters: OrganizationFiltersType
   ): Promise<Organization[]> {
     const queryParams = this.getQueryParams(filters);
+    console.log(`queryParams:\n${JSON.stringify(queryParams)}`);
     const {data: organizationsDTO} = await this.httpClient.get<
       OrganizationDTO[]
     >('/api/v1/organisation/get_all', queryParams);
@@ -48,6 +49,7 @@ export class OrganizationServiceImpl implements OrganizationService {
       nameOfOrganisation: filters.nameOfOrganisation || undefined,
       country: filters.country || undefined,
       city: filters.city || undefined,
+      sortOrder: filters.sortOrder || 'ASC',
     };
 
     return this.cleanFilters(filtersDTO);

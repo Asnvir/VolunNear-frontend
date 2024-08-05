@@ -1,5 +1,5 @@
 import {Box, Heading, HStack, Image, Text} from '@chakra-ui/react';
-// import NoImage from '../../../resources/No_image_available.png';
+import NoImage from '../../../../resources/No_image_available.png';
 import {Organization} from '../../../api/services/organizations/types.ts';
 
 type OrganisationCardProps = {
@@ -34,7 +34,7 @@ export const OrganisationCard = ({
       <Box>
         <Box width="100%" height="200px" overflow="hidden" mb={6}>
           <Image
-            src={organisation.avatarUrl || NoImage || ''}
+            src={organisation.avatarUrl || NoImage}
             alt={organisation.nameOfOrganisation}
             width="100%"
             height="100%"

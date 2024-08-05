@@ -10,7 +10,10 @@ export const useGetOrganisations = ({
   const query = useQuery({
     queryKey: ['QUERY_KEY_GET_ORGANIZATIONS', filters],
     queryFn: () => {
-      return organizationService.getOrganizations(filters);
+      return organizationService.getOrganizations({
+        ...filters,
+        sortOrder: 'ASC',
+      });
     },
   });
 
