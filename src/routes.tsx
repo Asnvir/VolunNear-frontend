@@ -64,6 +64,28 @@ export const router = createBrowserRouter([
       },
 
       {
+        path: '/',
+        element: <SidebarLayout />,
+        children: [
+          {
+            path: 'all-events',
+            element: (
+              <ProtectedRoute>
+                <AllEvents />
+              </ProtectedRoute>
+            ),
+          },
+          {
+            path: 'organizations-list',
+            element: (
+              <ProtectedRoute>
+                <OrganizationsPage />
+              </ProtectedRoute>
+            ),
+          },
+        ],
+      },
+      {
         path: 'volunteer/profile',
         element: (
           <ProtectedRoute>
