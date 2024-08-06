@@ -5,14 +5,14 @@ import {
 } from '../../../utils/constants/reactQueryKeys.ts';
 import {UploadAvatarParams} from '../../volunteer/useUpdateVolunteerProfile/types.ts';
 
-export const useUploadVolunteerAvatar = () => {
+export const useUploadOrganisationAvatar = () => {
   const {fileUploadService} = useServiceContext();
 
   const mutation = useMutation({
     mutationKey: [MUTATION_KEY_UPLOAD_VOLUNTEER_AVATAR],
     mutationFn: (uploadAvatarParams: UploadAvatarParams) => {
       console.log('uploadAvatarParams', uploadAvatarParams);
-      return fileUploadService.uploadVolunteerAvatar(uploadAvatarParams.formData, uploadAvatarParams.id);
+      return fileUploadService.uploadOrganisationAvatar(uploadAvatarParams.formData, uploadAvatarParams.id);
     },
   });
 

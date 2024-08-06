@@ -19,23 +19,24 @@ import MobileNav from './MobileNav'
 import {useNavigate} from 'react-router-dom';
 import {useLoggedIn} from '../../hooks/auth/useLoggedIn/useLoggedIn.ts';
 import {useLoggedOut} from '../../hooks/auth/useLoggedOut/useLoggedOut.ts';
-import {useGetVolunteerProfile} from '../../hooks/volunteer/useGetVolunteerProfile/useGetVolunteerProfile.ts';
 import {useEffect, useState} from 'react';
+import useGetUserRole from '../../hooks/auth/useGetUserRole/useGetUserRole.ts';
+import {useGetAvatar} from '../../hooks/useGetAvatar.ts';
 
 const Nav = () => {
   const { isOpen, onToggle } = useDisclosure()
   const navigate = useNavigate();
   const isLoggedIn = useLoggedIn();
   const logout = useLoggedOut();
-
+  const userRole = useGetUserRole();
   const [avatarUrl, setAvatarUrl] = useState<string | undefined>(undefined);
-  const {data, refetch} = useGetVolunteerProfile();
+  const {refetch} = useGetAvatar();
 
   useEffect(() => {
     if (isLoggedIn) {
       refetch().then((result) => {
-        if (result.data && result.data.avatarUrl) {
-          setAvatarUrl(result.data.avatarUrl);
+        if (result?.data) {
+          setAvatarUrl(result.data);
         }
       });
     }
@@ -43,6 +44,14 @@ const Nav = () => {
 
   const handleLogout = () => {
     logout().then(() => navigate("/login"));
+  }
+
+  const navigateToProfile = () => {
+    if (userRole === 'ROLE_VOLUNTEER') {
+      navigate('/volunteer/profile');
+    } else {
+      navigate('/organization/profile');
+    }
   }
 
   return (
@@ -103,7 +112,7 @@ const Nav = () => {
                     />
                   </MenuButton>
                   <MenuList zIndex={10000000}>
-                    <MenuItem onClick={() =>navigate("/volunteer/profile")}>Profile</MenuItem>
+                    <MenuItem onClick={() =>navigateToProfile()}>Profile</MenuItem>
                     <MenuDivider />
                     <MenuItem onClick={() => handleLogout()}>Logout</MenuItem>
                   </MenuList>

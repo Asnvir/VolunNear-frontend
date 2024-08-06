@@ -1,3 +1,5 @@
+import {IActivitiesDTO, IOrganisationInfoDTO} from '../../../data-contracts.ts';
+
 export type OrganizationFiltersType = {
   nameOfOrganisation?: string;
   country?: string;
@@ -27,9 +29,13 @@ export type OrganizationsTitles = string[];
 
 export type OrganizationService = {
   getOrganizations: (
-    filters: OrganizationFiltersType
+    filters: OrganizationFiltersType,
   ) => Promise<Organization[]>;
   getOrganizationsTitles: (
-    filters: OrganizationFiltersType
+    filters: OrganizationFiltersType,
   ) => Promise<OrganizationsTitles>;
+  getOrganisationProfile: () => Promise<IActivitiesDTO>;
+  updateOrganisationInfo: (
+    updateOrganisationInfoData: IOrganisationInfoDTO,
+  ) => Promise<IOrganisationInfoDTO>;
 };
