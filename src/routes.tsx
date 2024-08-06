@@ -22,6 +22,7 @@ import ActivityDetailsPage from './pages/ActivityDetailsPage.tsx';
 import {AllEvents} from './pages/AllEvents.tsx';
 import {OrganizationsPage} from './pages/OrganizationsPage.tsx';
 import {SidebarLayout} from './layouts/SidebarLayout.tsx';
+import AddActivityForm from './components/activities/addActivity/AddActivityForm.tsx';
 
 // import {EventsList} from './components/EventsList';
 // import {MyActivities} from './components/MyActivities';
@@ -57,6 +58,14 @@ export const router = createBrowserRouter([
               </ProtectedRoute>
             ),
           },
+          {
+            path: 'add-activity',
+            element: (
+              <ProtectedRoute>
+                <AddActivityForm />
+              </ProtectedRoute>
+            ),
+          },
         ],
       },
       {path: 'login', element: <LoginPage />},
@@ -66,28 +75,6 @@ export const router = createBrowserRouter([
         element: <RegistrationOrgPage />,
       },
 
-      {
-        path: '/',
-        element: <SidebarLayout />,
-        children: [
-          {
-            path: 'all-events',
-            element: (
-              <ProtectedRoute>
-                <AllEvents />
-              </ProtectedRoute>
-            ),
-          },
-          {
-            path: 'organizations-list',
-            element: (
-              <ProtectedRoute>
-                <OrganizationsPage />
-              </ProtectedRoute>
-            ),
-          },
-        ],
-      },
       {
         path: 'volunteer/profile',
         element: (

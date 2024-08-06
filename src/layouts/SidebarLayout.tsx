@@ -1,7 +1,7 @@
-import {Outlet, useLocation, useNavigate} from 'react-router-dom';
+import {Outlet} from 'react-router-dom';
 import useGetUserRole from '../hooks/auth/useGetUserRole/useGetUserRole.ts';
 import {useEffect, useState} from 'react';
-import {ROLE_VOLUNTEER} from '../utils/constants/routes.ts';
+import {ROLE_VOLUNTEER, ROLE_ORGANISATION} from '../utils/constants/routes.ts';
 import Banner from '../components/home/Banner.tsx';
 import DescriptionBoxes from '../components/home/DescriptionBoxes.tsx';
 import AboutUs from '../components/home/AboutUs.tsx';
@@ -9,40 +9,14 @@ import JourneyOfVolunNearSection from '../components/home/JourneyVolunNearSectio
 import Testimonials from '../components/home/Testimonials.tsx';
 import {useLoggedIn} from '../hooks/auth/useLoggedIn/useLoggedIn.ts';
 import {Button, Flex, useColorModeValue, VStack} from '@chakra-ui/react';
+import {VolunteerSidebar} from '../components/volunteer/VolunteerSidebar.tsx';
+import {OrganizationSidebar} from '../components/organizations/OrganizationSidebar.tsx';
 
 export const SidebarLayout = () => {
-  const navigate = useNavigate();
   const borderColor = useColorModeValue('gray.300', 'gray.700');
   const textColor = useColorModeValue('gray.800', 'white');
   const isLoggedIn = useLoggedIn();
   const userRole = useGetUserRole();
-  const location = useLocation();
-  const [activeButton, setActiveButton] = useState<string | null>(
-    userRole === ROLE_VOLUNTEER ? 'allEvents' : 'addActivity'
-  );
-
-  // const handleButtonClick = (button: string, route: string) => {
-  //   setActiveButton(button);
-  //   navigate(route);
-  // };
-
-  const buttonStyle = (button: string) => ({
-    bg: activeButton === button ? '#FF7A00' : 'transparent',
-    opacity: activeButton === button ? 1 : 0.5,
-    color: activeButton === button ? 'white' : 'black',
-    _hover: {
-      bg: 'orange.300',
-      color: 'white',
-    },
-  });
-
-  useEffect(() => {
-    if (location.pathname === '/all-events') {
-      setActiveButton('allEvents');
-    } else if (location.pathname === '/organizations-list') {
-      setActiveButton('organizationsList');
-    }
-  }, [location.pathname]);
 
   return (
     <Flex
@@ -62,58 +36,11 @@ export const SidebarLayout = () => {
             alignItems="flex-start"
           >
             {userRole === ROLE_VOLUNTEER ? (
-              <>
-                <Button
-                  w="full"
-                  variant="ghost"
-                  {...buttonStyle('allEvents')}
-                  onClick={() => navigate('all-events')}
-                >
-                  Events
-                </Button>
-
-                <Button
-                  w="full"
-                  variant="ghost"
-                  {...buttonStyle('organizationsList')}
-                  onClick={() => navigate('organizations-list')}
-                >
-                  Organizations List
-                </Button>
-              </>
+              <VolunteerSidebar />
+            ) : userRole === ROLE_ORGANISATION ? (
+              <OrganizationSidebar />
             ) : (
-              <>
-                <Button
-                  w="full"
-                  variant="ghost"
-                  {...buttonStyle('addActivity')}
-                >
-                  Add Activity
-                </Button>
-                <Button
-                  w="full"
-                  variant="ghost"
-                  {...buttonStyle('myActivities')}
-                >
-                  My Activities
-                </Button>
-                <Button
-                  w="full"
-                  variant="ghost"
-                  {...buttonStyle('chat')}
-                  // onClick={() => handleButtonClick('chat', '')}
-                >
-                  Chat
-                </Button>
-                <Button
-                  w="full"
-                  variant="ghost"
-                  {...buttonStyle('notifications')}
-                  // onClick={() => handleButtonClick('notifications', '')}
-                >
-                  Notifications
-                </Button>
-              </>
+              <></>
             )}
           </VStack>
           <VStack
@@ -124,9 +51,9 @@ export const SidebarLayout = () => {
             maxHeight="calc(100vh - 220px)"
             overflowY="auto"
             sx={{
-              '::-webkit-scrollbar': {display: 'none'}, // This is a pseudo-element and remains in kebab-case
-              msOverflowStyle: 'none', // Corrected from '-ms-overflow-style' to 'msOverflowStyle'
-              scrollbarWidth: 'none', // Corrected from 'scrollbar-width' to 'scrollbarWidth'
+              '::-webkit-scrollbar': {display: 'none'},
+              msOverflowStyle: 'none',
+              scrollbarWidth: 'none',
             }}
           >
             <Outlet />
