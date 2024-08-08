@@ -16,4 +16,7 @@ export const API_ENDPOINTS = {
   LEAVE_ACTIVITY: `/api/v1/volunteer/leave_activity?id=`,
   IS_VOLUNTEER_JOINED: `/api/v1/volunteer/is_my_activity?activityId=`,
   DELETE_ACTIVITY: '/api/v1/organisation/delete_activity/',
+  GET_ALL_SUBSCRIPTIONS: '/api/v1/notifications/my_subscriptions',
+  SUBSCRIBE_TO_ORGANISATION: '/api/v1/notifications/subscribe',
+  UNSUBSCRIBE_FROM_ORGANISATION: '/api/v1/notifications/unsubscribe',
 };

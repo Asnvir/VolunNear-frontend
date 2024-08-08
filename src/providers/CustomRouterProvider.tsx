@@ -14,6 +14,7 @@ import ErrorPage from '../pages/ErrorPage.tsx';
 import {ROLE_VOLUNTEER} from '../utils/constants/routes.ts';
 import {AddActivityPage} from '../pages/AddActivityPage.tsx';
 import VolunteerProfileSettings from '../pages/VolunteerProfileSettings.tsx';
+import OrganisationProfileSettings from '../pages/OrganisationProfileSettings.tsx';
 
 export const CustomRouterProvider = () => {
   const userRole = useGetUserRole();
@@ -77,6 +78,14 @@ export const CustomRouterProvider = () => {
           element: (
             <ProtectedRoute>
               <VolunteerProfileSettings />
+            </ProtectedRoute>
+          ),
+        },
+        {
+          path: 'organization/profile',
+          element: (
+            <ProtectedRoute>
+              <OrganisationProfileSettings />
             </ProtectedRoute>
           ),
         },
