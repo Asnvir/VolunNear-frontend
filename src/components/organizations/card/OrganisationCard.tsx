@@ -2,6 +2,7 @@ import {Box, Heading, HStack, IconButton, Image, Text, useToast} from '@chakra-u
 import NoImage from '../../../../resources/No_image_available.png';
 import {Organization} from '../../../api/services/organizations/types.ts';
 import { BellIcon } from '@chakra-ui/icons';
+import {useState} from 'react';
 
 type OrganisationCardProps = {
   organisation: Organization;
@@ -15,15 +16,18 @@ export const OrganisationCard = ({
                                    onClick,
                                    onSubscribe,
                                    onUnSubscribe,
-                                   isSubscribed
+                                   isSubscribed: initialIsSubscribed,
                                  }: OrganisationCardProps) => {
   const toast = useToast();
-
+  const [isSubscribed, setIsSubscribed] = useState(initialIsSubscribed);
   const handleSubscribe = async (e: React.MouseEvent) => {
+
+
     e.stopPropagation();
     try {
       if (isSubscribed) {
         await onUnSubscribe(organisation.id.toString());
+        setIsSubscribed(false);
         toast({
           title: 'Unsubscribed',
           description: `You have unsubscribed from notifications for ${organisation.nameOfOrganisation}.`,
@@ -33,6 +37,7 @@ export const OrganisationCard = ({
         });
       } else {
         await onSubscribe(organisation.id.toString());
+        setIsSubscribed(true);
         toast({
           title: 'Subscribed',
           description: `You have subscribed to notifications for ${organisation.nameOfOrganisation}.`,

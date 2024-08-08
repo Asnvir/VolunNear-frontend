@@ -37,7 +37,7 @@ export const OrganizationsList = ({filters}: OrganizationsListProps) => {
 
   const {mutate: subscribeToOrganisation} = useSubscribedToOrganisation();
   const {mutate: unSubscribeToOrganisation} = useUnSubscribeToOrganisation();
-  const {data: subscribedOrganisations} = useGetAllSubscribedOrganisation();
+  const {data: subscribedOrganisations, refetch} = useGetAllSubscribedOrganisation();
 
   const navigate = useNavigate();
   const [currentPage, setCurrentPage] = useState(1);
@@ -57,9 +57,11 @@ export const OrganizationsList = ({filters}: OrganizationsListProps) => {
 
   const handleSubscribe = (organizationID: string) => {
     subscribeToOrganisation(organizationID);
+    refetch();
   }
   const handleUnSubscribe = (organizationID: string) => {
     unSubscribeToOrganisation(organizationID);
+    refetch();
   }
 
   const startIndex = (currentPage - 1) * itemsPerPage;
