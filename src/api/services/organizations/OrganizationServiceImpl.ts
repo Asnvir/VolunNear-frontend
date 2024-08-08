@@ -7,6 +7,8 @@ import {
 } from './types.ts';
 import {HttpClient} from '../../httpClient/types.ts';
 import {HttpClientImpl} from '../../httpClient/HttpClientImpl.ts';
+import {IActivitiesDTO, IOrganisationInfoDTO, IUpdateOrganisationInfoData} from '../../../data-contracts.ts';
+import {API_ENDPOINTS} from '../../constants.ts';
 
 export class OrganizationServiceImpl implements OrganizationService {
   private static instance: OrganizationServiceImpl | null = null;
@@ -33,6 +35,21 @@ export class OrganizationServiceImpl implements OrganizationService {
     return organizationsDTO.map(this.organizationFromDTO);
   }
 
+
+  public async getOrganisationProfile(): Promise<IActivitiesDTO> {
+    const {data} = await this.httpClient.get<IActivitiesDTO>(
+      API_ENDPOINTS.ORGANISATION_PROFILE
+    );
+    return data;
+  }
+
+  public async updateOrganisationInfo(updateOrganisationInfoData: IUpdateOrganisationInfoData): Promise<IOrganisationInfoDTO> {
+    const {data} = await this.httpClient.put<IUpdateOrganisationInfoData,IOrganisationInfoDTO>(
+      API_ENDPOINTS.UPDATE_ORGANISATION_PROFILE,updateOrganisationInfoData
+    );
+    return data;
+  }
+
   private organizationFromDTO(organizationDTO: OrganizationDTO): Organization {
     return {
       id: organizationDTO.id,
@@ -43,6 +60,7 @@ export class OrganizationServiceImpl implements OrganizationService {
       avatarUrl: organizationDTO.avatarUrl,
     };
   }
+
 
   private getQueryParams(filters: OrganizationFiltersType) {
     const filtersDTO = {

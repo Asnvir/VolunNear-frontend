@@ -8,11 +8,12 @@ import {OrganizationsPage} from '../pages/OrganizationsPage.tsx';
 import {LoginPage} from '../pages/LoginPage.tsx';
 import {RegistrationVolunteerPage} from '../pages/registration/RegistrationVolunteerPage.tsx';
 import {RegistrationOrgPage} from '../pages/registration/RegistrationOrgPage.tsx';
-import ProfileSettings from '../pages/ProfileSettings.tsx';
+// import ProfileSettings from '../pages/ProfileSettings.tsx';
 import ActivityDetailsPage from '../pages/ActivityDetailsPage.tsx';
 import ErrorPage from '../pages/ErrorPage.tsx';
 import {ROLE_VOLUNTEER} from '../utils/constants/routes.ts';
 import {AddActivityPage} from '../pages/AddActivityPage.tsx';
+import VolunteerProfileSettings from '../pages/VolunteerProfileSettings.tsx';
 
 export const CustomRouterProvider = () => {
   const userRole = useGetUserRole();
@@ -75,7 +76,7 @@ export const CustomRouterProvider = () => {
           path: 'volunteer/profile',
           element: (
             <ProtectedRoute>
-              <ProfileSettings />
+              <VolunteerProfileSettings />
             </ProtectedRoute>
           ),
         },
