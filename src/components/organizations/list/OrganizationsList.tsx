@@ -14,6 +14,15 @@ import {useNavigate} from 'react-router-dom';
 import {OrganizationFiltersType} from '../../../api/services/organizations/types.ts';
 import {useGetOrganisations} from '../../../hooks/organizations/useGetOrganizations/useGetOrganisations.tsx';
 import {OrganisationCard} from '../card/OrganisationCard.tsx';
+import {
+  useSubscribedToOrganisation
+} from '../../../hooks/notifications/useSubscribeToOrganisation/useSubscribedToOrganisation.ts';
+import {
+  useUnSubscribeToOrganisation
+} from '../../../hooks/notifications/useUnSubscribeToOrganisation/useUnSubscribeToOrganisation.ts';
+import {
+  useGetAllSubscribedOrganisation
+} from '../../../hooks/notifications/useGetAllSubscribedOrganisations/useGetAllSubscribedOrganisation.ts';
 
 export type OrganizationsListProps = {
   filters: OrganizationFiltersType;
@@ -26,12 +35,18 @@ export const OrganizationsList = ({filters}: OrganizationsListProps) => {
     error: errorActivities,
   } = useGetOrganisations({filters});
 
+  const {mutate: subscribeToOrganisation} = useSubscribedToOrganisation();
+  const {mutate: unSubscribeToOrganisation} = useUnSubscribeToOrganisation();
+  const {data: subscribedOrganisations} = useGetAllSubscribedOrganisation();
+
   const navigate = useNavigate();
   const [currentPage, setCurrentPage] = useState(1);
   const itemsPerPage = 12;
 
   const showList = !!(organizations && organizations.length > 0);
-
+  const isSubscribed = (organizationID: string): boolean => {
+    return subscribedOrganisations?.some((sub) => sub.id === organizationID);
+  };
   const handleOrganisationClick = (id: string) => {
     navigate(`/organisation/${id}`);
   };
@@ -39,6 +54,13 @@ export const OrganizationsList = ({filters}: OrganizationsListProps) => {
   const handlePageChange = (page: number) => {
     setCurrentPage(page);
   };
+
+  const handleSubscribe = (organizationID: string) => {
+    subscribeToOrganisation(organizationID);
+  }
+  const handleUnSubscribe = (organizationID: string) => {
+    unSubscribeToOrganisation(organizationID);
+  }
 
   const startIndex = (currentPage - 1) * itemsPerPage;
   const endIndex = startIndex + itemsPerPage;
@@ -81,6 +103,9 @@ export const OrganizationsList = ({filters}: OrganizationsListProps) => {
                 key={index}
                 organisation={organization}
                 onClick={handleOrganisationClick}
+                onSubscribe={handleSubscribe}
+                onUnSubscribe={handleUnSubscribe}
+                isSubscribed={isSubscribed(organization.id)}
               />
             ))}
           </SimpleGrid>

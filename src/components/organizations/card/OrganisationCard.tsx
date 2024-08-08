@@ -1,16 +1,57 @@
-import {Box, Heading, HStack, Image, Text} from '@chakra-ui/react';
+import {Box, Heading, HStack, IconButton, Image, Text, useToast} from '@chakra-ui/react';
 import NoImage from '../../../../resources/No_image_available.png';
 import {Organization} from '../../../api/services/organizations/types.ts';
+import { BellIcon } from '@chakra-ui/icons';
 
 type OrganisationCardProps = {
   organisation: Organization;
   onClick: (organizationID: string) => void;
+  onSubscribe: (organizationID: string) => void;
+  isSubscribed: boolean;
 };
 
 export const OrganisationCard = ({
-  organisation,
-  onClick,
-}: OrganisationCardProps) => {
+                                   organisation,
+                                   onClick,
+                                   onSubscribe,
+                                   onUnSubscribe,
+                                   isSubscribed
+                                 }: OrganisationCardProps) => {
+  const toast = useToast();
+
+  const handleSubscribe = async (e: React.MouseEvent) => {
+    e.stopPropagation();
+    try {
+      if (isSubscribed) {
+        await onUnSubscribe(organisation.id.toString());
+        toast({
+          title: 'Unsubscribed',
+          description: `You have unsubscribed from notifications for ${organisation.nameOfOrganisation}.`,
+          status: 'info',
+          duration: 3000,
+          isClosable: true,
+        });
+      } else {
+        await onSubscribe(organisation.id.toString());
+        toast({
+          title: 'Subscribed',
+          description: `You have subscribed to notifications for ${organisation.nameOfOrganisation}.`,
+          status: 'success',
+          duration: 3000,
+          isClosable: true,
+        });
+      }
+    } catch (error) {
+      toast({
+        title: 'Error',
+        description: `Failed to update subscription for ${organisation.nameOfOrganisation}.`,
+        status: 'error',
+        duration: 3000,
+        isClosable: true,
+      });
+    }
+  };
+
   return (
     <Box
       borderWidth="1px"
@@ -30,7 +71,18 @@ export const OrganisationCard = ({
       display="flex"
       flexDirection="column"
       justifyContent="space-between"
+      position="relative"
     >
+      <IconButton
+        icon={<BellIcon />}
+        aria-label="Subscribe to notifications"
+        position="absolute"
+        top={2}
+        right={2}
+        size="sm"
+        color={isSubscribed ? 'orange.400' : 'gray.400'}
+        onClick={handleSubscribe}
+      />
       <Box>
         <Box width="100%" height="200px" overflow="hidden" mb={6}>
           <Image
