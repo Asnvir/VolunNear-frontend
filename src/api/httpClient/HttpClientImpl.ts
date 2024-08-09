@@ -1,6 +1,6 @@
 import axios, {AxiosInstance, AxiosRequestConfig} from 'axios';
 import {LocalStorageHelper} from '../../helpers/types.ts';
-import {AUTH_TOKEN} from '../../utils/constants/routes.ts';
+import {AUTH_TOKEN} from '../../utils/constants/authConstants.ts';
 import {HttpClient, HttpResponse, RequestQueryParams} from './types.ts';
 import {LocalStorageHelperImpl} from '../../helpers/LocalStorageHelper.ts';
 

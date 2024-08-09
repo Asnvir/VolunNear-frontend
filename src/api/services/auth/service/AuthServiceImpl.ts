@@ -1,6 +1,6 @@
 import {API_ENDPOINTS} from '../../../constants.ts';
 import {LocalStorageHelper} from '../../../../helpers/types.ts';
-import {AUTH_TOKEN} from '../../../../utils/constants/routes.ts';
+import {AUTH_TOKEN} from '../../../../utils/constants/authConstants.ts';
 import {jwtDecode} from 'jwt-decode';
 import {
   IRegistrationOrganisationRequestDTO,
@@ -73,7 +73,7 @@ export class AuthServiceImpl implements AuthService {
   }
 
   public logout(): void {
-    console.log('logout')
+    console.log('logout');
     window.localStorage.removeItem(AUTH_TOKEN);
   }
 
@@ -119,12 +119,14 @@ export class AuthServiceImpl implements AuthService {
     oldPassword: string,
     newPassword: string
   ): Promise<void> {
-    const response = await this.httpClient.post<void, {currentPassword: string, newPassword: string}>(API_ENDPOINTS.CHANGE_PASSWORD, {oldPassword, newPassword});
+    const response = await this.httpClient.post<
+      void,
+      {currentPassword: string; newPassword: string}
+    >(API_ENDPOINTS.CHANGE_PASSWORD, {oldPassword, newPassword});
     if (response.status !== 200) {
       throw new Error('Password change failed');
     }
   }
-
 
   private isTokenExpired = (token: JwtToken) => {
     return token.exp * 1000 <= Date.now();

@@ -1,14 +1,16 @@
 import {Outlet} from 'react-router-dom';
 import useGetUserRole from '../hooks/auth/useGetUserRole/useGetUserRole.ts';
-import {useEffect, useState} from 'react';
-import {ROLE_VOLUNTEER, ROLE_ORGANISATION} from '../utils/constants/routes.ts';
+import {
+  ROLE_ORGANISATION,
+  ROLE_VOLUNTEER,
+} from '../utils/constants/authConstants.ts';
 import Banner from '../components/home/Banner.tsx';
 import DescriptionBoxes from '../components/home/DescriptionBoxes.tsx';
 import AboutUs from '../components/home/AboutUs.tsx';
 import JourneyOfVolunNearSection from '../components/home/JourneyVolunNearSection.tsx';
 import Testimonials from '../components/home/Testimonials.tsx';
 import {useLoggedIn} from '../hooks/auth/useLoggedIn/useLoggedIn.ts';
-import {Button, Flex, useColorModeValue, VStack} from '@chakra-ui/react';
+import {Flex, useColorModeValue, VStack} from '@chakra-ui/react';
 import {VolunteerSidebar} from '../components/volunteer/VolunteerSidebar.tsx';
 import {OrganizationSidebar} from '../components/organizations/OrganizationSidebar.tsx';
 

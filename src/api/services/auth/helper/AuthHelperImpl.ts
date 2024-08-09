@@ -3,7 +3,7 @@ import {jwtDecode} from 'jwt-decode';
 import {
   ROLE_ORGANISATION,
   ROLE_VOLUNTEER,
-} from '../../../../utils/constants/routes.ts';
+} from '../../../../utils/constants/authConstants.ts';
 import {JwtToken, Role} from '../service/types.ts';
 
 export class AuthHelperImpl implements AuthHelper {
