@@ -37,6 +37,7 @@ export const ActivityCard = ({activity, onClick}: ActivityCardProps) => {
       display="flex"
       flexDirection="column"
       justifyContent="space-between"
+      zIndex={100}
     >
       <Box>
         <Box width="100%" height="200px" overflow="hidden" mb={6}>

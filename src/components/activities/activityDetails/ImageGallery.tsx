@@ -30,11 +30,11 @@ const CustomImageGallery: React.FC<ImageGalleryProps> = ({ galleryImages, coverI
     const galleryThumbnails = document.querySelectorAll('.image-gallery-thumbnail img');
 
     gallerySlides.forEach(img => {
-      img.style.borderRadius = '15px'; // Adjust the radius as needed
+      img.style.borderRadius = '5px'; // Adjust the radius as needed
     });
 
     galleryThumbnails.forEach(img => {
-      img.style.borderRadius = '15px'; // Adjust the radius for thumbnails as needed
+      img.style.borderRadius = '5px'; // Adjust the radius for thumbnails as needed
     });
   }, [images]);
 
