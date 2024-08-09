@@ -94,22 +94,6 @@ export const Home = () => {
                 >
                   My Activities
                 </Button>
-                <Button
-                  w="full"
-                  variant="ghost"
-                  {...buttonStyle('chat')}
-                  onClick={() => handleButtonClick('chat', '')}
-                >
-                  Chat
-                </Button>
-                <Button
-                  w="full"
-                  variant="ghost"
-                  {...buttonStyle('notifications')}
-                  onClick={() => handleButtonClick('notifications', '')}
-                >
-                  Notifications
-                </Button>
               </>
             )}
           </VStack>

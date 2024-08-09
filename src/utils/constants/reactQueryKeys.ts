@@ -30,3 +30,6 @@ export const QUERY_KEY_GET_ALL_SUBSCRIBED_ORGANISATIONS = 'getAllSubscribedOrgan
 export const MUTATION_KEY_SUBSCRIBE_TO_ORGANISATION = 'subscribeToOrganisation' as string;
 export const MUTATION_KEY_UNSUBSCRIBE_FROM_ORGANISATION = 'unsubscribeFromOrganisation' as string;
 
+export const QUERY_GET_AVERAGE_RATING_OF_ORGANISATION = 'getAverageRatingOfOrganisation' as string;
+export const MUTATION_KEY_RATE_ORGANISATION = 'rateOrganisation' as string;
+

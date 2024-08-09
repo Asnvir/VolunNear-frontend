@@ -38,4 +38,6 @@ export type OrganizationService = {
   updateOrganisationInfo: (
     updateOrganisationInfoData: IOrganisationInfoDTO,
   ) => Promise<IOrganisationInfoDTO>;
+  getAverageRating: (orgId: string) => Promise<number>;
+  addOrUpdateRating: (orgId: string, rating: number) => Promise<void>;
 };

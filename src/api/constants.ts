@@ -19,4 +19,6 @@ export const API_ENDPOINTS = {
   GET_ALL_SUBSCRIPTIONS: '/api/v1/notifications/my_subscriptions',
   SUBSCRIBE_TO_ORGANISATION: '/api/v1/notifications/subscribe',
   UNSUBSCRIBE_FROM_ORGANISATION: '/api/v1/notifications/unsubscribe',
+  GET_AVERAGE_RATING_OF_ORGANISATION: '/api/v1/organisations/average-rating/',
+  RATE_ORGANISATION: '/api/v1/organisations/rate/',
 };
