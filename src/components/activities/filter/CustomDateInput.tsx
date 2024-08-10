@@ -7,8 +7,16 @@ import {
 import React from 'react';
 import {CalendarIcon, CloseIcon} from '@chakra-ui/icons';
 
-// eslint-disable-next-line react/display-name
-const CustomDateInput = React.forwardRef(({value, onClick, onClear}, ref) => (
+type CustomDateInputProps = {
+  value: string | undefined; // The value can be a string or undefined
+  onClick: () => void; // The onClick handler is a function with no arguments
+  onClear: () => void; // The onClear handler is a function with no arguments
+};
+
+const CustomDateInput = React.forwardRef<
+  HTMLInputElement,
+  CustomDateInputProps
+>(({value, onClick, onClear}, ref) => (
   <InputGroup width="100%" height="40px">
     <InputLeftElement height="40px">
       {!value ? (
@@ -30,9 +38,9 @@ const CustomDateInput = React.forwardRef(({value, onClick, onClear}, ref) => (
       )}
     </InputLeftElement>
     <Input
-      onClick={onClick}
+      // onClick={onClick}
       ref={ref}
-      value={value}
+      value={value || ''} // Ensure value is a string, fallback to empty string if undefined
       readOnly
       width="100%"
       height="40px"
@@ -42,5 +50,6 @@ const CustomDateInput = React.forwardRef(({value, onClick, onClear}, ref) => (
     />
   </InputGroup>
 ));
+CustomDateInput.displayName = 'CustomDateInput';
 
 export default CustomDateInput;

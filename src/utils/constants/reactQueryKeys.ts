@@ -3,8 +3,7 @@ export const QUERY_KEY_GET_FILTERED_ACTIVITIES =
   'getFilteredActivities' as string;
 export const QUERY_KEY_GET_VOLUNTEER_ACTIVITIES_TITLES =
   'getVolunteerActivitiesTitles' as string;
-export const QUERY_KEY_GET_VOLUNTEER_ACTIVITIES_TYPES =
-  'getVolunteerActivitiesTypes' as string;
+export const QUERY_KEY_GET_ACTIVITIES_TYPES = 'getActivitiesTypes' as string;
 export const QUERY_KEY_GET_VOLUNTEER_COUNTRIES_CITIES =
   'getVolunteerCountriesCities' as string;
 

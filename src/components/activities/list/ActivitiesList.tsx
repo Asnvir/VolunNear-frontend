@@ -1,34 +1,14 @@
-import React, {useState} from 'react';
-import {
-  Alert,
-  AlertIcon,
-  Box,
-  Button,
-  Flex,
-  Heading,
-  SimpleGrid,
-  Spinner,
-  Text,
-} from '@chakra-ui/react';
+import {useState} from 'react';
+import {Box, Button, Flex, Heading, SimpleGrid} from '@chakra-ui/react';
 import {ActivityCard} from '../ActivityCard.tsx';
-import {ActivitiesListProps} from './types.ts';
 import {useNavigate} from 'react-router-dom';
 import {Activity} from '../../../api/types.ts';
 
-export const ActivitiesList = ({
-  // isMyActivities,
-  // filters,
-  activities,
-}: ActivitiesListProps) => {
-  // const {
-  //   data: activities,
-  //   isLoading: isLoadingActivities,
-  //   error: errorActivities,
-  //   isGeolocationAvailable,
-  //   isGeolocationEnabled,
-  //   positionError,
-  // } = useGetVolunteerActivities({isMyActivities, filters});
+type ActivitiesListProps = {
+  activities: Activity[];
+};
 
+export const ActivitiesList = ({activities}: ActivitiesListProps) => {
   const navigate = useNavigate();
   const [currentPage, setCurrentPage] = useState(1);
   const itemsPerPage = 12;

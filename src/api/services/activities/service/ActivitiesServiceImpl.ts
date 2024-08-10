@@ -44,29 +44,26 @@ export class ActivitiesServiceImpl implements ActivitiesService {
   }
 
   public async getVolunteerActivities(
-    queryParams: VolunteerActivitiesQueryParams
+    params: VolunteerActivitiesQueryParams
   ): Promise<Activity[]> {
-    console.log(
-      `Received queryParams in getVolunteerActivities:\n${JSON.stringify(queryParams)}`
-    );
+    const queryParams = {
+      ...params,
+      type: params.type === ActivityType.ALL ? '' : params.type,
+    };
+
     const backendFilters = this.activityMapper.mapFrontendToBackendFilters(
       queryParams,
       false
     );
     const filteredParams = this.activityUtil.filterEmptyFilters(backendFilters);
 
-    // Convert all parameters to strings
     const queryParamsAsString =
       this.activityMapper.convertToQueryParams(filteredParams);
 
-    // Create URLSearchParams object and convert to string
     const queryParamsString = new URLSearchParams(
       queryParamsAsString
     ).toString();
 
-    console.log(`queryParamsString: ${queryParamsString}`);
-
-    // Include queryParamsString directly in the URL
     const {data: organizationsDTO} =
       await this.httpClient.get<ActivitiesResponse>(
         `/api/v1/organisation/activities?${queryParamsString}`
@@ -83,28 +80,26 @@ export class ActivitiesServiceImpl implements ActivitiesService {
   }
 
   public async getOrganisationActivities(
-    queryParams: OrganisationActivitiesQueryParams
+    params: OrganisationActivitiesQueryParams
   ): Promise<Activity[]> {
+    const queryParams = {
+      ...params,
+      type: params.type === ActivityType.ALL ? '' : params.type,
+    };
+
     const backendFilters = this.activityMapper.mapFrontendToBackendFilters(
       queryParams,
       true
     );
     const filteredParams = this.activityUtil.filterEmptyFilters(backendFilters);
 
-    // Convert all parameters to strings
     const queryParamsAsString =
       this.activityMapper.convertToQueryParams(filteredParams);
 
-    // Create URLSearchParams object and convert to string
     const queryParamsString = new URLSearchParams(
       queryParamsAsString
     ).toString();
 
-    console.log(
-      `Organization Activities queryParamsString: ${queryParamsString}`
-    );
-
-    // Include queryParamsString directly in the URL
     const {data: activityDTOS} =
       await this.httpClient.get<OrganisationActivitiesResponse>(
         `/api/v1/organisation/get_activities?${queryParamsString}`
@@ -179,7 +174,6 @@ export class ActivitiesServiceImpl implements ActivitiesService {
       ActivitiesFiltersRequest
     >('/api/v1/volunteer/set_preferences', filtersDTO);
     const updatedDTO = response.data;
-    // console.log(`updatedDTO: ${JSON.stringify(updatedDTO)}`);
     return this.activityMapper.DTOtoFilters(updatedDTO);
   }
 
@@ -200,11 +194,6 @@ export class ActivitiesServiceImpl implements ActivitiesService {
       await this.httpClient.get<OrganisationActivitiesResponse>(
         `/api/v1/organisation/get_activities?sortOrder=ASC`
       );
-
-    console.log(
-      `Organisation activities:\n${JSON.stringify(organizationActivitiesDTO)}`
-    );
-
     return organizationActivitiesDTO.map(activity => activity.title);
   }
 }

@@ -38,3 +38,42 @@ export function beautifyActivityType(type: ActivityType): string {
       return type; // Fallback to the original value if no match is found
   }
 }
+
+export const mapToActivityType = (value: string): ActivityType => {
+  switch (value.toUpperCase()) {
+    case 'UNKNOWN':
+      return ActivityType.UNKNOWN;
+    case 'FAMILY':
+      return ActivityType.FAMILY;
+    case 'SPORT':
+      return ActivityType.SPORT;
+    case 'EDUCATION':
+      return ActivityType.EDUCATION;
+    case 'ENVIRONMENT':
+      return ActivityType.ENVIRONMENT;
+    case 'HEALTH':
+      return ActivityType.HEALTH;
+    case 'COMMUNITY':
+      return ActivityType.COMMUNITY;
+    case 'CULTURE':
+      return ActivityType.CULTURE;
+    case 'TECHNOLOGY':
+      return ActivityType.TECHNOLOGY;
+    case 'ANIMAL CARE':
+      return ActivityType.ANIMAL_CARE;
+    case 'ELDERLY CARE':
+      return ActivityType.ELDERLY_CARE;
+    case 'DISASTER RELIEF':
+      return ActivityType.DISASTER_RELIEF;
+    case 'ARTS':
+      return ActivityType.ARTS;
+    case 'MUSIC':
+      return ActivityType.MUSIC;
+    case 'CHILDREN':
+      return ActivityType.CHILDREN;
+    case 'OTHER':
+      return ActivityType.OTHER;
+    default:
+      return ActivityType.ALL;
+  }
+};

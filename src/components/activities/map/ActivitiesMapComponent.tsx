@@ -84,7 +84,7 @@ export const ActivitiesMapComponent = ({
     return <Center height="500px">No activities found</Center>;
   }
 
-  console.log(`Activities: ${JSON.stringify(activities)}`);
+  // console.log(`Activities: ${JSON.stringify(activities)}`);
   return (
     <MapContainer
       center={center}

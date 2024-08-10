@@ -43,6 +43,7 @@ export enum ActivityType {
   MUSIC = 'MUSIC',
   CHILDREN = 'CHILDREN',
   OTHER = 'OTHER',
+  ALL = 'ALL',
 }
 export type ActivitiesTypes = ActivityType[];
 
