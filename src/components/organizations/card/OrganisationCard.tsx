@@ -6,7 +6,7 @@ import {useState} from 'react';
 
 type OrganisationCardProps = {
   organisation: Organization;
-  onClick: (organizationID: string) => void;
+  onClick: (organizationID: Organization) => void;
   onSubscribe: (organizationID: string) => void;
   isSubscribed: boolean;
 };
@@ -72,7 +72,7 @@ export const OrganisationCard = ({
       maxW="100%"
       cursor="pointer"
       bg="white"
-      onClick={() => onClick(organisation.id.toString())}
+      onClick={() => onClick(organisation)}
       display="flex"
       flexDirection="column"
       justifyContent="space-between"
