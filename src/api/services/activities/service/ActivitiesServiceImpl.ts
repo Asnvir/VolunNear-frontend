@@ -2,16 +2,19 @@ import {ActivityMapperImpl} from '../../../mappers/activitiy/ActivityMapperImpl.
 import {
   ActivitiesResponse,
   Activity,
+  ActivityDTO,
   CreateActivityRequest,
+  OrganisationActivitiesResponse,
 } from '../../../types.ts';
 import {ActivityMapper} from '../../../mappers/activitiy/types.ts';
 import {
   ActivitiesFiltersType,
-  ActivitiesQueryParams,
   ActivitiesService,
   ActivitiesTitles,
   ActivitiesTypes,
   ActivityType,
+  OrganisationActivitiesQueryParams,
+  VolunteerActivitiesQueryParams,
 } from './types.ts';
 import {
   ActivitiesFiltersRequest,
@@ -40,11 +43,16 @@ export class ActivitiesServiceImpl implements ActivitiesService {
     return ActivitiesServiceImpl.instance;
   }
 
-  public async getActivities(
-    queryParams: ActivitiesQueryParams
+  public async getVolunteerActivities(
+    queryParams: VolunteerActivitiesQueryParams
   ): Promise<Activity[]> {
-    const backendFilters =
-      this.activityMapper.mapFrontendToBackendFilters(queryParams);
+    console.log(
+      `Received queryParams in getVolunteerActivities:\n${JSON.stringify(queryParams)}`
+    );
+    const backendFilters = this.activityMapper.mapFrontendToBackendFilters(
+      queryParams,
+      false
+    );
     const filteredParams = this.activityUtil.filterEmptyFilters(backendFilters);
 
     // Convert all parameters to strings
@@ -72,6 +80,64 @@ export class ActivitiesServiceImpl implements ActivitiesService {
         })
       )
     );
+  }
+
+  public async getOrganisationActivities(
+    queryParams: OrganisationActivitiesQueryParams
+  ): Promise<Activity[]> {
+    const backendFilters = this.activityMapper.mapFrontendToBackendFilters(
+      queryParams,
+      true
+    );
+    const filteredParams = this.activityUtil.filterEmptyFilters(backendFilters);
+
+    // Convert all parameters to strings
+    const queryParamsAsString =
+      this.activityMapper.convertToQueryParams(filteredParams);
+
+    // Create URLSearchParams object and convert to string
+    const queryParamsString = new URLSearchParams(
+      queryParamsAsString
+    ).toString();
+
+    console.log(
+      `Organization Activities queryParamsString: ${queryParamsString}`
+    );
+
+    // Include queryParamsString directly in the URL
+    const {data: activityDTOS} =
+      await this.httpClient.get<OrganisationActivitiesResponse>(
+        `/api/v1/organisation/get_activities?${queryParamsString}`
+      );
+
+    return activityDTOS.map(activityDTO =>
+      this.mapActivityDTOToActivity(activityDTO)
+    );
+  }
+
+  private mapActivityDTOToActivity(activityDTO: ActivityDTO): Activity {
+    return {
+      activityId: activityDTO.id,
+      activityTitle: activityDTO.title,
+      activityDescription: activityDTO.description,
+      activityCountry: activityDTO.country,
+      activityCity: activityDTO.city,
+      activityStreet: activityDTO.street,
+      activityNumberOfHouse: activityDTO.numberOfHouse,
+      activityKind: activityDTO.kindOfActivity,
+      activityDateOfPlace: activityDTO.dateOfPlace,
+      activityLatitude: activityDTO.locationDTO.latitude,
+      activityLongitude: activityDTO.locationDTO.longitude,
+      activityDistance: activityDTO.distance,
+      activityCoverImage: activityDTO.coverImage,
+      activityGalleryImages: activityDTO.galleryImages,
+      organisationId: '',
+      organisationName: '',
+      organisationCountry: '',
+      organisationCity: '',
+      organisationAddress: '',
+      organisationAvatarUrl: '',
+    };
   }
 
   public async addVolunteerToActivity(activityId: string): Promise<void> {
@@ -122,12 +188,23 @@ export class ActivitiesServiceImpl implements ActivitiesService {
       await this.httpClient.get<ActivitiesTitlesResponse>(
         '/api/v1/organisation/all_activities_names'
       );
-    const titles = this.activityMapper.DTOtoTitles(titlesDTO);
-
-    return titles;
+    return this.activityMapper.DTOtoTitles(titlesDTO);
   }
 
   public async getActivitiesTypes(): Promise<ActivitiesTypes> {
     return Promise.resolve(Object.values(ActivityType));
+  }
+
+  public async getOrganisationActivitiesTitles(): Promise<ActivitiesTitles> {
+    const {data: organizationActivitiesDTO} =
+      await this.httpClient.get<OrganisationActivitiesResponse>(
+        `/api/v1/organisation/get_activities?sortOrder=ASC`
+      );
+
+    console.log(
+      `Organisation activities:\n${JSON.stringify(organizationActivitiesDTO)}`
+    );
+
+    return organizationActivitiesDTO.map(activity => activity.title);
   }
 }

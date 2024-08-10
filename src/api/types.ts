@@ -67,6 +67,8 @@ export type ActivitiesResponse = {
   organisationResponseDTO: OrganisationDTO;
 }[];
 
+export type OrganisationActivitiesResponse = ActivityDTO[];
+
 export type Activity = {
   activityId: string;
   activityCity: string;
@@ -102,7 +104,6 @@ export type CreateActivityRequest = {
   coverImage: string;
   galleryImages: string[];
 };
-
 
 export type User = {
   username: string;

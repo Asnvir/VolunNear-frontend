@@ -1,16 +1,16 @@
+import * as z from 'zod';
+import {MappedCountryData} from '../../../api/types.ts';
 import {SubmitHandler, useForm} from 'react-hook-form';
-import {format} from 'date-fns';
 import {zodResolver} from '@hookform/resolvers/zod';
+import {ActivitiesFilterValues} from '../useActivitiesFilterForm/useActivitiesFilterForm.tsx';
 import {useState} from 'react';
-import {useGetVolunteerActivitiesTitles} from '../useGetVolunteerActivitiesTitles/useGetVolunteerActivitiesTitles.ts';
+import {OrganisationActivitiesFiltersType} from '../../../api/services/activities/service/types.ts';
 import {useGetVolunteerActivitiesTypes} from '../useGetVolunteerActivitiesTypes/useGetVolunteerActivitiesTypes.ts';
 import {useGetCountriesCities} from '../../forms/useGetCountriesCities/useGetCountriesCities.ts';
-import {MappedCountryData} from '../../../api/types.ts';
-import {ActivitiesFiltersType} from '../../../api/services/activities/service/types.ts';
+import {format} from 'date-fns';
+import {useGetOrganizationActivitiesTitles} from '../useGetOrganizationActivitiesTitles/useGetOrganizationActivitiesTitles.ts';
 
-import * as z from 'zod';
-
-export const ActivitiesFilterValidationSchema = z.object({
+export const OrganisationsActivitiesFilterValidationSchema = z.object({
   title: z.object({label: z.string(), value: z.string()}).optional().nullable(),
   type: z.object({label: z.string(), value: z.string()}).optional().nullable(),
   date: z.date().optional().nullable(),
@@ -19,11 +19,10 @@ export const ActivitiesFilterValidationSchema = z.object({
     .optional()
     .nullable(),
   city: z.object({label: z.string(), value: z.string()}).optional().nullable(),
-  isMyActivities: z.string().optional().nullable(),
 });
 
-export type ActivitiesFilterValues = z.infer<
-  typeof ActivitiesFilterValidationSchema
+export type OrganisationsActivitiesFilterValues = z.infer<
+  typeof OrganisationsActivitiesFilterValidationSchema
 >;
 
 const createActivityTitleOption = (title: string) => ({
@@ -87,25 +86,23 @@ export const emptyOrganisationActivitiesFilters = {
   city: '',
 };
 
-export const useActivitiesFilterForm = () => {
+export const useOrganisationsActivitiesFilterForm = () => {
   const {
     handleSubmit,
     watch,
     reset,
     control,
     formState: {errors, isSubmitting},
-  } = useForm<ActivitiesFilterValues>({
-    resolver: zodResolver(ActivitiesFilterValidationSchema),
+  } = useForm<OrganisationsActivitiesFilterValues>({
+    resolver: zodResolver(OrganisationsActivitiesFilterValidationSchema),
   });
 
-  const [filters, setFilters] = useState<ActivitiesFiltersType>(
-    emptyVolunteerActivitiesFilters
+  const [filters, setFilters] = useState<OrganisationActivitiesFiltersType>(
+    emptyOrganisationActivitiesFilters
   );
-
-  const {data: activitiesTitles = []} = useGetVolunteerActivitiesTitles();
+  const {data: titles = []} = useGetOrganizationActivitiesTitles();
 
   const {data: activitiesTypes = []} = useGetVolunteerActivitiesTypes();
-
   const {data: activitiesCountriesCities = []} = useGetCountriesCities();
 
   const selectedCountry = watch('country');
@@ -123,7 +120,6 @@ export const useActivitiesFilterForm = () => {
       date: filters.date ? format(filters.date, 'yyyy-MM-dd') : '',
       country: filters.country?.value || '',
       city: filters.city?.value || '',
-      isMyActivities: filters.isMyActivities || '',
     });
 
     setFilters({
@@ -132,7 +128,6 @@ export const useActivitiesFilterForm = () => {
       date: filters.date ? format(filters.date, 'yyyy-MM-dd') : '',
       country: filters.country?.value || '',
       city: filters.city?.value || '',
-      isMyActivities: filters.isMyActivities || '',
     });
   };
 
@@ -144,14 +139,11 @@ export const useActivitiesFilterForm = () => {
   };
 
   return {
-    activitiesTitleOptions: activitiesTitles.map(createActivityTitleOption),
-    activitiesTypeOptions: activitiesTypes.map(createActivityTypeOption),
+    titleOptions: titles.map(createActivityTitleOption),
+    typeOptions: activitiesTypes.map(createActivityTypeOption),
+    countryOptions: activitiesCountriesCities.map(createCountryOption),
+    cityOptions: createCityOptions(selectedCountry, activitiesCountriesCities),
     selectedCountry,
-    activitiesCountryOption: activitiesCountriesCities.map(createCountryOption),
-    activitiesCityOptions: createCityOptions(
-      selectedCountry,
-      activitiesCountriesCities
-    ),
     date,
     handleDateChange,
     handleReset,

@@ -33,7 +33,8 @@ export type ActivityMapper = {
   DTOtoTitles(titlesDTO: ActivitiesTitlesResponse): ActivitiesTitles;
 
   mapFrontendToBackendFilters: (
-    filters: ActivitiesFiltersType
+    filters: ActivitiesFiltersType,
+    isOrganisation: boolean
   ) => BackendActivitiesFiltersType;
 
   convertToQueryParams: (

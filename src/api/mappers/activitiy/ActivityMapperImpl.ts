@@ -114,11 +114,20 @@ export class ActivityMapperImpl implements ActivityMapper {
   }
 
   public mapFrontendToBackendFilters(
-    filters: ActivitiesFiltersType
+    filters: ActivitiesFiltersType,
+    isOrganisation: boolean
   ): BackendActivitiesFiltersType {
     const {type, date, isMyActivities, ...rest} = filters;
     // const formattedDate = date ? format(date, 'yyyy-MM-dd') : undefined;
     // console.log(`formattedDate: ${formattedDate}`);
+    if (isOrganisation) {
+      return {
+        ...rest,
+        dateOfPlace: date,
+        kindOfActivity: type,
+      };
+    }
+
     return {
       ...rest,
       myActivities: isMyActivities === 'true',

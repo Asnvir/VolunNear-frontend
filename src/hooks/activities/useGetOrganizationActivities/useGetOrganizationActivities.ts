@@ -1,10 +1,16 @@
 import {useServiceContext} from '../../../shared/hooks/useServiceContext.ts';
 import {useQuery} from '@tanstack/react-query';
-import {QUERY_KEY_GET_FILTERED_ACTIVITIES} from '../../../utils/constants/reactQueryKeys.ts';
+import {QUERY_KEY_GET_ORGANISATION__ACTIVITIES} from '../../../utils/constants/reactQueryKeys.ts';
 import {useGeolocated} from 'react-geolocated';
-import {UseGetActivitiesProps} from './types.ts';
+import {OrganisationActivitiesFiltersType} from '../../../api/services/activities/service/types.ts';
 
-export const useGetActivities = ({filters}: UseGetActivitiesProps) => {
+type UseGetOrganizationActivitiesProps = {
+  filters: OrganisationActivitiesFiltersType;
+};
+
+export const useGetOrganizationActivities = ({
+  filters,
+}: UseGetOrganizationActivitiesProps) => {
   const {activitiesService} = useServiceContext();
 
   const {coords, isGeolocationAvailable, isGeolocationEnabled, positionError} =
@@ -17,10 +23,13 @@ export const useGetActivities = ({filters}: UseGetActivitiesProps) => {
     });
 
   const query = useQuery({
-    queryKey: [QUERY_KEY_GET_FILTERED_ACTIVITIES, filters, coords],
+    queryKey: [QUERY_KEY_GET_ORGANISATION__ACTIVITIES, filters, coords],
     queryFn: () => {
       if (coords) {
-        return activitiesService.getActivities({
+        // console.log(
+        //   `Call the activitiesService.getOrganisationActivities with the following parameters: ${JSON.stringify(filters)}, sortOrder: 'ASC', latitude: ${coords.latitude}, longitude: ${coords.longitude}`
+        // );
+        return activitiesService.getOrganisationActivities({
           ...filters,
           sortOrder: 'ASC',
           latitude: coords.latitude,

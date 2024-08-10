@@ -6,7 +6,6 @@ import {useEffect, useState} from 'react';
 import {Center, IconButton, Link, Spinner} from '@chakra-ui/react';
 import {FaMapMarkerAlt} from 'react-icons/fa';
 import {ActivitiesMapComponentProps} from './types.ts';
-import {useGetActivities} from '../../../hooks/activities/useGetActivities/useGetActivities.ts';
 import {useNavigate} from 'react-router-dom';
 
 const LocateButton = ({coords}: {coords: LatLngExpression | undefined}) => {
@@ -37,8 +36,9 @@ const LocateButton = ({coords}: {coords: LatLngExpression | undefined}) => {
 };
 
 export const ActivitiesMapComponent = ({
-  isMyActivities,
-  filters,
+  // isMyActivities,
+  // filters,
+  activities,
 }: ActivitiesMapComponentProps) => {
   const {coords, positionError} = useGeolocated({
     positionOptions: {
@@ -53,14 +53,14 @@ export const ActivitiesMapComponent = ({
   const [loadingGeoPosition, setLoadingGeoPosition] = useState(true);
   const navigate = useNavigate();
 
-  const {
-    data: activities,
-    // isLoading: isLoadingActivities,
-    // error: errorActivities,
-    // isGeolocationAvailable,
-    // isGeolocationEnabled,
-    // positionError,
-  } = useGetActivities({isMyActivities, filters});
+  // const {
+  //   data: activities,
+  //   // isLoading: isLoadingActivities,
+  //   // error: errorActivities,
+  //   // isGeolocationAvailable,
+  //   // isGeolocationEnabled,
+  //   // positionError,
+  // } = useGetVolunteerActivities({isMyActivities, filters});
 
   useEffect(() => {
     if (coords) {
