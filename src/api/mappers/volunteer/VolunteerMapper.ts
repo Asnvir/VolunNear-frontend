@@ -1,13 +1,12 @@
 import {ActivitiesFiltersDTO, VolunteerMapper} from './types.ts';
-import {ActivitiesFiltersType} from '../../../context/types.ts';
+import {VolunteerActivitiesFiltersType} from '../../../context/types.ts';
 import {UpdateVolunteerInfo} from '../../services/volunteer/types.ts';
 import {IUpdateVolunteerInfoRequestDTO} from '../../../data-contracts.ts';
 
 export class VolunteerMapperImpl implements VolunteerMapper {
   private static instance: VolunteerMapperImpl;
 
-  private constructor() {
-  }
+  private constructor() {}
 
   public static getInstance(): VolunteerMapperImpl {
     if (!VolunteerMapperImpl.instance) {

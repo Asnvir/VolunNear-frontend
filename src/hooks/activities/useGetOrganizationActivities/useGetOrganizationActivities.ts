@@ -26,9 +26,6 @@ export const useGetOrganizationActivities = ({
     queryKey: [QUERY_KEY_GET_ORGANISATION__ACTIVITIES, filters, coords],
     queryFn: () => {
       if (coords) {
-        // console.log(
-        //   `Call the activitiesService.getOrganisationActivities with the following parameters: ${JSON.stringify(filters)}, sortOrder: 'ASC', latitude: ${coords.latitude}, longitude: ${coords.longitude}`
-        // );
         return activitiesService.getOrganisationActivities({
           ...filters,
           sortOrder: 'ASC',

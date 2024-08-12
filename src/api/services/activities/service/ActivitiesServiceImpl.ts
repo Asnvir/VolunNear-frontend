@@ -8,12 +8,12 @@ import {
 } from '../../../types.ts';
 import {ActivityMapper} from '../../../mappers/activitiy/types.ts';
 import {
-  ActivitiesFiltersType,
   ActivitiesService,
   ActivitiesTitles,
   ActivitiesTypes,
   ActivityType,
   OrganisationActivitiesQueryParams,
+  VolunteerActivitiesFiltersType,
   VolunteerActivitiesQueryParams,
 } from './types.ts';
 import {
@@ -50,7 +50,6 @@ export class ActivitiesServiceImpl implements ActivitiesService {
       ...params,
       type: params.type === ActivityType.ALL ? '' : params.type,
     };
-
     const backendFilters = this.activityMapper.mapFrontendToBackendFilters(
       queryParams,
       false
@@ -91,6 +90,7 @@ export class ActivitiesServiceImpl implements ActivitiesService {
       queryParams,
       true
     );
+
     const filteredParams = this.activityUtil.filterEmptyFilters(backendFilters);
 
     const queryParamsAsString =
@@ -166,8 +166,8 @@ export class ActivitiesServiceImpl implements ActivitiesService {
   }
 
   public async setActivitiesFilters(
-    filters: ActivitiesFiltersType
-  ): Promise<ActivitiesFiltersType> {
+    filters: VolunteerActivitiesFiltersType
+  ): Promise<VolunteerActivitiesFiltersType> {
     const filtersDTO = this.activityMapper.filtersToDTO(filters);
     const response = await this.httpClient.post<
       ActivitiesFiltersResponse,

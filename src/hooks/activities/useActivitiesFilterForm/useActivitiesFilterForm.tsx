@@ -81,17 +81,6 @@ export const useActivitiesFilterForm = ({
   const selectedCountry = watch('country');
 
   const onSubmit: SubmitHandler<GenericActivitiesFilterValues> = filters => {
-    console.log(
-      `Filters being set:\n${JSON.stringify({
-        title: filters.title?.value || '',
-        type: (filters.type?.value || '').toUpperCase(),
-        date: filters.date ? format(filters.date, 'yyyy-MM-dd') : '',
-        country: filters.country?.value || '',
-        city: filters.city?.value || '',
-        isMyActivities: filters.isMyActivities || '',
-      })}`
-    );
-
     setFilters({
       title: filters.title?.value || '',
       type: mapToActivityType(filters.type?.value || ''),

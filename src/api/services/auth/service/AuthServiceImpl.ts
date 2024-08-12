@@ -73,7 +73,6 @@ export class AuthServiceImpl implements AuthService {
   }
 
   public logout(): void {
-    console.log('logout');
     window.localStorage.removeItem(AUTH_TOKEN);
   }
 

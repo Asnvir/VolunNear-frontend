@@ -4,7 +4,7 @@ import {Box} from '@chakra-ui/react';
 import {ActivitiesMapComponent} from '../components/activities/map/ActivitiesMapComponent.tsx';
 import {ActivitiesList} from '../components/activities/list/ActivitiesList.tsx';
 import {useGetOrganizationActivities} from '../hooks/activities/useGetOrganizationActivities/useGetOrganizationActivities.ts';
-import {OrganisationActivitiesFilterForm} from '../components/activities/filter/OrganisationActivitiesFilterForm.tsx';
+import {OrganisationActivitiesFilterFormWrapper} from '../components/activities/filter/OrganisationActivitiesFilterFormWrapper.tsx';
 
 export const OrganisationActivities = () => {
   const [filters, setFilters] = useState<OrganisationActivitiesFiltersType>({
@@ -23,7 +23,9 @@ export const OrganisationActivities = () => {
 
   return (
     <>
-      <OrganisationActivitiesFilterForm onApply={handleFiltersChange} />
+      <OrganisationActivitiesFilterFormWrapper
+        onChangeFilters={handleFiltersChange}
+      />
       <Box w="full">
         <ActivitiesMapComponent activities={activities} />
       </Box>

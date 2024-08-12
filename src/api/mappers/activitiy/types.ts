@@ -5,7 +5,7 @@ import {
   OrganisationDTO,
 } from '../../types.ts';
 import {
-  ActivitiesFiltersType,
+  VolunteerActivitiesFiltersType,
   ActivitiesTitles,
   BackendActivitiesFiltersType,
 } from '../../services/activities/service/types.ts';
@@ -27,13 +27,17 @@ export type ActivityMapper = {
 
   toDto(activity: CreateActivityRequest): IAddActivityRequestDTO;
 
-  filtersToDTO(filters: ActivitiesFiltersType): ActivitiesFiltersRequest;
+  filtersToDTO(
+    filters: VolunteerActivitiesFiltersType
+  ): ActivitiesFiltersRequest;
 
-  DTOtoFilters(filtersDTO: ActivitiesFiltersResponse): ActivitiesFiltersType;
+  DTOtoFilters(
+    filtersDTO: ActivitiesFiltersResponse
+  ): VolunteerActivitiesFiltersType;
   DTOtoTitles(titlesDTO: ActivitiesTitlesResponse): ActivitiesTitles;
 
   mapFrontendToBackendFilters: (
-    filters: ActivitiesFiltersType,
+    filters: VolunteerActivitiesFiltersType,
     isOrganisation: boolean
   ) => BackendActivitiesFiltersType;
 

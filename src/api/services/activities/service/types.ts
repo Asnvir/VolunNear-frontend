@@ -8,7 +8,7 @@ export type Coordinates = {
   longitude: number;
 };
 
-export type ActivitiesFiltersType = {
+export type VolunteerActivitiesFiltersType = {
   title?: string;
   date?: string;
   type?: string;
@@ -47,7 +47,7 @@ export enum ActivityType {
 }
 export type ActivitiesTypes = ActivityType[];
 
-export type VolunteerActivitiesQueryParams = ActivitiesFiltersType & {
+export type VolunteerActivitiesQueryParams = VolunteerActivitiesFiltersType & {
   sortOrder: SortOrder;
 } & Coordinates;
 
@@ -57,7 +57,7 @@ export type OrganisationActivitiesQueryParams =
   } & Coordinates;
 
 export type BackendActivitiesFiltersType = Omit<
-  ActivitiesFiltersType,
+  VolunteerActivitiesFiltersType,
   'type' | 'date' | 'isMyActivities'
 > & {
   kindOfActivity?: string;
@@ -74,8 +74,8 @@ export type ActivitiesService = {
   ): Promise<Activity[]>;
 
   setActivitiesFilters: (
-    filters: ActivitiesFiltersType
-  ) => Promise<ActivitiesFiltersType>;
+    filters: VolunteerActivitiesFiltersType
+  ) => Promise<VolunteerActivitiesFiltersType>;
 
   getActivitiesTitles(): Promise<ActivitiesTitles>;
   getOrganisationActivitiesTitles(): Promise<ActivitiesTitles>;

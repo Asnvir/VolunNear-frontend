@@ -1,5 +1,5 @@
-import {ActivitiesFiltersType} from '../../../api/services/activities/service/types.ts';
+import {VolunteerActivitiesFiltersType} from '../../../api/services/activities/service/types.ts';
 
 export type UseGetActivitiesProps = {
-  filters: ActivitiesFiltersType;
+  filters: VolunteerActivitiesFiltersType;
 };
