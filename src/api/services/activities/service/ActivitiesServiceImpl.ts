@@ -155,7 +155,7 @@ export class ActivitiesServiceImpl implements ActivitiesService {
 
   public async deleteActivity(activityId: string): Promise<void> {
     await this.httpClient.delete<void>(
-      API_ENDPOINTS.DELETE_ACTIVITY + activityId
+      API_ENDPOINTS.DELETE_ACTIVITY + `id=${activityId}`
     );
   }
 

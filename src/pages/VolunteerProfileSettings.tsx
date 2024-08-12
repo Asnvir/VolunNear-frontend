@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import {
   Box,
   Button,
@@ -21,57 +21,39 @@ import {
   useToast,
 } from '@chakra-ui/react';
 import { ViewIcon, ViewOffIcon, AddIcon } from '@chakra-ui/icons';
+import { useForm, Controller } from 'react-hook-form';
 import { useGetVolunteerProfile } from '../hooks/volunteer/useGetVolunteerProfile/useGetVolunteerProfile';
 import { useUpdateVolunteerProfile } from '../hooks/volunteer/useUpdateVolunteerProfile/useUpdateVolunteerProfile';
-import {useUploadVolunteerAvatar} from '../hooks/files/useUploadVolunteerAvatar/useUploadVolunteerAvatar.ts';
-import {useChangePassword} from '../hooks/auth/useChangePassword/useChangePassword.ts';
+import { useUploadVolunteerAvatar } from '../hooks/files/useUploadVolunteerAvatar/useUploadVolunteerAvatar.ts';
+import { useChangePassword } from '../hooks/auth/useChangePassword/useChangePassword.ts';
 
 const VolunteerProfileSettings: React.FC = () => {
-  const [initialEmail, setInitialEmail] = useState('');
-  const [initialUsername, setInitialUsername] = useState('');
-  const [initialRealName, setInitialRealName] = useState('');
-  const [avatarUrl, setAvatarUrl] = useState('');
+  const { control, handleSubmit, reset, formState: { errors } } = useForm();
+  const toast = useToast();
 
-  const [email, setEmail] = useState(initialEmail);
-  const [username, setUsername] = useState(initialUsername);
-  const [realName, setRealName] = useState(initialRealName);
-  const [volunteerId, setVolunteerId] = useState(''); //
-
-  const [oldPassword, setOldPassword] = useState('');
-  const [newPassword, setNewPassword] = useState('');
-  const [confirmNewPassword, setConfirmNewPassword] = useState('');
+  const { mutate: updateVolunteerProfile } = useUpdateVolunteerProfile();
+  const { data: volunteerProfile } = useGetVolunteerProfile();
+  const { mutate: uploadVolunteerAvatar } = useUploadVolunteerAvatar();
+  const { mutate: changePassword } = useChangePassword();
 
   const [showCurrentPassword, setShowCurrentPassword] = useState(false);
   const [showNewPassword, setShowNewPassword] = useState(false);
   const [showConfirmNewPassword, setShowConfirmNewPassword] = useState(false);
 
-  const toast = useToast();
-  const { mutate: updateVolunteerProfile } = useUpdateVolunteerProfile();
-
-  const { data: volunteerProfile } = useGetVolunteerProfile();
-
-  const {mutate: uploadVolunteerAvatar} = useUploadVolunteerAvatar();
-
-  const {mutate: changePassword} = useChangePassword();
-
   useEffect(() => {
     if (volunteerProfile) {
-      console.log(volunteerProfile);
-      setEmail(volunteerProfile.email ?? '');
-      setUsername(volunteerProfile.username ?? '');
-      setRealName(volunteerProfile.realName ?? '');
-      setVolunteerId(volunteerProfile.id ?? '')
-      console.log(volunteerProfile.avatarUrl ?? '');
-      setAvatarUrl(volunteerProfile.avatarUrl ?? '');
-      setInitialEmail(volunteerProfile.email ?? '');
-      setInitialUsername(volunteerProfile.username ?? '');
-      setInitialRealName(volunteerProfile.realName ?? '');
+      reset({
+        email: volunteerProfile.email ?? '',
+        username: volunteerProfile.username ?? '',
+        realName: volunteerProfile.realName ?? '',
+        avatarUrl: volunteerProfile.avatarUrl ?? ''
+      });
     }
-  }, [volunteerProfile]);
+  }, [volunteerProfile, reset]);
 
-  const handleSave = () => {
+  const handleSave = (data) => {
     updateVolunteerProfile(
-      { email, username, realName, avatarUrl },
+      { email: data.email, username: data.username, realName: data.realName, avatarUrl: data.avatarUrl },
       {
         onSuccess: () => {
           toast({
@@ -94,27 +76,15 @@ const VolunteerProfileSettings: React.FC = () => {
     );
   };
 
-  const handleCancel = () => {
-    // Revert changes to initial values
-    setEmail(initialEmail);
-    setUsername(initialUsername);
-    setRealName(initialRealName);
-    setAvatarUrl(volunteerProfile?.avatarUrl ?? '');
-    console.log('Changes reverted');
-  };
-
-  const handleAvatarChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const handleAvatarChange = (e) => {
     if (e.target.files && e.target.files[0]) {
-      const reader = new FileReader();
-      reader.readAsDataURL(e.target.files[0]);
-
       const formData = new FormData();
       formData.append('file', e.target.files[0]);
       uploadVolunteerAvatar(
-        { formData, volunteerId },
+        { formData, volunteerId: volunteerProfile.id },
         {
           onSuccess: (data) => {
-            setAvatarUrl(data)
+            reset({ avatarUrl: data });
           },
           onError: (error) => {
             toast({
@@ -130,8 +100,8 @@ const VolunteerProfileSettings: React.FC = () => {
     }
   };
 
-  const validatePasswords = () => {
-    if (newPassword !== confirmNewPassword) {
+  const validatePasswords = (data) => {
+    if (data.newPassword !== data.confirmNewPassword) {
       toast({
         title: 'Error',
         description: "New passwords don't match!",
@@ -142,7 +112,7 @@ const VolunteerProfileSettings: React.FC = () => {
       return false;
     }
 
-    if (newPassword.length < 8) {
+    if (data.newPassword.length < 8) {
       toast({
         title: 'Error',
         description: 'Password must be at least 8 characters long.',
@@ -156,13 +126,13 @@ const VolunteerProfileSettings: React.FC = () => {
     return true;
   };
 
-  const handleChangePassword = () => {
-    if (!validatePasswords()) {
+  const handleChangePassword = (data) => {
+    if (!validatePasswords(data)) {
       return;
     }
 
     changePassword(
-      { oldPassword, newPassword },
+      { oldPassword: data.oldPassword, newPassword: data.newPassword },
       {
         onSuccess: () => {
           toast({
@@ -171,9 +141,7 @@ const VolunteerProfileSettings: React.FC = () => {
             duration: 5000,
             isClosable: true,
           });
-          setOldPassword('');
-          setNewPassword('');
-          setConfirmNewPassword('');
+          reset({ oldPassword: '', newPassword: '', confirmNewPassword: '' });
         },
         onError: (error) => {
           toast({
@@ -193,7 +161,7 @@ const VolunteerProfileSettings: React.FC = () => {
       <Box bg="white" p={6} rounded="md" boxShadow="xl" maxW="600px" w="full">
         <VStack spacing={8} align="stretch">
           <Flex justify="center" position="relative">
-            <Avatar size="xl" src={avatarUrl} />
+            <Avatar size="xl" src={volunteerProfile?.avatarUrl} />
             <Input
               type="file"
               accept="image/*"
@@ -221,97 +189,128 @@ const VolunteerProfileSettings: React.FC = () => {
             </TabList>
             <TabPanels>
               <TabPanel>
-                <FormControl id="username">
-                  <FormLabel>Username</FormLabel>
-                  <Input
-                    type="text"
-                    value={username}
-                    onChange={(e) => setUsername(e.target.value)}
-                  />
-                </FormControl>
-                <FormControl id="realName">
-                  <FormLabel>Full Name</FormLabel>
-                  <Input
-                    type="text"
-                    value={realName}
-                    onChange={(e) => setRealName(e.target.value)}
-                  />
-                </FormControl>
-                <FormControl id="email">
-                  <FormLabel>Email</FormLabel>
-                  <Input
-                    type="email"
-                    value={email}
-                    onChange={(e) => setEmail(e.target.value)}
-                  />
-                </FormControl>
-                <Stack direction="row" spacing={4} justify="flex-end" mt={4}>
-                  <Button variant="outline" colorScheme="orange" onClick={handleCancel}>
-                    Cancel
-                  </Button>
-                  <Button colorScheme="orange" onClick={handleSave}>
-                    Save
-                  </Button>
-                </Stack>
+                <form onSubmit={handleSubmit(handleSave)}>
+                  <FormControl id="username" isInvalid={errors.username}>
+                    <FormLabel>Username</FormLabel>
+                    <Controller
+                      name="username"
+                      control={control}
+                      rules={{ required: "Username is required" }}
+                      render={({ field }) => <Input type="text" {...field} />}
+                    />
+                    {errors.username && <Box color="red.500">{errors.username.message}</Box>}
+                  </FormControl>
+                  <FormControl id="realName" isInvalid={errors.realName}>
+                    <FormLabel>Full Name</FormLabel>
+                    <Controller
+                      name="realName"
+                      control={control}
+                      rules={{ required: "Full Name is required" }}
+                      render={({ field }) => <Input type="text" {...field} />}
+                    />
+                    {errors.realName && <Box color="red.500">{errors.realName.message}</Box>}
+                  </FormControl>
+                  <FormControl id="email" isInvalid={errors.email}>
+                    <FormLabel>Email</FormLabel>
+                    <Controller
+                      name="email"
+                      control={control}
+                      rules={{ required: "Email is required" }}
+                      render={({ field }) => <Input type="email" {...field} />}
+                    />
+                    {errors.email && <Box color="red.500">{errors.email.message}</Box>}
+                  </FormControl>
+                  <Stack direction="row" spacing={4} justify="flex-end" mt={4}>
+                    <Button variant="outline" colorScheme="orange" onClick={() => reset()}>
+                      Cancel
+                    </Button>
+                    <Button colorScheme="orange" type="submit">
+                      Save
+                    </Button>
+                  </Stack>
+                </form>
               </TabPanel>
               <TabPanel>
-                <FormControl id="currentPassword">
-                  <FormLabel>Current Password</FormLabel>
-                  <InputGroup>
-                    <Input
-                      type={showCurrentPassword ? 'text' : 'password'}
-                      value={oldPassword}
-                      onChange={(e) => setOldPassword(e.target.value)}
-                    />
-                    <InputRightElement>
-                      <IconButton
-                        variant="ghost"
-                        aria-label="Toggle Password Visibility"
-                        icon={showCurrentPassword ? <ViewOffIcon /> : <ViewIcon />}
-                        onClick={() => setShowCurrentPassword(!showCurrentPassword)}
+                <form onSubmit={handleSubmit(handleChangePassword)}>
+                  <FormControl id="currentPassword" isInvalid={errors.oldPassword}>
+                    <FormLabel>Current Password</FormLabel>
+                    <InputGroup>
+                      <Controller
+                        name="oldPassword"
+                        control={control}
+                        rules={{ required: "Current password is required" }}
+                        render={({ field }) => (
+                          <Input
+                            type={showCurrentPassword ? 'text' : 'password'}
+                            {...field}
+                          />
+                        )}
                       />
-                    </InputRightElement>
-                  </InputGroup>
-                </FormControl>
-                <FormControl id="newPassword">
-                  <FormLabel>New Password</FormLabel>
-                  <InputGroup>
-                    <Input
-                      type={showNewPassword ? 'text' : 'password'}
-                      value={newPassword}
-                      onChange={(e) => setNewPassword(e.target.value)}
-                    />
-                    <InputRightElement>
-                      <IconButton
-                        variant="ghost"
-                        aria-label="Toggle Password Visibility"
-                        icon={showNewPassword ? <ViewOffIcon /> : <ViewIcon />}
-                        onClick={() => setShowNewPassword(!showNewPassword)}
+                      <InputRightElement>
+                        <IconButton
+                          variant="ghost"
+                          aria-label="Toggle Password Visibility"
+                          icon={showCurrentPassword ? <ViewOffIcon /> : <ViewIcon />}
+                          onClick={() => setShowCurrentPassword(!showCurrentPassword)}
+                        />
+                      </InputRightElement>
+                    </InputGroup>
+                    {errors.oldPassword && <Box color="red.500">{errors.oldPassword.message}</Box>}
+                  </FormControl>
+                  <FormControl id="newPassword" isInvalid={errors.newPassword}>
+                    <FormLabel>New Password</FormLabel>
+                    <InputGroup>
+                      <Controller
+                        name="newPassword"
+                        control={control}
+                        rules={{ required: "New password is required", minLength: { value: 8, message: "Password must be at least 8 characters long" } }}
+                        render={({ field }) => (
+                          <Input
+                            type={showNewPassword ? 'text' : 'password'}
+                            {...field}
+                          />
+                        )}
                       />
-                    </InputRightElement>
-                  </InputGroup>
-                </FormControl>
-                <FormControl id="confirmNewPassword">
-                  <FormLabel>Confirm New Password</FormLabel>
-                  <InputGroup>
-                    <Input
-                      type={showConfirmNewPassword ? 'text' : 'password'}
-                      value={confirmNewPassword}
-                      onChange={(e) => setConfirmNewPassword(e.target.value)}
-                    />
-                    <InputRightElement>
-                      <IconButton
-                        variant="ghost"
-                        aria-label="Toggle Password Visibility"
-                        icon={showConfirmNewPassword ? <ViewOffIcon /> : <ViewIcon />}
-                        onClick={() => setShowConfirmNewPassword(!showConfirmNewPassword)}
+                      <InputRightElement>
+                        <IconButton
+                          variant="ghost"
+                          aria-label="Toggle Password Visibility"
+                          icon={showNewPassword ? <ViewOffIcon /> : <ViewIcon />}
+                          onClick={() => setShowNewPassword(!showNewPassword)}
+                        />
+                      </InputRightElement>
+                    </InputGroup>
+                    {errors.newPassword && <Box color="red.500">{errors.newPassword.message}</Box>}
+                  </FormControl>
+                  <FormControl id="confirmNewPassword" isInvalid={errors.confirmNewPassword}>
+                    <FormLabel>Confirm New Password</FormLabel>
+                    <InputGroup>
+                      <Controller
+                        name="confirmNewPassword"
+                        control={control}
+                        rules={{ required: "Please confirm your new password" }}
+                        render={({ field }) => (
+                          <Input
+                            type={showConfirmNewPassword ? 'text' : 'password'}
+                            {...field}
+                          />
+                        )}
                       />
-                    </InputRightElement>
-                  </InputGroup>
-                </FormControl>
-                <Button mt={4} colorScheme="orange" onClick={handleChangePassword}>
-                  Change Password
-                </Button>
+                      <InputRightElement>
+                        <IconButton
+                          variant="ghost"
+                          aria-label="Toggle Password Visibility"
+                          icon={showConfirmNewPassword ? <ViewOffIcon /> : <ViewIcon />}
+                          onClick={() => setShowConfirmNewPassword(!showConfirmNewPassword)}
+                        />
+                      </InputRightElement>
+                    </InputGroup>
+                    {errors.confirmNewPassword && <Box color="red.500">{errors.confirmNewPassword.message}</Box>}
+                  </FormControl>
+                  <Button mt={4} colorScheme="orange" type="submit">
+                    Change Password
+                  </Button>
+                </form>
               </TabPanel>
             </TabPanels>
           </Tabs>

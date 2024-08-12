@@ -26,10 +26,6 @@ export const OrganizationSidebar = () => {
       setActiveButton('addActivity');
     } else if (location.pathname === ROUTE_ORGANIZATION_MY_ACTIVITIES) {
       setActiveButton('myActivities');
-    } else if (location.pathname === '/chat') {
-      setActiveButton('chat');
-    } else if (location.pathname === '/notifications') {
-      setActiveButton('notifications');
     }
   }, [location.pathname]);
 
@@ -50,22 +46,6 @@ export const OrganizationSidebar = () => {
         onClick={() => navigate(ROUTE_ORGANIZATION_MY_ACTIVITIES)}
       >
         My events
-      </Button>
-      <Button
-        w="full"
-        variant="ghost"
-        {...buttonStyle('chat')}
-        onClick={() => navigate('chats')}
-      >
-        Chat
-      </Button>
-      <Button
-        w="full"
-        variant="ghost"
-        {...buttonStyle('notifications')}
-        onClick={() => navigate('notifications')}
-      >
-        Notifications
       </Button>
     </>
   );

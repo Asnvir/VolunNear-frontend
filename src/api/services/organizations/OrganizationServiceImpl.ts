@@ -35,6 +35,19 @@ export class OrganizationServiceImpl implements OrganizationService {
     return organizationsDTO.map(this.organizationFromDTO);
   }
 
+  public async getAverageRating(orgId:string): Promise<number> {
+    const {data} = await this.httpClient.get<number>(
+      API_ENDPOINTS.GET_AVERAGE_RATING_OF_ORGANISATION + `${orgId}`,
+    )
+    return data;
+  }
+
+  public async addOrUpdateRating(orgId:string, rating:number): Promise<void> {
+      await this.httpClient.post(
+      API_ENDPOINTS.RATE_ORGANISATION + `${orgId}`,rating
+      )
+  }
+
 
   public async getOrganisationProfile(): Promise<IActivitiesDTO> {
     const {data} = await this.httpClient.get<IActivitiesDTO>(
