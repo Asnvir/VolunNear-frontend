@@ -2,8 +2,7 @@ import useGetUserRole from '../hooks/auth/useGetUserRole/useGetUserRole.ts';
 import {createBrowserRouter, Navigate, RouterProvider} from 'react-router-dom';
 import {MainLayout} from '../layouts/MainLayout.tsx';
 import {SidebarLayout} from '../layouts/SidebarLayout.tsx';
-import ProtectedRoute from '../components/navigation/ProtectedRoute.tsx';
-import {AllEvents} from '../pages/AllEvents.tsx';
+import {AllActivities} from '../pages/AllActivities.tsx';
 import {OrganizationsPage} from '../pages/OrganizationsPage.tsx';
 import {LoginPage} from '../pages/LoginPage.tsx';
 import {RegistrationVolunteerPage} from '../pages/registration/RegistrationVolunteerPage.tsx';
@@ -11,10 +10,20 @@ import {RegistrationOrgPage} from '../pages/registration/RegistrationOrgPage.tsx
 // import ProfileSettings from '../pages/ProfileSettings.tsx';
 import ActivityDetailsPage from '../pages/ActivityDetailsPage.tsx';
 import ErrorPage from '../pages/ErrorPage.tsx';
-import {ROLE_VOLUNTEER} from '../utils/constants/routes.ts';
+import {
+  ROLE_ORGANISATION,
+  ROLE_VOLUNTEER,
+} from '../utils/constants/authConstants.ts';
 import {AddActivityPage} from '../pages/AddActivityPage.tsx';
 import VolunteerProfileSettings from '../pages/VolunteerProfileSettings.tsx';
-import OrganisationProfileSettings from '../pages/OrganisationProfileSettings.tsx';
+import {
+  ROUTE_ORGANIZATION_ADD_ACTIVITY,
+  ROUTE_ORGANIZATION_MY_ACTIVITIES,
+  ROUTE_VOLUNTEER_EVENTS,
+  ROUTE_VOLUNTEER_ORGANIZATIONS,
+} from '../utils/constants/routesConstants.ts';
+import {ProtectedRoute} from '../components/navigation/ProtectedRoute.tsx';
+import {OrganisationActivities} from '../pages/OrganisationActivities.tsx';
 
 export const CustomRouterProvider = () => {
   const userRole = useGetUserRole();
@@ -32,32 +41,42 @@ export const CustomRouterProvider = () => {
               index: true,
               element:
                 userRole == ROLE_VOLUNTEER ? (
-                  <Navigate to="all-events" replace />
+                  <Navigate to={ROUTE_VOLUNTEER_EVENTS} replace />
+                ) : userRole === ROLE_ORGANISATION ? (
+                  <Navigate to={ROUTE_ORGANIZATION_ADD_ACTIVITY} replace />
                 ) : (
-                  <Navigate to="add-activity" replace />
+                  <></>
                 ),
             },
             {
-              path: 'all-events',
+              path: ROUTE_VOLUNTEER_EVENTS,
               element: (
-                <ProtectedRoute>
-                  <AllEvents />
+                <ProtectedRoute roles={[ROLE_VOLUNTEER]}>
+                  <AllActivities />
                 </ProtectedRoute>
               ),
             },
             {
-              path: 'organizations-list',
+              path: ROUTE_VOLUNTEER_ORGANIZATIONS,
               element: (
-                <ProtectedRoute>
+                <ProtectedRoute roles={[ROLE_VOLUNTEER]}>
                   <OrganizationsPage />
                 </ProtectedRoute>
               ),
             },
             {
-              path: 'add-activity',
+              path: ROUTE_ORGANIZATION_ADD_ACTIVITY,
               element: (
-                <ProtectedRoute>
+                <ProtectedRoute roles={[ROLE_ORGANISATION]}>
                   <AddActivityPage />
+                </ProtectedRoute>
+              ),
+            },
+            {
+              path: ROUTE_ORGANIZATION_MY_ACTIVITIES,
+              element: (
+                <ProtectedRoute roles={[ROLE_ORGANISATION]}>
+                  <OrganisationActivities />
                 </ProtectedRoute>
               ),
             },
@@ -78,14 +97,6 @@ export const CustomRouterProvider = () => {
           element: (
             <ProtectedRoute>
               <VolunteerProfileSettings />
-            </ProtectedRoute>
-          ),
-        },
-        {
-          path: 'organization/profile',
-          element: (
-            <ProtectedRoute>
-              <OrganisationProfileSettings />
             </ProtectedRoute>
           ),
         },

@@ -1,6 +1,10 @@
 import {useEffect, useState} from 'react';
 import {useLocation, useNavigate} from 'react-router-dom';
 import {Button} from '@chakra-ui/react';
+import {
+  ROUTE_VOLUNTEER_EVENTS,
+  ROUTE_VOLUNTEER_ORGANIZATIONS,
+} from '../../utils/constants/routesConstants.ts';
 
 export const VolunteerSidebar = () => {
   const [activeButton, setActiveButton] = useState<string | null>();
@@ -18,9 +22,9 @@ export const VolunteerSidebar = () => {
   });
 
   useEffect(() => {
-    if (location.pathname === '/all-events') {
+    if (location.pathname === ROUTE_VOLUNTEER_EVENTS) {
       setActiveButton('allEvents');
-    } else if (location.pathname === '/organizations-list') {
+    } else if (location.pathname === ROUTE_VOLUNTEER_ORGANIZATIONS) {
       setActiveButton('organizationsList');
     }
   }, [location.pathname]);
@@ -31,7 +35,7 @@ export const VolunteerSidebar = () => {
         w="full"
         variant="ghost"
         {...buttonStyle('allEvents')}
-        onClick={() => navigate('all-events')}
+        onClick={() => navigate(ROUTE_VOLUNTEER_EVENTS)}
       >
         Events
       </Button>
@@ -40,9 +44,9 @@ export const VolunteerSidebar = () => {
         w="full"
         variant="ghost"
         {...buttonStyle('organizationsList')}
-        onClick={() => navigate('organizations-list')}
+        onClick={() => navigate(ROUTE_VOLUNTEER_ORGANIZATIONS)}
       >
-        Organizations List
+        Organizations
       </Button>
     </>
   );

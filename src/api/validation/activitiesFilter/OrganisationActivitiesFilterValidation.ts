@@ -1,6 +1,6 @@
 import * as z from 'zod';
 
-export const GenericActivitiesFilterValidationSchema = z.object({
+export const OrganisationActivitiesFilterValidationSchema = z.object({
   title: z.object({label: z.string(), value: z.string()}).optional().nullable(),
   type: z.object({label: z.string(), value: z.string()}).optional().nullable(),
   date: z.date().optional().nullable(),
@@ -9,9 +9,9 @@ export const GenericActivitiesFilterValidationSchema = z.object({
     .optional()
     .nullable(),
   city: z.object({label: z.string(), value: z.string()}).optional().nullable(),
-  isMyActivities: z.string().optional().nullable(), // This is optional and only used for volunteer activities
+  isMyActivities: z.string().optional().nullable(),
 });
 
-export type GenericActivitiesFilterValues = z.infer<
-  typeof GenericActivitiesFilterValidationSchema
+export type OrganisationActivitiesFilterValues = z.infer<
+  typeof OrganisationActivitiesFilterValidationSchema
 >;

@@ -6,9 +6,10 @@ import {
 } from '../../types.ts';
 import {ActivityMapper} from './types.ts';
 import {
-  ActivitiesFiltersType,
   ActivitiesTitles,
+  ActivityType,
   BackendActivitiesFiltersType,
+  VolunteerActivitiesFiltersType,
 } from '../../services/activities/service/types.ts';
 import {
   ActivitiesFiltersRequest,
@@ -16,6 +17,7 @@ import {
   ActivitiesTitlesResponse,
 } from '../../httpClient/types.ts';
 import {IAddActivityRequestDTO} from '../../../data-contracts.ts';
+
 // import {format} from 'date-fns';
 
 export class ActivityMapperImpl implements ActivityMapper {
@@ -75,12 +77,9 @@ export class ActivityMapperImpl implements ActivityMapper {
   }
 
   public filtersToDTO(
-    filters: ActivitiesFiltersType
+    filters: VolunteerActivitiesFiltersType
   ): ActivitiesFiltersRequest {
-    console.log(`filters: ${JSON.stringify(filters)}`);
-
     if (!filters) {
-      console.error('Invalid filters object');
       return {preferences: []};
     }
 
@@ -90,16 +89,12 @@ export class ActivityMapperImpl implements ActivityMapper {
       )
       .map(([key, value]) => `${key}:${value}`);
 
-    const preferencesDTO = {preferences};
-    console.log(
-      `FiltersToDTO - preferencesDTO: ${JSON.stringify(preferencesDTO)}`
-    );
-    return preferencesDTO;
+    return {preferences};
   }
 
   public DTOtoFilters(
     filtersDTO: ActivitiesFiltersResponse
-  ): ActivitiesFiltersType {
+  ): VolunteerActivitiesFiltersType {
     return {
       title: filtersDTO.title,
       date: filtersDTO.date,
@@ -113,17 +108,40 @@ export class ActivityMapperImpl implements ActivityMapper {
     return titlesDTO;
   }
 
+  private mapLabelToEnum(label: string | undefined): ActivityType | undefined {
+    if (!label) return undefined;
+
+    const formattedLabel = label.toUpperCase().replace(' ', '_');
+    return ActivityType[formattedLabel as keyof typeof ActivityType];
+  }
+
   public mapFrontendToBackendFilters(
-    filters: ActivitiesFiltersType
+    filters: VolunteerActivitiesFiltersType,
+    isOrganisation: boolean
   ): BackendActivitiesFiltersType {
     const {type, date, isMyActivities, ...rest} = filters;
-    // const formattedDate = date ? format(date, 'yyyy-MM-dd') : undefined;
-    // console.log(`formattedDate: ${formattedDate}`);
+
+    const kindOfActivity = this.mapLabelToEnum(type) || '';
+
+    if (isOrganisation) {
+      return {
+        ...rest,
+        dateOfPlace: date,
+        kindOfActivity:
+          kindOfActivity === ActivityType.ALL || kindOfActivity === undefined
+            ? ''
+            : kindOfActivity,
+      };
+    }
+
     return {
       ...rest,
       myActivities: isMyActivities === 'true',
       dateOfPlace: date,
-      kindOfActivity: type,
+      kindOfActivity:
+        kindOfActivity === ActivityType.ALL || kindOfActivity === undefined
+          ? ''
+          : kindOfActivity,
     };
   }
 

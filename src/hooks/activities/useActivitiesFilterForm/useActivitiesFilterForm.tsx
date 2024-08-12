@@ -1,108 +1,89 @@
 import {SubmitHandler, useForm} from 'react-hook-form';
-import {format} from 'date-fns';
-import {ActivitiesFilterValues} from '../../../api/validation/activitiesFilter/types.ts';
+import {
+  GenericActivitiesFilterValidationSchema,
+  GenericActivitiesFilterValues,
+} from './types.ts';
 import {zodResolver} from '@hookform/resolvers/zod';
-import {ActivitiesFilterValidationSchema} from '../../../api/validation/activitiesFilter/ActivitiesFilterValidation.ts';
 import {useState} from 'react';
-import {useGetActivitiesTitles} from '../useGetActivitiesTitles/useGetActivitiesTitles.ts';
-import {useGetActivitiesTypes} from '../useGetActivitiesTypes/useGetActivitiesTypes.ts';
-import {useGetCountriesCities} from '../../forms/useGetCountriesCities/useGetCountriesCities.ts';
-import {MappedCountryData} from '../../../api/types.ts';
-import {ActivitiesFiltersType} from '../../../api/services/activities/service/types.ts';
+import {format} from 'date-fns';
+import {mapToActivityType} from '../../../utils/kindToButyType.ts';
 
-const createActivityTitleOption = (title: string) => ({
-  label: title,
-  value: title,
-});
-
-const createActivityTypeOption = (type: string) => ({
-  label: type,
-  value: type,
-});
-
-const createCountryOption = (country: MappedCountryData) => ({
-  label: country.country,
-  value: country.country,
-});
-
-const createCityOptions = (
-  selectedCountry: {value: string; label: string} | null | undefined,
-  activitiesCountriesCities: MappedCountryData[]
-) => {
-  if (!selectedCountry || !activitiesCountriesCities) {
-    return [];
-  }
-
-  const countryData = activitiesCountriesCities.find(
-    country => country.country === selectedCountry.value
-  );
-
-  return countryData
-    ? countryData.cities.map(city => ({
-        label: city,
-        value: city,
-      }))
-    : [];
+type UseActivitiesFilterFormProps = {
+  enabledMyActivitiesForVolunteerActivities: boolean;
 };
 
-const emptyFormData = {
-  title: null,
-  type: null,
-  date: undefined,
-  country: null,
-  city: null,
-  isMyActivities: null,
-};
-
-export const emptyFilters = {
-  title: '',
-  type: '',
-  date: '',
-  country: '',
-  city: '',
-  isMyActivities: '',
-};
-
-export const useActivitiesFilterForm = () => {
+export const useActivitiesFilterForm = ({
+  enabledMyActivitiesForVolunteerActivities,
+}: UseActivitiesFilterFormProps) => {
   const {
     handleSubmit,
     watch,
     reset,
     control,
     formState: {errors, isSubmitting},
-  } = useForm<ActivitiesFilterValues>({
-    resolver: zodResolver(ActivitiesFilterValidationSchema),
+  } = useForm<GenericActivitiesFilterValues>({
+    resolver: zodResolver(GenericActivitiesFilterValidationSchema),
   });
 
-  const [filters, setFilters] = useState<ActivitiesFiltersType>(emptyFilters);
+  const emptyFilters = enabledMyActivitiesForVolunteerActivities
+    ? {
+        title: '',
+        type: '',
+        date: '',
+        country: '',
+        city: '',
+        isMyActivities: '',
+      }
+    : {
+        title: '',
+        type: '',
+        date: '',
+        country: '',
+        city: '',
+      };
 
-  const {data: activitiesTitles = []} = useGetActivitiesTitles();
+  const emptyFormData = enabledMyActivitiesForVolunteerActivities
+    ? {
+        title: null, // Убедитесь, что используется null
+        type: null, // Убедитесь, что используется null
+        date: undefined, // Оставьте undefined для DatePicker
+        country: null, // Убедитесь, что используется null
+        city: null, // Убедитесь, что используется null
+        isMyActivities: '', // Здесь используйте пустую строку
+      }
+    : {
+        title: null,
+        type: null,
+        date: undefined,
+        country: null,
+        city: null,
+      };
 
-  const {data: activitiesTypes = []} = useGetActivitiesTypes();
+  const [filters, setFilters] = useState(emptyFilters);
 
-  const {data: activitiesCountriesCities = []} = useGetCountriesCities();
+  const isAnyFilterSet = enabledMyActivitiesForVolunteerActivities
+    ? !!(
+        filters.title ||
+        filters.type ||
+        filters.date ||
+        filters.country ||
+        filters.city ||
+        filters.isMyActivities === 'true'
+      )
+    : !!(
+        filters.title ||
+        filters.type ||
+        filters.date ||
+        filters.country ||
+        filters.city
+      );
 
   const selectedCountry = watch('country');
 
-  const [date, setDate] = useState<Date | undefined>(undefined);
-
-  const handleDateChange = (date: Date) => {
-    setDate(date);
-  };
-
-  const onSubmit: SubmitHandler<ActivitiesFilterValues> = filters => {
-    console.log('Filters being set:\n', {
-      title: filters.title?.value || '',
-      type: filters.type?.value || '',
-      date: filters.date ? format(filters.date, 'yyyy-MM-dd') : '',
-      country: filters.country?.value || '',
-      city: filters.city?.value || '',
-      isMyActivities: filters.isMyActivities || '',
-    });
-
+  const onSubmit: SubmitHandler<GenericActivitiesFilterValues> = filters => {
     setFilters({
       title: filters.title?.value || '',
-      type: filters.type?.value || '',
+      type: mapToActivityType(filters.type?.value || ''),
       date: filters.date ? format(filters.date, 'yyyy-MM-dd') : '',
       country: filters.country?.value || '',
       city: filters.city?.value || '',
@@ -111,30 +92,23 @@ export const useActivitiesFilterForm = () => {
   };
 
   const handleFormSubmit = handleSubmit(onSubmit);
-
-  const handleReset = () => {
+  const handleFormReset = () => {
     reset(emptyFormData);
     onSubmit(emptyFormData);
   };
 
   return {
-    activitiesTitleOptions: activitiesTitles.map(createActivityTitleOption),
-    activitiesTypeOptions: activitiesTypes.map(createActivityTypeOption),
+    filters,
     selectedCountry,
-    activitiesCountryOption: activitiesCountriesCities.map(createCountryOption),
-    activitiesCityOptions: createCityOptions(
-      selectedCountry,
-      activitiesCountriesCities
-    ),
-    date,
-    handleDateChange,
-    handleReset,
+    // date,
     control,
+    // handleDateChange,
     handleFormSubmit,
+    handleFormReset,
     formState: {
       errors,
       isSubmitting,
     },
-    filters,
+    isAnyFilterSet,
   };
 };

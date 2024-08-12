@@ -1,8 +1,8 @@
 import {ReactNode, useState} from 'react';
 import {ActivitiesContext} from '../context/ActivitiesContext.ts';
-import {ActivitiesFiltersType} from '../api/services/activities/service/types.ts';
+import {VolunteerActivitiesFiltersType} from '../api/services/activities/service/types.ts';
 
-const EMPTY_FILTERS: ActivitiesFiltersType = {
+const EMPTY_FILTERS: VolunteerActivitiesFiltersType = {
   title: '',
   date: '',
   type: '',
@@ -17,7 +17,8 @@ type ActivitiesFiltersProviderProps = {
 export const ActivitiesFiltersProvider = ({
   children,
 }: ActivitiesFiltersProviderProps) => {
-  const [filters, setFilters] = useState<ActivitiesFiltersType>(EMPTY_FILTERS);
+  const [filters, setFilters] =
+    useState<VolunteerActivitiesFiltersType>(EMPTY_FILTERS);
 
   return (
     <ActivitiesContext.Provider value={{filters, setFilters}}>

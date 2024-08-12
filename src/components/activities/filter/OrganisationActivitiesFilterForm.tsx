@@ -1,50 +1,46 @@
-import {useEffect} from 'react';
 import {
   Box,
   Button,
-  Checkbox,
   Divider,
   Flex,
   FormControl,
   FormErrorMessage,
-  FormLabel,
   Icon,
 } from '@chakra-ui/react';
+import {Control, Controller, FieldErrors} from 'react-hook-form';
 import {Select} from 'chakra-react-select';
-import {Controller} from 'react-hook-form';
-import {useActivitiesFilterForm} from '../../../hooks/activities/useActivitiesFilterForm/useActivitiesFilterForm';
-import {ActivitiesFilterProps} from './types';
-import {MdClear, MdSearch} from 'react-icons/md';
-import 'react-datepicker/dist/react-datepicker.css';
 import DatePicker from 'react-datepicker';
 import CustomDateInput from './CustomDateInput.tsx';
+import {MdClear, MdSearch} from 'react-icons/md';
+import {OrganisationActivitiesFilterValues} from '../../../api/validation/activitiesFilter/OrganisationActivitiesFilterValidation.ts';
 
-export const ActivitiesFilter = ({onApply}: ActivitiesFilterProps) => {
-  const {
-    activitiesTitleOptions,
-    activitiesTypeOptions,
-    selectedCountry,
-    activitiesCountryOption,
-    activitiesCityOptions,
-    handleFormSubmit,
-    handleReset,
-    control,
-    formState: {errors, isSubmitting},
-    filters,
-  } = useActivitiesFilterForm();
+type OrganisationActivitiesFilterFormProps = {
+  control: Control<OrganisationActivitiesFilterValues>;
+  titleOptions: {label: string; value: string}[];
+  typeOptions: {label: string; value: string}[];
+  countryOptions: {label: string; value: string}[];
+  cityOptions: {label: string; value: string}[];
+  selectedCountry?: {label: string; value: string} | null | undefined;
+  handleFormSubmit: () => void;
+  handleFormReset: () => void;
+  errors: FieldErrors<OrganisationActivitiesFilterValues>;
+  isSubmitting: boolean;
+  isVisibleResetButton: boolean;
+};
 
-  useEffect(() => {
-    onApply(filters);
-  }, [filters, onApply]);
-
-  const isAnyFilterSet = !!(
-    filters.title ||
-    filters.type ||
-    filters.date ||
-    filters.country ||
-    filters.city
-  );
-
+export const OrganisationActivitiesFilterForm = ({
+  control,
+  titleOptions,
+  typeOptions,
+  countryOptions,
+  cityOptions,
+  selectedCountry,
+  handleFormSubmit,
+  handleFormReset,
+  errors,
+  isSubmitting,
+  isVisibleResetButton,
+}: OrganisationActivitiesFilterFormProps) => {
   return (
     <Box
       w="full"
@@ -67,7 +63,8 @@ export const ActivitiesFilter = ({onApply}: ActivitiesFilterProps) => {
                 <Select
                   {...field}
                   placeholder="Title"
-                  options={activitiesTitleOptions}
+                  value={field.value || null}
+                  options={titleOptions}
                   menuPortalTarget={document.body}
                   styles={{menuPortal: base => ({...base, zIndex: 9999})}}
                 />
@@ -88,7 +85,7 @@ export const ActivitiesFilter = ({onApply}: ActivitiesFilterProps) => {
                 <Select
                   {...field}
                   placeholder="Type"
-                  options={activitiesTypeOptions}
+                  options={typeOptions}
                   menuPortalTarget={document.body}
                   styles={{menuPortal: base => ({...base, zIndex: 9999})}}
                 />
@@ -116,18 +113,6 @@ export const ActivitiesFilter = ({onApply}: ActivitiesFilterProps) => {
                   customInput={
                     <CustomDateInput onClear={() => field.onChange(null)} />
                   }
-                  popperPlacement="bottom-start"
-                  popperModifiers={{
-                    offset: {
-                      enabled: true,
-                      offset: '0, 10',
-                    },
-                    preventOverflow: {
-                      enabled: true,
-                      escapeWithReference: false,
-                      boundariesElement: 'viewport',
-                    },
-                  }}
                 />
               )}
             />
@@ -146,7 +131,7 @@ export const ActivitiesFilter = ({onApply}: ActivitiesFilterProps) => {
                 <Select
                   {...field}
                   placeholder="Country"
-                  options={activitiesCountryOption}
+                  options={countryOptions}
                   menuPortalTarget={document.body}
                   styles={{menuPortal: base => ({...base, zIndex: 9999})}}
                 />
@@ -172,7 +157,7 @@ export const ActivitiesFilter = ({onApply}: ActivitiesFilterProps) => {
                 <Select
                   {...field}
                   placeholder="City"
-                  options={activitiesCityOptions}
+                  options={cityOptions}
                   isDisabled={!selectedCountry}
                   menuPortalTarget={document.body}
                   styles={{menuPortal: base => ({...base, zIndex: 9999})}}
@@ -181,36 +166,6 @@ export const ActivitiesFilter = ({onApply}: ActivitiesFilterProps) => {
             />
             <FormErrorMessage>
               {errors.city && errors.city.message}
-            </FormErrorMessage>
-          </FormControl>
-
-          {/*<Divider orientation="vertical" height="30px" />*/}
-
-          <FormControl isInvalid={!!errors.isMyActivities} flex="1" mx={2}>
-            <Controller
-              name="isMyActivities"
-              control={control}
-              render={({field}) => (
-                // <Flex align="center">
-                <Checkbox
-                  {...field}
-                  isChecked={field.value === 'true'}
-                  onChange={e =>
-                    field.onChange(e.target.checked ? 'true' : 'false')
-                  }
-                  colorScheme="orange"
-                  size="lg"
-                  borderColor="gray.300"
-                >
-                  <FormLabel ml={2} mb={0} color="gray.500">
-                    My events
-                  </FormLabel>
-                </Checkbox>
-                // </Flex>
-              )}
-            />
-            <FormErrorMessage>
-              {errors.isMyActivities && errors.isMyActivities.message}
             </FormErrorMessage>
           </FormControl>
 
@@ -228,7 +183,7 @@ export const ActivitiesFilter = ({onApply}: ActivitiesFilterProps) => {
             <Icon as={MdSearch} w={6} h={6} />
           </Button>
 
-          {isAnyFilterSet && (
+          {isVisibleResetButton && (
             <Button
               type="button"
               variant="outline"
@@ -237,7 +192,7 @@ export const ActivitiesFilter = ({onApply}: ActivitiesFilterProps) => {
               ml={4}
               bg="gray.200"
               _hover={{bg: 'gray.400'}}
-              onClick={handleReset}
+              onClick={handleFormReset}
               p={4}
             >
               <Icon as={MdClear} w={6} h={6} />

@@ -4,7 +4,7 @@ import {RegisterOrgCredentials} from '../../../../hooks/auth/useRegisterOrg/type
 import {
   ROLE_ORGANISATION,
   ROLE_VOLUNTEER,
-} from '../../../../utils/constants/routes.ts';
+} from '../../../../utils/constants/authConstants.ts';
 import {JwtPayload} from 'jwt-decode';
 
 export type AuthService = {

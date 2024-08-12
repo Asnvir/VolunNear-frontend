@@ -1,8 +1,5 @@
 import {UpdateVolunteerInfo, VolunteerService} from './types.ts';
-import {HttpClientService} from '../http/types.ts';
-import {VolunteerService} from './types.ts';
 import {HttpClient} from '../../httpClient/types.ts';
-import {ActivitiesFiltersType} from '../../../context/types.ts';
 import {VolunteerMapperImpl} from '../../mappers/volunteer/VolunteerMapper.ts';
 import {VolunteerMapper} from '../../mappers/volunteer/types.ts';
 import {API_ENDPOINTS} from '../../constants.ts';
@@ -12,14 +9,14 @@ import {
   IVolunteerProfileResponseDTO,
 } from '../../../data-contracts.ts';
 import {HttpClientImpl} from '../../httpClient/HttpClientImpl.ts';
+import {VolunteerActivitiesFiltersType} from '../activities/service/types.ts';
 
 export class VolunteerServiceImpl implements VolunteerService {
   private static instance: VolunteerServiceImpl | null = null;
   private volMapper: VolunteerMapper = VolunteerMapperImpl.getInstance();
   private httpClient: HttpClient = HttpClientImpl.getInstance();
 
-  private constructor() {
-  }
+  private constructor() {}
 
   public static getInstance(): VolunteerServiceImpl {
     if (!VolunteerServiceImpl.instance) {
@@ -29,31 +26,31 @@ export class VolunteerServiceImpl implements VolunteerService {
   }
 
   public updateVolunteerPreferences(
-    filters: ActivitiesFiltersType,
-  ): Promise<ActivitiesFiltersType> {
-    const preferencesDTO = this.volMapper.preferencesToDTO(filters);
-
-    return preferencesDTO;
+    filters: VolunteerActivitiesFiltersType
+  ): Promise<VolunteerActivitiesFiltersType> {
+    return this.volMapper.preferencesToDTO(filters);
   }
 
   public async getVolunteerProfile(): Promise<IVolunteerProfileResponseDTO> {
-    const {data: volunteerProfileDTO} = await this.httpClient.get<
-      IVolunteerProfileResponseDTO
-    >(API_ENDPOINTS.VOLUNTEER_PROFILE);
+    const {data: volunteerProfileDTO} =
+      await this.httpClient.get<IVolunteerProfileResponseDTO>(
+        API_ENDPOINTS.VOLUNTEER_PROFILE
+      );
     return volunteerProfileDTO;
   }
 
   public async isVolunteerActivityJoined(activityId: string): Promise<boolean> {
-    console.log("Into isVolunteerActivityJoined activityId: ", activityId)
     const {data: isJoined} = await this.httpClient.get<boolean>(
       API_ENDPOINTS.IS_VOLUNTEER_JOINED + activityId
     );
     return isJoined;
   }
 
-
-  public async updateVolunteerProfile(updateVolunteerInfo: UpdateVolunteerInfo): Promise<IUpdateVolunteerInfoRequestDTO> {
-    const updateVolunteerInfoDTO = this.volMapper.updateVolunteerInfoToDTO(updateVolunteerInfo);
+  public async updateVolunteerProfile(
+    updateVolunteerInfo: UpdateVolunteerInfo
+  ): Promise<IUpdateVolunteerInfoRequestDTO> {
+    const updateVolunteerInfoDTO =
+      this.volMapper.updateVolunteerInfoToDTO(updateVolunteerInfo);
     const {data: updatedVolunteerInfoDTO} = await this.httpClient.put<
       IUpdateVolunteerInfoData,
       IUpdateVolunteerInfoRequestDTO

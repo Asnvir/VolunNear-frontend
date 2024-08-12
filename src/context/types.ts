@@ -1,7 +1,7 @@
 import {User} from '../api/types.ts';
 import {VolunteerService} from '../api/services/volunteer/types.ts';
 import {
-  ActivitiesFiltersType,
+  VolunteerActivitiesFiltersType,
   ActivitiesService,
 } from '../api/services/activities/service/types.ts';
 import {AuthService} from '../api/services/auth/service/types.ts';
@@ -30,6 +30,6 @@ export type AppStateContextType = {
 };
 
 export type ActivitiesContextType = {
-  filters: ActivitiesFiltersType;
-  setFilters: (filters: ActivitiesFiltersType) => void;
+  filters: VolunteerActivitiesFiltersType;
+  setFilters: (filters: VolunteerActivitiesFiltersType) => void;
 };

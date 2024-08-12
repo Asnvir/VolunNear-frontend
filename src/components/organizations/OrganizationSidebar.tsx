@@ -1,6 +1,10 @@
 import {useEffect, useState} from 'react';
 import {useLocation, useNavigate} from 'react-router-dom';
 import {Button} from '@chakra-ui/react';
+import {
+  ROUTE_ORGANIZATION_ADD_ACTIVITY,
+  ROUTE_ORGANIZATION_MY_ACTIVITIES,
+} from '../../utils/constants/routesConstants.ts';
 
 export const OrganizationSidebar = () => {
   const [activeButton, setActiveButton] = useState<string | null>();
@@ -18,9 +22,9 @@ export const OrganizationSidebar = () => {
   });
 
   useEffect(() => {
-    if (location.pathname === '/add-activity') {
+    if (location.pathname === ROUTE_ORGANIZATION_ADD_ACTIVITY) {
       setActiveButton('addActivity');
-    } else if (location.pathname === '/my-activities') {
+    } else if (location.pathname === ROUTE_ORGANIZATION_MY_ACTIVITIES) {
       setActiveButton('myActivities');
     }
   }, [location.pathname]);
@@ -31,17 +35,17 @@ export const OrganizationSidebar = () => {
         w="full"
         variant="ghost"
         {...buttonStyle('addActivity')}
-        onClick={() => navigate('add-activity')}
+        onClick={() => navigate(ROUTE_ORGANIZATION_ADD_ACTIVITY)}
       >
-        Add Activity
+        Add event
       </Button>
       <Button
         w="full"
         variant="ghost"
         {...buttonStyle('myActivities')}
-        onClick={() => navigate('my-activities')}
+        onClick={() => navigate(ROUTE_ORGANIZATION_MY_ACTIVITIES)}
       >
-        My Activities
+        My events
       </Button>
     </>
   );

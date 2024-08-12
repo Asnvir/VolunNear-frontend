@@ -1,12 +1,12 @@
 import {useServiceContext} from '../../../shared/hooks/useServiceContext.ts';
 import {useQuery} from '@tanstack/react-query';
-import {QUERY_KEY_GET_COUNTIRES_CITIES} from '../../../utils/constants/reactQueryKeys.ts';
+import {QUERY_KEY_GET_VOLUNTEER_COUNTRIES_CITIES} from '../../../utils/constants/reactQueryKeys.ts';
 
 export const useGetCountriesCities = () => {
   const {formService} = useServiceContext();
 
   const query = useQuery({
-    queryKey: [QUERY_KEY_GET_COUNTIRES_CITIES],
+    queryKey: [QUERY_KEY_GET_VOLUNTEER_COUNTRIES_CITIES],
     queryFn: () => formService.getCountriesData(),
   });
 
