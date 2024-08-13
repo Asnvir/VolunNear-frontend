@@ -17,10 +17,13 @@ import {
 import {AddActivityPage} from '../pages/AddActivityPage.tsx';
 import VolunteerProfileSettings from '../pages/VolunteerProfileSettings.tsx';
 import {
+  ROUTE_LOGIN,
   ROUTE_ORGANIZATION_ADD_ACTIVITY,
   ROUTE_ORGANIZATION_MY_ACTIVITIES,
+  ROUTE_ORGANIZATION_REGISTRATION,
   ROUTE_VOLUNTEER_EVENTS,
   ROUTE_VOLUNTEER_ORGANIZATIONS,
+  ROUTE_VOLUNTEER_REGISTRATION,
 } from '../utils/constants/routesConstants.ts';
 import {ProtectedRoute} from '../components/navigation/ProtectedRoute.tsx';
 import {OrganisationActivities} from '../pages/OrganisationActivities.tsx';
@@ -82,13 +85,13 @@ export const CustomRouterProvider = () => {
             },
           ],
         },
-        {path: 'login', element: <LoginPage />},
+        {path: ROUTE_LOGIN, element: <LoginPage />},
         {
-          path: 'registration/volunteer',
+          path: ROUTE_VOLUNTEER_REGISTRATION,
           element: <RegistrationVolunteerPage />,
         },
         {
-          path: 'registration/organization',
+          path: ROUTE_ORGANIZATION_REGISTRATION,
           element: <RegistrationOrgPage />,
         },
 

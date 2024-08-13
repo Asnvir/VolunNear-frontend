@@ -1,6 +1,16 @@
 import {extendTheme} from '@chakra-ui/react';
 
 export const theme = extendTheme({
+  colors: {
+    primary: {
+      500: '#FF7A00',
+      300: '#FF9A33',
+    },
+    secondary: {
+      500: '#4299E1',
+      300: '#63B3ED',
+    },
+  },
   fonts: {
     heading: 'Poppins, sans-serif',
     body: 'Poppins, sans-serif',
@@ -14,31 +24,20 @@ export const theme = extendTheme({
       },
       variants: {
         primary: {
-          bg: '#FF7A00',
+          bg: 'primary.500',
           color: 'white',
           _hover: {
-            bg: 'orange.300',
+            bg: 'primary.300',
           },
         },
         secondary: {
-          bg: 'blue.400',
+          bg: 'secondary.500',
           color: 'white',
           _hover: {
-            bg: 'blue.300',
+            bg: 'secondary.300',
           },
         },
       },
     },
-    colors: {
-      primary: {
-        400: '#FF7A00',
-        300: 'orange.300',
-      },
-      secondary: {
-        400: 'blue.400',
-        300: 'blue.300',
-      },
-    },
-  }
+  },
 });
-
