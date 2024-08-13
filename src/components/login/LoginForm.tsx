@@ -11,21 +11,22 @@ import {
   AlertTitle,
   Box,
   Button,
+  Flex,
   FormControl,
   FormErrorMessage,
   FormLabel,
+  Heading,
   IconButton,
   Input,
   InputGroup,
   InputRightElement,
-  VStack,
   Link,
-  Flex,
-  Heading,
   Text,
+  VStack,
 } from '@chakra-ui/react';
 import {ViewIcon, ViewOffIcon} from '@chakra-ui/icons';
 import {LoginFormValues} from '../../api/validation/login/types.ts';
+import {SignUpContainer} from '../registration/SignUpContainer.tsx';
 
 export const LoginForm = () => {
   const {
@@ -122,11 +123,9 @@ export const LoginForm = () => {
         </Button>
 
         <Flex justify="space-between" width="full" mt={4}>
-          <Link color="blue.500" onClick={() => navigate('/signup')}>
-            Sign Up
-          </Link>
+          <SignUpContainer />
           <Link color="blue.500" onClick={() => navigate('/forgot-password')}>
-            Forgot Password?
+            Forgot password?
           </Link>
         </Flex>
 
