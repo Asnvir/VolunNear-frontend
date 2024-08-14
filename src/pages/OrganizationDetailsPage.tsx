@@ -16,13 +16,15 @@ import {
   Textarea,
   Image,
   Flex,
-  SimpleGrid,
+  SimpleGrid, useToast,
 } from '@chakra-ui/react';
 import {Rating, Star} from '@smastrom/react-rating';
 import '@smastrom/react-rating/style.css';
 import {useLocation} from 'react-router-dom';
 import NoImage from '../../resources/No_image_available.png';
 import {Organization} from '../api/services/organizations/types.ts';
+import {usePostFeedback} from '../hooks/feedbacks/usePostFeedback/usePostFeedback.ts';
+import {useAddOrUpdateRating} from '../hooks/organizations/userAddOrUpdateRating/useAddOrUpdateRating.ts';
 
 interface LocationState {
   organisation: Organization;
@@ -33,33 +35,63 @@ const OrganizationDetailsPage: React.FC = () => {
   const [feedback, setFeedback] = useState("");
   const { state } = useLocation<LocationState>();
   const organisation = state?.organisation;
+  const toast = useToast();
 
-  const handleFeedbackSubmit = async () => {
-    try {
-      // Send rating to the rating endpoint
-      await fetch('/api/rating', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
+  const {mutate: postFeedback} = usePostFeedback();
+  const {mutate: rateOrganisation} = useAddOrUpdateRating();
+
+  const handleFeedbackSubmit = () => {
+    rateOrganisation(
+      { orgId: organisation.id, rating },
+      {
+        onSuccess: () => {
+          toast({
+            title: 'Rating submitted.',
+            description: 'Your rating has been successfully submitted.',
+            status: 'success',
+            duration: 5000,
+            isClosable: true,
+          });
+
+          postFeedback(
+            { idOfOrganisation: organisation.id, rate:rating, feedbackDescription:feedback },
+            {
+              onSuccess: () => {
+                toast({
+                  title: 'Feedback submitted.',
+                  description: 'Your feedback has been successfully submitted.',
+                  status: 'success',
+                  duration: 5000,
+                  isClosable: true,
+                });
+
+                console.log('Feedback and rating submitted successfully');
+              },
+              onError: (error) => {
+                toast({
+                  title: 'Error submitting feedback.',
+                  description: error?.message || 'Unable to submit feedback. Please try again later.',
+                  status: 'error',
+                  duration: 5000,
+                  isClosable: true,
+                });
+                console.error('Error submitting feedback:', error);
+              },
+            }
+          );
         },
-        body: JSON.stringify({ organizationId: organisation.id, rating }),
-      });
-
-      // Send feedback to the feedback endpoint
-      await fetch('/api/feedback', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
+        onError: (error) => {
+          toast({
+            title: 'Error submitting rating.',
+            description: error?.message || 'Unable to submit rating. Please try again later.',
+            status: 'error',
+            duration: 5000,
+            isClosable: true,
+          });
+          console.error('Error submitting rating:', error);
         },
-        body: JSON.stringify({ organizationId: organisation.id, feedback }),
-      });
-
-      // Optionally, you can add a success message or reset the form
-      console.log('Feedback and rating submitted successfully');
-
-    } catch (error) {
-      console.error('Error submitting feedback or rating:', error);
-    }
+      }
+    );
 
     onClose();
   };
