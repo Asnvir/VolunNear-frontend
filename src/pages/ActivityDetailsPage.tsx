@@ -20,6 +20,9 @@ import OrganizationInfo from '../components/activities/activityDetails/Organista
 import OrganisationDetails from '../components/activities/activityDetails/OrganisationDetails.tsx';
 import {useGetAverageRating} from '../hooks/organizations/useGetAvarageRating/useGetAverageRating.ts';
 import {useGetVolunteerActivities} from '../hooks/activities/useGetVolunteerActivities/useGetVolunteerActivities.ts';
+import {
+  useGetFeedbacksByOrganisation
+} from '../hooks/feedbacks/useGetFeedbacksByOrganisation/useGetFeedbacksByOrganisation.ts';
 
 interface LocationState {
   activity: Activity;
@@ -32,13 +35,17 @@ const ActivityDetailsPage: React.FC = () => {
   // Fetch average rating
   const {data: averageRatingData, isLoading: isLoadingRating} =
     useGetAverageRating(activity?.organisationId || '');
+  const {data: feedbacks, isLoading: isLoadingFeedbacks} = useGetFeedbacksByOrganisation(activity?.organisationId || '');
   const [averageRating, setAverageRating] = useState(0);
-
+  const [feedbacksCount, setFeedbacksCount] = useState(0);
   useEffect(() => {
     if (!isLoadingRating && averageRatingData !== undefined) {
       setAverageRating(averageRatingData);
     }
-  }, [isLoadingRating, averageRatingData]);
+    if(!isLoadingFeedbacks && feedbacks !== undefined) {
+      setFeedbacksCount(feedbacks.length);
+    }
+  }, [isLoadingRating, averageRatingData, isLoadingFeedbacks, feedbacks]);
 
   // Fetch similar activities
   const {
@@ -104,7 +111,7 @@ const ActivityDetailsPage: React.FC = () => {
               <OrganisationDetails
                 avatarUrl={activity.organisationAvatarUrl}
                 name={activity.organisationName}
-                numberOfReviews={45} // This can be replaced with real data if available
+                numberOfReviews={feedbacksCount} // This can be replaced with real data if available
                 rating={averageRating}
               />
             </Box>

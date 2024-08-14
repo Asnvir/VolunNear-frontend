@@ -128,6 +128,7 @@ export interface INearbyActivitiesRequestDTO {
   city?: string;
 }
 
+
 export interface IFeedbackResponseDTO {
   /** @format uuid */
   id?: string;
@@ -136,6 +137,7 @@ export interface IFeedbackResponseDTO {
   description?: string;
   realNameOfUser?: string;
   username?: string;
+  avatarUrl?: string;
 }
 
 export type IUpdateVolunteerInfoData = IVolunteerInfoDTO;

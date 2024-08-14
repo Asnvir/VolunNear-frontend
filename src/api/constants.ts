@@ -22,5 +22,6 @@ export const API_ENDPOINTS = {
   GET_AVERAGE_RATING_OF_ORGANISATION: '/api/v1/organisations/average-rating/',
   RATE_ORGANISATION: '/api/v1/organisations/rate/',
   POST_FEEDBACK: '/api/v1/feedback/give_feedback',
+  GET_FEEDBACKS: '/api/v1/feedback/feedbacks_of_organisation',
   GET_ALL_FEEDBACKS_OF_ORGANISATION: '/api/v1/feedback//feedbacks_of_organisation',
 };

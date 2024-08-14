@@ -52,4 +52,5 @@ export const QUERY_GET_AVERAGE_RATING_OF_ORGANISATION = 'getAverageRatingOfOrgan
 export const MUTATION_KEY_RATE_ORGANISATION = 'rateOrganisation' as string;
 
 export const MUTATION_KEY_POST_FEEDBACK = 'postFeedback' as string;
+export const QUERY_KEY_GET_FEEDBACKS = 'getFeedbacks' as string;
 

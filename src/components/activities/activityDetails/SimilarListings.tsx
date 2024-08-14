@@ -59,7 +59,7 @@ const SimilarListings: React.FC<SimilarListingsProps> = ({ activities, isLoading
   return (
     <Box>
       <Heading as="h3" size="md" mb={6} textAlign="start">
-        Similar Volunteer Activities
+        Similar Activities
       </Heading>
       <Carousel
         responsive={responsive}

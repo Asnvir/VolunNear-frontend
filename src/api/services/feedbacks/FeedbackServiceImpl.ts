@@ -3,7 +3,7 @@
 import {FeedbackService} from './types.ts';
 import {HttpClient} from '../../httpClient/types.ts';
 import {HttpClientImpl} from '../../httpClient/HttpClientImpl.ts';
-import {IFeedbackRequest} from '../../../data-contracts.ts';
+import {IFeedbackRequest, IFeedbackResponseDTO} from '../../../data-contracts.ts';
 import {API_ENDPOINTS} from '../../constants.ts';
 
 export class FeedbackServiceImpl implements FeedbackService {
@@ -26,6 +26,12 @@ export class FeedbackServiceImpl implements FeedbackService {
     )
     return data;
   }
-  //TODO: Implement the getAllFeedback method
+
+  public async getAllFeedbacks(id: string): Promise<IFeedbackResponseDTO[]> {
+    const {data} = await this.httpClient.get<IFeedbackResponseDTO[]>(
+      `${API_ENDPOINTS.GET_FEEDBACKS}?id=${id}`
+    )
+    return data;
+  }
 
 }
