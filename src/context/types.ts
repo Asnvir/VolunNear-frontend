@@ -9,6 +9,7 @@ import {FileUploadService} from '../api/services/files/service/types.ts';
 import {PlacesService} from '../api/services/places/types.ts';
 import {OrganizationService} from '../api/services/organizations/types.ts';
 import {NotificationService} from '../api/services/notifications/types.ts';
+import {FeedbackService} from '../api/services/feedbacks/types.ts';
 
 export type ServiceContextType = {
   activitiesService: ActivitiesService;
@@ -18,6 +19,7 @@ export type ServiceContextType = {
   fileUploadService: FileUploadService;
   formService: PlacesService;
   notificationService: NotificationService;
+  feedbackService: FeedbackService;
 };
 
 export type AppStateType = {

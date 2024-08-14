@@ -43,8 +43,9 @@ export class OrganizationServiceImpl implements OrganizationService {
   }
 
   public async addOrUpdateRating(orgId:string, rating:number): Promise<void> {
+    console.log(`orgId: ${orgId}, rating: ${rating}`)
       await this.httpClient.post(
-      API_ENDPOINTS.RATE_ORGANISATION + `${orgId}`,rating
+      API_ENDPOINTS.RATE_ORGANISATION + `${orgId}` + `?rating=${rating}`
       )
   }
 

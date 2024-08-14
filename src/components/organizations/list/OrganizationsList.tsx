@@ -11,7 +11,7 @@ import {
   Text,
 } from '@chakra-ui/react';
 import {useNavigate} from 'react-router-dom';
-import {OrganizationFiltersType} from '../../../api/services/organizations/types.ts';
+import {Organization, OrganizationFiltersType} from '../../../api/services/organizations/types.ts';
 import {useGetOrganisations} from '../../../hooks/organizations/useGetOrganizations/useGetOrganisations.tsx';
 import {OrganisationCard} from '../card/OrganisationCard.tsx';
 import {
@@ -47,8 +47,8 @@ export const OrganizationsList = ({filters}: OrganizationsListProps) => {
   const isSubscribed = (organizationID: string): boolean => {
     return subscribedOrganisations?.some((sub) => sub.id === organizationID);
   };
-  const handleOrganisationClick = (id: string) => {
-    navigate(`/organisation/${id}`);
+  const handleOrganisationClick = (organisation: Organization) => {
+    navigate(`/organisation/${organisation.id}`, { state: { organisation } });
   };
 
   const handlePageChange = (page: number) => {

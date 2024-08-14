@@ -104,7 +104,7 @@ export class ActivitiesServiceImpl implements ActivitiesService {
       await this.httpClient.get<OrganisationActivitiesResponse>(
         `/api/v1/organisation/get_activities?${queryParamsString}`
       );
-
+    console.log("Get organisation activities", activityDTOS)
     return activityDTOS.map(activityDTO =>
       this.mapActivityDTOToActivity(activityDTO)
     );
