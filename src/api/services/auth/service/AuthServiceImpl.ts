@@ -6,7 +6,12 @@ import {
   IRegistrationOrganisationRequestDTO,
   IRegistrationVolunteerRequestDTO,
 } from '../../../../data-contracts.ts';
-import {HttpClient} from '../../../httpClient/types.ts';
+import {
+  ChangePasswordRequest,
+  ChangePasswordResponse,
+  HttpClient,
+  ResponseForgotPasswordDTO,
+} from '../../../httpClient/types.ts';
 import {AuthMapper} from '../../../mappers/auth/types.ts';
 import {AuthMapperImpl} from '../../../mappers/auth/AuthMapperImpl.ts';
 import {
@@ -114,18 +119,18 @@ export class AuthServiceImpl implements AuthService {
     }
   }
 
-  public async changePassword(
-    oldPassword: string,
-    newPassword: string
-  ): Promise<void> {
-    const response = await this.httpClient.post<
-      void,
-      {currentPassword: string; newPassword: string}
-    >(API_ENDPOINTS.CHANGE_PASSWORD, {oldPassword, newPassword});
-    if (response.status !== 200) {
-      throw new Error('Password change failed');
-    }
-  }
+  // public async changePassword(
+  //   oldPassword: string,
+  //   newPassword: string
+  // ): Promise<void> {
+  //   const response = await this.httpClient.post<
+  //     void,
+  //     {currentPassword: string; newPassword: string}
+  //   >(API_ENDPOINTS.CHANGE_PASSWORD, {oldPassword, newPassword});
+  //   if (response.status !== 200) {
+  //     throw new Error('Password change failed');
+  //   }
+  // }
 
   private isTokenExpired = (token: JwtToken) => {
     return token.exp * 1000 <= Date.now();
@@ -146,6 +151,139 @@ export class AuthServiceImpl implements AuthService {
       return this.createUser(decodedToken, role);
     } catch (error) {
       return null;
+    }
+  }
+
+  public async verifyEmail(email: string): Promise<ResponseForgotPasswordDTO> {
+    try {
+      console.log('Verifying email:', email);
+      const response = await this.httpClient.post<
+        ResponseForgotPasswordDTO,
+        null
+      >(
+        `${API_ENDPOINTS.VERIFY_EMAIL}/${email}`,
+        null, // Assuming no body is needed for this request
+        {
+          headers: {
+            'Content-Type': 'application/json',
+          },
+        }
+      );
+
+      // Check if the request was successful
+      if (response.status === 200) {
+        // Return the response data with success flag
+        return {
+          success: true,
+          message: response.data.message, // Add other necessary fields from response.data
+          // Optionally include other properties from response.data if needed
+        };
+      } else {
+        // Handle error response
+        console.error('Email verification failed:', response.data);
+        // Return the response data with success flag set to false
+        return {
+          success: false,
+          message: response.data.message || 'Email verification failed',
+        };
+      }
+    } catch (error) {
+      // Ensure the error is of type Error
+      if (error instanceof Error) {
+        console.error(
+          'An error occurred during email verification:',
+          error.message
+        );
+        // Return an error object with success flag set to false
+        return {
+          success: false,
+          message: error.message,
+        };
+      } else {
+        console.error('An unknown error occurred during email verification');
+        // Return an error object with success flag set to false
+        return {
+          success: false,
+          message: 'An unknown error occurred',
+        };
+      }
+    }
+  }
+
+  public async verifyOTP(
+    otp: string,
+    email: string
+  ): Promise<ResponseForgotPasswordDTO> {
+    try {
+      console.log('AuthServiceImpl - Verifying OTP:', otp, 'for email:', email);
+
+      // Send the POST request to the backend with OTP and email as path variables
+      const response = await this.httpClient.post<
+        ResponseForgotPasswordDTO,
+        null
+      >(`${API_ENDPOINTS.VERIFY_OTP}/${otp}/${email}`, null, {
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      });
+
+      // Check if the request was successful
+      if (response.status === 200) {
+        // Return the response data with success flag
+        return {
+          success: true,
+          message: response.data.message, // Add other necessary fields from response.data
+          // Optionally include other properties from response.data if needed
+        };
+      } else {
+        // Handle error response
+        console.error('OTP verification failed:', response.data);
+        // Return the response data with success flag set to false
+        return {
+          success: false,
+          message: response.data.message || 'OTP verification failed',
+        };
+      }
+    } catch (error) {
+      // Ensure the error is of type Error
+      if (error instanceof Error) {
+        console.error(
+          'An error occurred during OTP verification:',
+          error.message
+        );
+        // Return an error object with success flag set to false
+        return {
+          success: false,
+          message: error.message,
+        };
+      } else {
+        console.error('An unknown error occurred during OTP verification');
+        // Return an error object with success flag set to false
+        return {
+          success: false,
+          message: 'An unknown error occurred',
+        };
+      }
+    }
+  }
+
+  public async changePassword(
+    email: string,
+    changePasswordRequest: ChangePasswordRequest
+  ): Promise<ChangePasswordResponse> {
+    try {
+      const response = await this.httpClient.post<
+        ChangePasswordResponse,
+        ChangePasswordRequest
+      >(`${API_ENDPOINTS.CHANGE_PASSWORD}/${email}`, changePasswordRequest, {
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      });
+      return response.data;
+    } catch (error) {
+      console.error('Failed to change password:', error);
+      throw new Error('Failed to change password');
     }
   }
 }

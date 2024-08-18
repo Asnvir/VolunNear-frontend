@@ -1,25 +1,44 @@
-import {useServiceContext} from '../../../shared/hooks/useServiceContext.ts';
+// useChangePassword.ts
 import {useMutation} from '@tanstack/react-query';
-import {
-  MUTATION_KEY_CHANGE_PASSWORD,
-} from '../../../utils/constants/reactQueryKeys.ts';
-import {ChangePasswordParams} from './types.ts';
+import {useServiceContext} from '../../../shared/hooks/useServiceContext.ts';
+import {ChangePasswordRequest} from '../../../api/httpClient/types.ts';
+import {MUTATION_KEY_CHANGE_PASSWORD} from '../../../utils/constants/reactQueryKeys.ts';
 
-export const useChangePassword = () => {
+export const useChangePassword = (
+  onSuccess: () => void,
+  onError: (errorMessage: string) => void
+) => {
   const {authService} = useServiceContext();
 
   const mutation = useMutation({
     mutationKey: [MUTATION_KEY_CHANGE_PASSWORD],
-    mutationFn: (changePasswordParams: ChangePasswordParams) => {
-      console.log('changePasswordParams', changePasswordParams);
-      return authService.changePassword(changePasswordParams.oldPassword, changePasswordParams.newPassword);
+    mutationFn: async ({
+      email,
+      changePassword,
+    }: {
+      email: string;
+      changePassword: ChangePasswordRequest;
+    }) => {
+      return await authService.changePassword(email, changePassword);
+    },
+    onSuccess: data => {
+      if (data.success) {
+        console.log('Password changed successfully:', data.message);
+        onSuccess();
+      } else {
+        onError(data.message || 'Password change failed');
+      }
+    },
+    onError: error => {
+      const errorMessage =
+        error instanceof Error ? error.message : 'Unknown error occurred';
+      onError(errorMessage);
     },
   });
 
   return {
-    mutate: mutation.mutate,
-    data: mutation.data,
-    isLoading: mutation.isLoading,
+    changePassword: mutation.mutateAsync,
+    isLoading: mutation.isPending,
     error: mutation.error?.message,
   };
 };
