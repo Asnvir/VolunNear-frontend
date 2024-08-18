@@ -10,7 +10,6 @@ export const API_ENDPOINTS = {
   UPLOAD_ORGANISATION_AVATAR: `/api/v1/upload/avatar/organisation`,
   UPLOAD_ACTIVITY_COVER_IMAGE: '/api/v1/upload/activity/cover',
   UPLOAD_ACTIVITY_GALLERY_IMAGES: '/api/v1/upload/activity/gallery_images',
-  CHANGE_PASSWORD: `/api/v1/change_password`,
   CREATE_ACTIVITY: `/api/v1/organisation/add_activity`,
   JOIN_ACTIVITY: `/api/v1/volunteer/enter_to_activity?id=`,
   LEAVE_ACTIVITY: `/api/v1/volunteer/leave_activity?id=`,
@@ -23,5 +22,9 @@ export const API_ENDPOINTS = {
   RATE_ORGANISATION: '/api/v1/organisations/rate/',
   POST_FEEDBACK: '/api/v1/feedback/give_feedback',
   GET_FEEDBACKS: '/api/v1/feedback/feedbacks_of_organisation',
-  GET_ALL_FEEDBACKS_OF_ORGANISATION: '/api/v1/feedback//feedbacks_of_organisation',
+  GET_ALL_FEEDBACKS_OF_ORGANISATION:
+    '/api/v1/feedback//feedbacks_of_organisation',
+  VERIFY_EMAIL: '/api/v1/forgot_password/verify_email',
+  VERIFY_OTP: '/api/v1/forgot_password/verify_otp',
+  CHANGE_PASSWORD: `/api/v1/forgot_password/change_password`,
 };
