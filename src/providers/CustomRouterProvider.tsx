@@ -16,7 +16,6 @@ import {
 } from '../utils/constants/authConstants.ts';
 import {AddActivityPage} from '../pages/AddActivityPage.tsx';
 import VolunteerProfileSettings from '../pages/VolunteerProfileSettings.tsx';
-import OrganisationProfileSettings from '../pages/OrganisationProfileSettings.tsx';
 import OrganizationDetailsPage from '../pages/OrganizationDetailsPage.tsx';
 import {
   ROUTE_LOGIN,
@@ -108,16 +107,14 @@ export const CustomRouterProvider = () => {
         {
           path: 'activity/:activityId',
           element: (
-            // <ProtectedRoute>
-            <ActivityDetailsPage />
-            // </ProtectedRoute>
+            <ProtectedRoute roles={[ROLE_ORGANISATION, ROLE_VOLUNTEER]}>
+              <ActivityDetailsPage />
+            </ProtectedRoute>
           ),
         },
         {
           path: 'organisation/:organizationId',
-          element: (
-              <OrganizationDetailsPage />
-          )
+          element: <OrganizationDetailsPage />,
         },
         {
           path: '*',

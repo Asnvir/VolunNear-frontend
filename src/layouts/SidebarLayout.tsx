@@ -65,9 +65,9 @@ export const SidebarLayout = () => {
         <Flex direction="column" minHeight="100vh" width="full">
           <Banner />
           <DescriptionBoxes />
-          <AboutUs />
+          <AboutUs id="about-us" />
           <JourneyOfVolunNearSection />
-          <Testimonials />
+          <Testimonials id="feedbacks" />
         </Flex>
       )}
     </Flex>

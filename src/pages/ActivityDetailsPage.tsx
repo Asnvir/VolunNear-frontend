@@ -1,5 +1,5 @@
 import React, {useEffect, useState} from 'react';
-import {useLocation} from 'react-router-dom';
+import {useLocation, useParams} from 'react-router-dom';
 import {
   Alert,
   AlertIcon,
@@ -20,29 +20,28 @@ import OrganizationInfo from '../components/activities/activityDetails/Organista
 import OrganisationDetails from '../components/activities/activityDetails/OrganisationDetails.tsx';
 import {useGetAverageRating} from '../hooks/organizations/useGetAvarageRating/useGetAverageRating.ts';
 import {useGetVolunteerActivities} from '../hooks/activities/useGetVolunteerActivities/useGetVolunteerActivities.ts';
-import {
-  useGetFeedbacksByOrganisation
-} from '../hooks/feedbacks/useGetFeedbacksByOrganisation/useGetFeedbacksByOrganisation.ts';
+import {useGetFeedbacksByOrganisation} from '../hooks/feedbacks/useGetFeedbacksByOrganisation/useGetFeedbacksByOrganisation.ts';
 
-interface LocationState {
-  activity: Activity;
-}
+type ActivityDetailsParams = {
+  activityId: string;
+};
 
 const ActivityDetailsPage: React.FC = () => {
-  const {state} = useLocation<LocationState>();
-  const activity = state?.activity;
+  const {activityId} = useParams<ActivityDetailsParams>();
+  const {activity} = useGetActivity(activityId);
 
   // Fetch average rating
   const {data: averageRatingData, isLoading: isLoadingRating} =
     useGetAverageRating(activity?.organisationId || '');
-  const {data: feedbacks, isLoading: isLoadingFeedbacks} = useGetFeedbacksByOrganisation(activity?.organisationId || '');
+  const {data: feedbacks, isLoading: isLoadingFeedbacks} =
+    useGetFeedbacksByOrganisation(activity?.organisationId || '');
   const [averageRating, setAverageRating] = useState(0);
   const [feedbacksCount, setFeedbacksCount] = useState(0);
   useEffect(() => {
     if (!isLoadingRating && averageRatingData !== undefined) {
       setAverageRating(averageRatingData);
     }
-    if(!isLoadingFeedbacks && feedbacks !== undefined) {
+    if (!isLoadingFeedbacks && feedbacks !== undefined) {
       setFeedbacksCount(feedbacks.length);
     }
   }, [isLoadingRating, averageRatingData, isLoadingFeedbacks, feedbacks]);
