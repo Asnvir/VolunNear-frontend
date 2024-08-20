@@ -6,6 +6,11 @@ import {
   ROLE_VOLUNTEER,
 } from '../../../../utils/constants/authConstants.ts';
 import {JwtPayload} from 'jwt-decode';
+import {
+  ChangePasswordRequest,
+  ChangePasswordResponse,
+  ResponseForgotPasswordDTO,
+} from '../../../httpClient/types.ts';
 
 export type AuthService = {
   login: (loginCredentials: LoginCredentials) => Promise<User>;
@@ -17,7 +22,12 @@ export type AuthService = {
     registerOrgCredentials: RegisterOrgCredentials
   ) => Promise<void>;
   getCurrentUser: () => User | null;
-  changePassword: (oldPassword: string, newPassword: string) => Promise<void>;
+  verifyEmail(email: string): Promise<ResponseForgotPasswordDTO>;
+  verifyOTP(otp: string, email: string): Promise<ResponseForgotPasswordDTO>;
+  changePassword(
+    email: string,
+    changePasswordRequest: ChangePasswordRequest
+  ): Promise<ChangePasswordResponse>;
 };
 
 export type Role = typeof ROLE_ORGANISATION | typeof ROLE_VOLUNTEER;

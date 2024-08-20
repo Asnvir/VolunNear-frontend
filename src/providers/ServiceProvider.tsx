@@ -12,6 +12,7 @@ import {PlacesService} from '../api/services/places/types.ts';
 import {OrganizationService} from '../api/services/organizations/types.ts';
 import {OrganizationServiceImpl} from '../api/services/organizations/OrganizationServiceImpl.ts';
 import {NotificationServiceImpl} from '../api/services/notifications/NotificationServiceImpl.ts';
+import {FeedbackServiceImpl} from '../api/services/feedbacks/FeedbackServiceImpl.ts';
 
 type ServiceProviderProps = {
   children: React.ReactNode;
@@ -33,6 +34,8 @@ const initServices = () => {
 
   const notificationService = NotificationServiceImpl.getInstance();
 
+  const feedbackService = FeedbackServiceImpl.getInstance();
+
   return {
     authService,
     activitiesService,
@@ -40,7 +43,8 @@ const initServices = () => {
     volunteerService,
     formService,
     fileUploadService,
-    notificationService
+    notificationService,
+    feedbackService
   };
 };
 

@@ -42,6 +42,21 @@ export type ActivitiesFiltersResponse = {
   country: string;
 };
 
+export type ResponseForgotPasswordDTO = {
+  success: boolean;
+  message: string;
+};
+
+export type ChangePasswordRequest = {
+  newPassword: string;
+  repeatedNewPassword: string;
+};
+
+export type ChangePasswordResponse = {
+  success: boolean;
+  message: string;
+};
+
 export type ActivitiesTitlesResponse = string[];
 
 export type CountriesCitiesResponse = {

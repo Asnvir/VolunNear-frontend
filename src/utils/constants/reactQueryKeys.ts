@@ -42,12 +42,20 @@ export const QUERY_KEY_IS_JOIN_ACTIVITY = 'isJoinActivity' as string;
 
 export const MUTATION_KEY_LEAVE_ACTIVITY = 'leaveActivity' as string;
 export const MUTATION_KEY_CHANGE_PASSWORD = 'changePassword' as string;
+export const MUTATION_KEY_VERIFY_EMAIL = 'verifyEmail';
+export const MUTATION_KEY_VERIFY_OTP = 'verifyOtp';
 
-export const QUERY_KEY_GET_ALL_SUBSCRIBED_ORGANISATIONS = 'getAllSubscribedOrganisations' as string;
+export const QUERY_KEY_GET_ALL_SUBSCRIBED_ORGANISATIONS =
+  'getAllSubscribedOrganisations' as string;
 
-export const MUTATION_KEY_SUBSCRIBE_TO_ORGANISATION = 'subscribeToOrganisation' as string;
-export const MUTATION_KEY_UNSUBSCRIBE_FROM_ORGANISATION = 'unsubscribeFromOrganisation' as string;
+export const MUTATION_KEY_SUBSCRIBE_TO_ORGANISATION =
+  'subscribeToOrganisation' as string;
+export const MUTATION_KEY_UNSUBSCRIBE_FROM_ORGANISATION =
+  'unsubscribeFromOrganisation' as string;
 
-export const QUERY_GET_AVERAGE_RATING_OF_ORGANISATION = 'getAverageRatingOfOrganisation' as string;
+export const QUERY_GET_AVERAGE_RATING_OF_ORGANISATION =
+  'getAverageRatingOfOrganisation' as string;
 export const MUTATION_KEY_RATE_ORGANISATION = 'rateOrganisation' as string;
 
+export const MUTATION_KEY_POST_FEEDBACK = 'postFeedback' as string;
+export const QUERY_KEY_GET_FEEDBACKS = 'getFeedbacks' as string;

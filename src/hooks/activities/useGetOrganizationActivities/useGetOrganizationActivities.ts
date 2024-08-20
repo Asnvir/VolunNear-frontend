@@ -41,7 +41,7 @@ export const useGetOrganizationActivities = ({
   return {
     data: query.data,
     isLoading: query.isLoading,
-    error: query.error?.message,
+    error: query.error,
     refetch: query.refetch,
     isGeolocationAvailable,
     isGeolocationEnabled,

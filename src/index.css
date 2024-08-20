@@ -1,0 +1,9 @@
+.custom-rating .smastrom__rating-item {
+    fill: transparent;
+    stroke: orange;
+    stroke-width: 2;
+}
+
+.custom-rating .smastrom__rating-item[data-is-active='false'] {
+    stroke: gray;
+}

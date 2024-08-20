@@ -11,21 +11,22 @@ import {
   AlertTitle,
   Box,
   Button,
+  Flex,
   FormControl,
   FormErrorMessage,
   FormLabel,
+  Heading,
   IconButton,
   Input,
   InputGroup,
   InputRightElement,
-  VStack,
-  Link,
-  Flex,
-  Heading,
   Text,
+  VStack,
 } from '@chakra-ui/react';
 import {ViewIcon, ViewOffIcon} from '@chakra-ui/icons';
 import {LoginFormValues} from '../../api/validation/login/types.ts';
+import {SignUpContainer} from '../registration/SignUpContainer.tsx';
+import {PasswordRecoveryProcess} from '../forgotPassword/PasswordRecoveryProcess.tsx';
 
 export const LoginForm = () => {
   const {
@@ -39,6 +40,7 @@ export const LoginForm = () => {
 
   const navigate = useNavigate();
   const [showPassword, setShowPassword] = useState(false);
+  const [isPasswordRecoveryOpen, setIsPasswordRecoveryOpen] = useState(false);
 
   const handlePasswordVisibility = () => setShowPassword(!showPassword);
 
@@ -122,12 +124,15 @@ export const LoginForm = () => {
         </Button>
 
         <Flex justify="space-between" width="full" mt={4}>
-          <Link color="blue.500" onClick={() => navigate('/signup')}>
-            Sign Up
-          </Link>
-          <Link color="blue.500" onClick={() => navigate('/forgot-password')}>
-            Forgot Password?
-          </Link>
+          <SignUpContainer />
+          <PasswordRecoveryProcess
+            onOtpVerified={() => {}}
+            renderAction={({onForgotPasswordClick}) => (
+              <button color="blue.500" onClick={onForgotPasswordClick}>
+                Forgot password?
+              </button>
+            )}
+          />
         </Flex>
 
         {errorOnServer && (
