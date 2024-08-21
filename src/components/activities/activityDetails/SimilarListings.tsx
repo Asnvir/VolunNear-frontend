@@ -1,9 +1,10 @@
-import {Box, Heading, Image, Text, VStack, HStack, Spinner, Alert, AlertIcon} from '@chakra-ui/react';
+import {Box, Heading, Spinner, Alert, AlertIcon} from '@chakra-ui/react';
 import Carousel from 'react-multi-carousel';
 import 'react-multi-carousel/lib/styles.css';
-import { Activity } from '../../../api/types';
+import {Activity} from '../../../api/types';
 import {ActivityCard} from '../ActivityCard.tsx';
-
+import {useNavigate} from 'react-router-dom';
+import React from 'react';
 
 interface SimilarListingsProps {
   activities?: Activity[];
@@ -11,22 +12,34 @@ interface SimilarListingsProps {
   error?: string;
 }
 
-const SimilarListings: React.FC<SimilarListingsProps> = ({ activities, isLoading, error, onCardClick }) => {
+const SimilarListings: React.FC<SimilarListingsProps> = ({
+  activities,
+  isLoading,
+  error,
+}) => {
+  const navigate = useNavigate();
+
+  const navigateToActivity = (activity: Activity) => {
+    console.log('Navigating to activity:', activity.activityTitle);
+    navigate(`/activity/${activity.activityId}`, {state: {activity}});
+    window.scrollTo(0, 0);
+  };
+
   const responsive = {
     superLargeDesktop: {
-      breakpoint: { max: 4000, min: 3000 },
+      breakpoint: {max: 4000, min: 3000},
       items: 5,
     },
     desktop: {
-      breakpoint: { max: 3000, min: 1024 },
+      breakpoint: {max: 3000, min: 1024},
       items: 3,
     },
     tablet: {
-      breakpoint: { max: 1024, min: 464 },
+      breakpoint: {max: 1024, min: 464},
       items: 2,
     },
     mobile: {
-      breakpoint: { max: 464, min: 0 },
+      breakpoint: {max: 464, min: 0},
       items: 1,
     },
   };
@@ -51,15 +64,17 @@ const SimilarListings: React.FC<SimilarListingsProps> = ({ activities, isLoading
   if (!activities || activities.length === 0) {
     return (
       <Box textAlign="center" py={10}>
-        <Text>No similar activities found.</Text>
+        <Heading as="h4" size="md">
+          No similar events found.
+        </Heading>
       </Box>
     );
   }
 
   return (
-    <Box>
+    <Box mt="30px">
       <Heading as="h3" size="md" mb={6} textAlign="start">
-        Similar Activities
+        Similar events
       </Heading>
       <Carousel
         responsive={responsive}
@@ -68,12 +83,14 @@ const SimilarListings: React.FC<SimilarListingsProps> = ({ activities, isLoading
         autoPlaySpeed={2000}
         keyBoardControl={true}
         showDots={true}
-        removeArrowOnDeviceType={["tablet", "mobile"]}
+        removeArrowOnDeviceType={['tablet', 'mobile']}
         dotListClass="custom-dot-list-style"
+        containerClass="carousel-container"
+        itemClass="carousel-item-padding-40-px"
       >
-        {activities.map((activity) => (
-          <Box key={activity.activityId} m={3} >
-            <ActivityCard activity={activity} onClick={onCardClick} />
+        {activities.map(activity => (
+          <Box key={activity.activityId} p={2}>
+            <ActivityCard activity={activity} onClick={navigateToActivity} />
           </Box>
         ))}
       </Carousel>

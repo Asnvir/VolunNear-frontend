@@ -16,7 +16,6 @@ import {
 } from '../utils/constants/authConstants.ts';
 import {AddActivityPage} from '../pages/AddActivityPage.tsx';
 import VolunteerProfileSettings from '../pages/VolunteerProfileSettings.tsx';
-import OrganisationProfileSettings from '../pages/OrganisationProfileSettings.tsx';
 import OrganizationDetailsPage from '../pages/OrganizationDetailsPage.tsx';
 import {
   ROUTE_LOGIN,
@@ -108,100 +107,19 @@ export const CustomRouterProvider = () => {
         {
           path: 'activity/:activityId',
           element: (
-            // <ProtectedRoute>
-            <ActivityDetailsPage />
-            // </ProtectedRoute>
+            <ProtectedRoute roles={[ROLE_ORGANISATION, ROLE_VOLUNTEER]}>
+              <ActivityDetailsPage />
+            </ProtectedRoute>
           ),
         },
         {
           path: 'organisation/:organizationId',
-          element: (
-              <OrganizationDetailsPage />
-          )
+          element: <OrganizationDetailsPage />,
         },
         {
           path: '*',
           element: <ErrorPage />,
         },
-        // {
-        //     path: 'profile',
-        //     element: (
-        //         <ProtectedRoute>
-        //             <Profile />
-        //         </ProtectedRoute>
-        //     ),
-        //     children: [
-        //         { path: 'volunteer', element: <ProfileVolunteer /> },
-        //         { path: 'organization', element: <ProfileOrganization /> },
-        //     ],
-        // },
-        // {
-        //     path: 'events',
-        //     element: (
-        //         <ProtectedRoute>
-        //             <Events />
-        //         </ProtectedRoute>
-        //     ),
-        // },
-        // {
-        //     path: 'organizations',
-        //     element: (
-        //         <ProtectedRoute>
-        //             <OrganizationsPage />
-        //         </ProtectedRoute>
-        //     ),
-        // },
-        // {
-        //     path: 'activities',
-        //     element: (
-        //         <ProtectedRoute>
-        //             <Activities />
-        //         </ProtectedRoute>
-        //     ),
-        // },
-        // {
-        //     path: 'feedbacks',
-        //     element: (
-        //         <ProtectedRoute>
-        //             <Feedbacks />
-        //         </ProtectedRoute>
-        //     ),
-        // },
-        // {
-        //     path: 'recommendations',
-        //     element: (
-        //         <ProtectedRoute>
-        //             <Recommendations />
-        //         </ProtectedRoute>
-        //     ),
-        // },
-        // {
-        //     path: 'notifications',
-        //     element: (
-        //         <ProtectedRoute>
-        //             <Notifications />
-        //         </ProtectedRoute>
-        //     ),
-        // },
-        // {
-        //     path: 'social-networks',
-        //     element: (
-        //         <ProtectedRoute>
-        //             <SocialNetworks />
-        //         </ProtectedRoute>
-        //     ),
-        // },
-        // {
-        //     path: 'my-events',
-        //     element: (
-        //         <ProtectedRoute roles={['USER']}>
-        //             <MyActivities />
-        //         </ProtectedRoute>
-        //     ),
-        // },
-        // { path: 'events-list', element: <EventsList /> },
-        // { path: 'organizations-list', element: <OrganizationsList /> },
-        // { path: 'profile-page', element: <ProfilePage /> },
       ],
     },
   ]);

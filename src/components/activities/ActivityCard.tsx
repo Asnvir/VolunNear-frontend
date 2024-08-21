@@ -5,6 +5,7 @@ import {beautifyActivityType} from '../../utils/kindToButyType.ts';
 import {formatDateWithoutSeconds} from '../../utils/formatDateWithoutSeconds.ts';
 interface ActivityCardProps {
   activity: {
+    activityId: string;
     activityTitle: string;
     activityDescription: string;
     activityCity: string;
@@ -46,7 +47,7 @@ export const ActivityCard = ({activity, onClick}: ActivityCardProps) => {
             alt={activity.activityTitle}
             width="100%"
             height="100%"
-            objectFit="cover"
+            objectFit="contain"
           />
         </Box>
         <Box px={6} pb={6}>
@@ -72,4 +73,3 @@ export const ActivityCard = ({activity, onClick}: ActivityCardProps) => {
     </Box>
   );
 };
-
