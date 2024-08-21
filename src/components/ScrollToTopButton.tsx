@@ -1,6 +1,6 @@
-import React, {useState, useEffect} from 'react';
+import React, {useEffect, useState} from 'react';
 import {Button, Flex} from '@chakra-ui/react';
-import {ChevronUpIcon} from '@chakra-ui/icons';
+import {FiArrowUpCircle} from 'react-icons/fi';
 
 export const ScrollToTopButton: React.FC = () => {
   const [isVisible, setIsVisible] = useState(false);
@@ -41,9 +41,10 @@ export const ScrollToTopButton: React.FC = () => {
         variant="solid"
         colorScheme="primary"
         borderRadius="full"
-        p={4}
+        p={6}
+        fontSize="2xl"
       >
-        <ChevronUpIcon boxSize={6} />
+        <FiArrowUpCircle size="32px" />
       </Button>
     </Flex>
   );
