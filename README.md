@@ -2,6 +2,7 @@
 
 ## Project Video
 
-[![Watch the video](https://img.youtube.com/vi/7ofREXKSmn8/maxresdefault.jpg)](https://www.youtube.com/watch?v=7ofREXKSmn8)
-
-Click the image above to watch a video demonstration of the project on YouTube.
+<video width="600" controls>
+  <source src="https://github.com/Asnvir/VolunNear-frontend/blob/main/volunnear-demo.mp4" type="video/mp4">
+  Your browser does not support the video tag.
+</video>
