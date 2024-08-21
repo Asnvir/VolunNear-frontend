@@ -20,6 +20,13 @@ export const SidebarLayout = () => {
   const isLoggedIn = useLoggedIn();
   const userRole = useGetUserRole();
 
+  const scrollToSection = (id: string) => {
+    const element = document.getElementById(id);
+    if (element) {
+      element.scrollIntoView({behavior: 'smooth'});
+    }
+  };
+
   return (
     <Flex
       direction="column"
@@ -65,9 +72,9 @@ export const SidebarLayout = () => {
         <Flex direction="column" minHeight="100vh" width="full">
           <Banner />
           <DescriptionBoxes />
-          <AboutUs />
+          <AboutUs id="about-us" />
           <JourneyOfVolunNearSection />
-          <Testimonials />
+          <Testimonials id="feedbacks" />
         </Flex>
       )}
     </Flex>

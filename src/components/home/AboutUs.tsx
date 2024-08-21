@@ -1,9 +1,11 @@
 import {Box, Flex, Text, Heading, Image, VStack} from '@chakra-ui/react';
- import AboutUsImage from '../../../resources/About us.png';
+import AboutUsImage from '../../../resources/About us.png';
 
-const AboutUsSection = () => {
+type AboutUsSectionProps = {id?: string};
+
+const AboutUsSection = ({id}: AboutUsSectionProps) => {
   return (
-    <Box mx="auto" p={4} maxW="1440px" textAlign="center" color="black">
+    <Box id={id} mx="auto" p={4} maxW="1440px" textAlign="center" color="black">
       <Box py={8}>
         <Text
           fontFamily="Epilogue"
@@ -35,7 +37,7 @@ const AboutUsSection = () => {
       </Box>
       <Flex justifyContent="center" my={8}>
         <Image
-           src={AboutUsImage}
+          src={AboutUsImage}
           alt="A Future Filled with Hope"
           borderRadius="24px"
           boxShadow="md"

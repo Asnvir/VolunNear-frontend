@@ -1,8 +1,8 @@
 export interface NavItem {
-  label: string
-  subLabel?: string
-  children?: Array<NavItem>
-  href?: string
+  label: string;
+  subLabel?: string;
+  children?: Array<NavItem>;
+  href?: string;
 }
 
 export const NAV_ITEMS: Array<NavItem> = [
@@ -12,10 +12,10 @@ export const NAV_ITEMS: Array<NavItem> = [
   },
   {
     label: 'About Us',
-    href: '/about_us',
+    href: '#about-us',
   },
   {
-    label: 'How It Works?',
-    href: '#',
+    label: 'Feedbacks',
+    href: '#feedbacks',
   },
-]
+];
