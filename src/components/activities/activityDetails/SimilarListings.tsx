@@ -1,18 +1,9 @@
-import {
-  Box,
-  Heading,
-  Image,
-  Text,
-  VStack,
-  HStack,
-  Spinner,
-  Alert,
-  AlertIcon,
-} from '@chakra-ui/react';
+import {Box, Heading, Spinner, Alert, AlertIcon} from '@chakra-ui/react';
 import Carousel from 'react-multi-carousel';
 import 'react-multi-carousel/lib/styles.css';
 import {Activity} from '../../../api/types';
 import {ActivityCard} from '../ActivityCard.tsx';
+import {useNavigate} from 'react-router-dom';
 import React from 'react';
 
 interface SimilarListingsProps {
@@ -25,8 +16,15 @@ const SimilarListings: React.FC<SimilarListingsProps> = ({
   activities,
   isLoading,
   error,
-  onCardClick,
 }) => {
+  const navigate = useNavigate();
+
+  const navigateToActivity = (activity: Activity) => {
+    console.log('Navigating to activity:', activity.activityTitle);
+    navigate(`/activity/${activity.activityId}`, {state: {activity}});
+    window.scrollTo(0, 0);
+  };
+
   const responsive = {
     superLargeDesktop: {
       breakpoint: {max: 4000, min: 3000},
@@ -66,15 +64,17 @@ const SimilarListings: React.FC<SimilarListingsProps> = ({
   if (!activities || activities.length === 0) {
     return (
       <Box textAlign="center" py={10}>
-        <Text>No similar activities found.</Text>
+        <Heading as="h4" size="md">
+          No similar events found.
+        </Heading>
       </Box>
     );
   }
 
   return (
-    <Box>
+    <Box mt="30px">
       <Heading as="h3" size="md" mb={6} textAlign="start">
-        Similar Activities
+        Similar events
       </Heading>
       <Carousel
         responsive={responsive}
@@ -85,10 +85,12 @@ const SimilarListings: React.FC<SimilarListingsProps> = ({
         showDots={true}
         removeArrowOnDeviceType={['tablet', 'mobile']}
         dotListClass="custom-dot-list-style"
+        containerClass="carousel-container"
+        itemClass="carousel-item-padding-40-px"
       >
         {activities.map(activity => (
-          <Box key={activity.activityId} m={3}>
-            <ActivityCard activity={activity} onClick={onCardClick} />
+          <Box key={activity.activityId} p={2}>
+            <ActivityCard activity={activity} onClick={navigateToActivity} />
           </Box>
         ))}
       </Carousel>

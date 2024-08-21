@@ -8,7 +8,6 @@ const AssignToActivity: React.FC = ({activityId}) => {
   const toast = useToast();
 
   const {data: isJoined, isLoading} = useVolunteerActivityJoined(activityId);
-
   const {mutate: joinToActivity} = useJoinToActivity();
   const {mutate: leaveActivity} = useLeaveActivity();
 
@@ -58,8 +57,13 @@ const AssignToActivity: React.FC = ({activityId}) => {
   };
 
   return (
-    // <Box borderWidth="1px" borderRadius="lg" p={4} boxShadow="md" textAlign="center">
-    <>
+    <Box
+      borderWidth="1px"
+      borderRadius="lg"
+      p={4}
+      boxShadow="md"
+      textAlign="center"
+    >
       <Text fontSize="lg" fontWeight="bold" mb={2}>
         Join to activity
       </Text>
@@ -76,8 +80,7 @@ const AssignToActivity: React.FC = ({activityId}) => {
           )}
         </Box>
       )}
-    </>
-    // </Box>
+    </Box>
   );
 };
 

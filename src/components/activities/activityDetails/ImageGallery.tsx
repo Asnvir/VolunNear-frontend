@@ -1,5 +1,5 @@
 import React, {useEffect} from 'react';
-import { Box } from '@chakra-ui/react';
+import {Box} from '@chakra-ui/react';
 import ImageGallery from 'react-image-gallery';
 import 'react-image-gallery/styles/css/image-gallery.css';
 import NoImage from '../../../../resources/No_image_available.png';
@@ -9,8 +9,10 @@ interface ImageGalleryProps {
   coverImage?: string;
 }
 
-
-const CustomImageGallery: React.FC<ImageGalleryProps> = ({ galleryImages, coverImage }) => {
+const CustomImageGallery: React.FC<ImageGalleryProps> = ({
+  galleryImages,
+  coverImage,
+}) => {
   const images = [
     {
       original: coverImage || NoImage,
@@ -18,16 +20,18 @@ const CustomImageGallery: React.FC<ImageGalleryProps> = ({ galleryImages, coverI
     },
     ...(galleryImages && galleryImages.length > 0
       ? galleryImages.map(image => ({
-        original: image,
-        thumbnail: image,
-      }))
-      : [{ original: NoImage, thumbnail: NoImage }]),
+          original: image,
+          thumbnail: image,
+        }))
+      : [{original: NoImage, thumbnail: NoImage}]),
   ];
 
   useEffect(() => {
-    console.log('CustomImageGallery useEffect', images)
+    // console.log('CustomImageGallery useEffect', images)
     const gallerySlides = document.querySelectorAll('.image-gallery-slide img');
-    const galleryThumbnails = document.querySelectorAll('.image-gallery-thumbnail img');
+    const galleryThumbnails = document.querySelectorAll(
+      '.image-gallery-thumbnail img'
+    );
 
     gallerySlides.forEach(img => {
       img.style.borderRadius = '5px'; // Adjust the radius as needed

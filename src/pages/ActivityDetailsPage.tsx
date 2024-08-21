@@ -1,59 +1,111 @@
-import React, {useEffect, useState} from 'react';
-import {useLocation, useParams} from 'react-router-dom';
+import React from 'react';
+import {useLocation} from 'react-router-dom';
 import {
   Alert,
   AlertIcon,
   Box,
-  Divider,
+  Button,
   Flex,
-  Heading,
+  Stack,
   Text,
-  VStack,
+  useToast,
 } from '@chakra-ui/react';
+import {FaCalendarAlt, FaMapMarkerAlt, FaRoute, FaStar} from 'react-icons/fa';
 import {Activity} from '../api/types';
-import Description from '../components/activities/activityDetails/Description.tsx';
-import SimilarListings from '../components/activities/activityDetails/SimilarListings.tsx';
-import MapComponent from '../components/activities/activityDetails/MapComponent.tsx';
-import CustomImageGallery from '../components/activities/activityDetails/ImageGallery.tsx';
-import AssignToActivity from '../components/activities/activityDetails/AssignToActivity.tsx';
-import OrganizationInfo from '../components/activities/activityDetails/OrganistaionInfo.tsx';
-import OrganisationDetails from '../components/activities/activityDetails/OrganisationDetails.tsx';
 import {useGetAverageRating} from '../hooks/organizations/useGetAvarageRating/useGetAverageRating.ts';
 import {useGetVolunteerActivities} from '../hooks/activities/useGetVolunteerActivities/useGetVolunteerActivities.ts';
 import {useGetFeedbacksByOrganisation} from '../hooks/feedbacks/useGetFeedbacksByOrganisation/useGetFeedbacksByOrganisation.ts';
+import {MapContainer, Marker, Popup, TileLayer} from 'react-leaflet';
+import 'react-responsive-carousel/lib/styles/carousel.min.css';
+import CustomImageGallery from '../components/activities/activityDetails/ImageGallery.tsx';
+import SimilarListings from '../components/activities/activityDetails/SimilarListings.tsx';
+import {useVolunteerActivityJoined} from '../hooks/volunteer/useVolunteerActivityJoined/useVolunteerActivityJoined.ts';
+import {useJoinToActivity} from '../hooks/activities/useJoinToActivity/useJoinToActivity.ts';
+import {useLeaveActivity} from '../hooks/activities/useLeaveActivity/useLeaveActivity.ts';
 
-type ActivityDetailsParams = {
-  activityId: string;
-};
+interface LocationState {
+  activity: Activity;
+}
 
 const ActivityDetailsPage: React.FC = () => {
-  const {activityId} = useParams<ActivityDetailsParams>();
-  const {activity} = useGetActivity(activityId);
+  const {state} = useLocation<LocationState>();
+  const activity = state?.activity;
+
+  console.log(activity);
 
   // Fetch average rating
-  const {data: averageRatingData, isLoading: isLoadingRating} =
-    useGetAverageRating(activity?.organisationId || '');
+  const {data: averageRating, isLoading: isLoadingRating} = useGetAverageRating(
+    activity?.organisationId || ''
+  );
+
   const {data: feedbacks, isLoading: isLoadingFeedbacks} =
     useGetFeedbacksByOrganisation(activity?.organisationId || '');
-  const [averageRating, setAverageRating] = useState(0);
-  const [feedbacksCount, setFeedbacksCount] = useState(0);
-  useEffect(() => {
-    if (!isLoadingRating && averageRatingData !== undefined) {
-      setAverageRating(averageRatingData);
-    }
-    if (!isLoadingFeedbacks && feedbacks !== undefined) {
-      setFeedbacksCount(feedbacks.length);
-    }
-  }, [isLoadingRating, averageRatingData, isLoadingFeedbacks, feedbacks]);
 
-  // Fetch similar activities
+  const numOfFeedbacks = feedbacks?.length || 0;
+
   const {
-    data: similarActivities,
-    isLoading: isLoadingActivities,
-    error: errorActivities,
+    data: similarActivitiesData,
+    isLoading: isLoadingSimilarActivities,
+    error: errorSimilarActivities,
   } = useGetVolunteerActivities({
     filters: {type: activity?.activityKind, date: ''},
   });
+
+  const similarActivities = similarActivitiesData?.filter(
+    activityObj => activityObj.activityId !== activity?.activityId
+  );
+
+  const toast = useToast();
+
+  const {data: isJoined, isLoading} = useVolunteerActivityJoined(
+    activity.activityId
+  );
+  const {mutate: joinToActivity} = useJoinToActivity();
+  const {mutate: leaveActivity} = useLeaveActivity();
+
+  const handleJoinActivity = () => {
+    // Add logic to join the activity
+    joinToActivity(activity.activityId, {
+      onSuccess: () => {
+        toast({
+          title: 'Activity joined successfully',
+          status: 'success',
+          duration: 5000,
+          isClosable: true,
+        });
+      },
+      onError: error => {
+        toast({
+          title: 'An error occurred',
+          description: error,
+          status: 'error',
+          duration: 5000,
+          isClosable: true,
+        });
+      },
+    });
+  };
+
+  const handleCancelActivity = () => {
+    leaveActivity(activity.activityId, {
+      onSuccess: () => {
+        toast({
+          title: 'Activity cancelled successfully',
+          status: 'success',
+          duration: 5000,
+          isClosable: true,
+        });
+      },
+      onError: error => {
+        toast({
+          title: 'An error occurred',
+          status: 'error',
+          duration: 5000,
+          isClosable: true,
+        });
+      },
+    });
+  };
 
   if (!activity) {
     return (
@@ -65,82 +117,121 @@ const ActivityDetailsPage: React.FC = () => {
   }
 
   return (
-    <Box p={4}>
-      <VStack spacing={8} align="stretch" maxW="1000px" mx="auto">
-        <Heading as="h1" size="2xl" mb="4" textAlign="start">
-          {activity.activityTitle}
-        </Heading>
+    <Flex direction="column" p={4} bg="gray.100" minH="100vh">
+      <Flex
+        direction="column"
+        w="1200px"
+        maxW="1200px"
+        mx="auto"
+        bg="white"
+        shadow="lg"
+        borderRadius="lg"
+        overflow="hidden"
+      >
+        <Box p={6} textAlign="center">
+          <Text fontSize="4xl" fontWeight="bold" mb={2}>
+            {activity.activityTitle}
+          </Text>
+        </Box>
+
         <CustomImageGallery
           galleryImages={activity.activityGalleryImages}
           coverImage={activity.activityCoverImage}
         />
-        <Flex
-          direction={{base: 'column', md: 'row'}}
-          gap={6}
-          align="flex-start"
-        >
-          <Box flex="1" maxW={{base: '100%', md: '60%'}}>
-            <VStack align="flex-start" spacing={4}>
-              <Box>
-                <Text fontSize="lg" fontWeight="bold">
-                  {activity.organisationCity}, {activity.organisationCountry}
+
+        <Box p={6}>
+          <Flex justify="space-between" mb={6}>
+            <Box flex="1" mr={4}>
+              <Stack spacing={4}>
+                <Text fontSize="2xl" fontWeight="semibold">
+                  Organisation: {activity.organisationName}
                 </Text>
-              </Box>
-              <Box>
-                <Text fontSize="lg" fontWeight="bold">
-                  {new Date(activity.activityDateOfPlace).toLocaleDateString()}
-                </Text>
-              </Box>
-            </VStack>
-            <Divider my={4} />
-            <Box mt={4}>
-              <OrganizationInfo
-                avatar={activity.organisationAvatarUrl}
-                name={activity.organisationName}
-                location={`${activity.organisationCountry} ${activity.organisationCity}`}
-              />
+                <Flex alignItems="center">
+                  <FaStar color="black" style={{marginRight: '8px'}} />
+                  <Text>{averageRating}</Text>
+                </Flex>
+
+                <Flex alignItems="center">
+                  <FaCalendarAlt style={{marginRight: '8px'}} />
+                  <Text>
+                    {new Date(
+                      activity.activityDateOfPlace
+                    ).toLocaleDateString()}{' '}
+                    at{' '}
+                    {new Date(
+                      activity.activityDateOfPlace
+                    ).toLocaleTimeString()}
+                  </Text>
+                </Flex>
+
+                <Flex alignItems="center">
+                  <FaMapMarkerAlt style={{marginRight: '8px'}} />
+                  <Text>
+                    {`${activity.activityStreet} ${activity.activityNumberOfHouse}, ${activity.activityCity}, ${activity.activityCountry}`}
+                  </Text>
+                </Flex>
+
+                <Flex alignItems="center">
+                  <FaRoute style={{marginRight: '8px'}} />
+                  <Text>{activity.activityDistance.toFixed(2)} km</Text>
+                </Flex>
+
+                <Box>
+                  <Text>Description</Text>
+                  <Box
+                    fontSize="md"
+                    color="gray.500"
+                    dangerouslySetInnerHTML={{
+                      __html: activity.activityDescription,
+                    }}
+                  />
+                </Box>
+              </Stack>
             </Box>
-            <Divider my={4} />
-            <Description description={activity.activityDescription} />
-            <Divider my={4} />
-            <Box mt={4} my={6}>
-              <Heading as="h3" size="lg">
-                Posted By
-              </Heading>
-              <OrganisationDetails
-                avatarUrl={activity.organisationAvatarUrl}
-                name={activity.organisationName}
-                numberOfReviews={feedbacksCount} // This can be replaced with real data if available
-                rating={averageRating}
-              />
+
+            <Box flex="1">
+              <MapContainer
+                center={[activity.activityLatitude, activity.activityLongitude]}
+                zoom={13}
+                style={{height: '200px', width: '100%', borderRadius: 'lg'}}
+              >
+                <TileLayer
+                  url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
+                  attribution="&copy; OpenStreetMap contributors"
+                />
+                <Marker
+                  position={[
+                    activity.activityLatitude,
+                    activity.activityLongitude,
+                  ]}
+                >
+                  <Popup>{activity.activityTitle}</Popup>
+                </Marker>
+              </MapContainer>
             </Box>
-            <Divider my={4} />
-          </Box>
-          <Box flex="0 0 375px">
-            <AssignToActivity activityId={activity.activityId} />
-          </Box>
-        </Flex>
-        <Heading as="h3" size="lg">
-          Location
-        </Heading>
-        <Box>
-          <Text fontSize="lg" fontWeight="bold">
-            {activity.activityCountry}, {activity.activityCity},{' '}
-            {activity.activityStreet}, {activity.activityNumberOfHouse}
-          </Text>
+          </Flex>
         </Box>
-        <MapComponent
-          latitude={activity.activityLatitude}
-          longitude={activity.activityLongitude}
-        />
-        <Divider my={4} />
-        <SimilarListings
-          activities={similarActivities} // Pass the fetched similar activities
-          isLoading={isLoadingActivities} // Pass loading state
-          error={errorActivities} // Pass error state
-        />
-      </VStack>
-    </Box>
+
+        <Flex justify="center" mb={6}>
+          {!isLoading && (
+            <Button
+              colorScheme={isJoined ? 'red' : 'green'}
+              onClick={isJoined ? handleCancelActivity : handleJoinActivity}
+            >
+              {isJoined ? 'Leave Event' : 'Join Event'}
+            </Button>
+          )}
+        </Flex>
+
+        <Box p={6} bg="gray.50">
+          <SimilarListings
+            isLoading={isLoadingSimilarActivities}
+            activities={similarActivities}
+            error={errorSimilarActivities}
+          />
+        </Box>
+      </Flex>
+    </Flex>
   );
 };
 
