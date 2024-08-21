@@ -24,7 +24,6 @@ const DesktopNav = () => {
     event.preventDefault();
 
     if (href?.startsWith('#')) {
-      // Handle smooth scrolling for anchor links
       const targetId = href.substring(1);
       const targetElement = document.getElementById(targetId);
       if (targetElement) {

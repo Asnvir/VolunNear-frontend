@@ -215,7 +215,7 @@ const ActivityDetailsPage: React.FC = () => {
         <Flex justify="center" mb={6}>
           {!isLoading && (
             <Button
-              colorScheme={isJoined ? 'red' : 'green'}
+              colorScheme={isJoined ? 'red' : 'primary'}
               onClick={isJoined ? handleCancelActivity : handleJoinActivity}
             >
               {isJoined ? 'Leave Event' : 'Join Event'}
