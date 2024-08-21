@@ -1,21 +1,28 @@
-import { Box, Avatar, Text, HStack, VStack } from '@chakra-ui/react';
+import {Avatar, HStack, Text, VStack} from '@chakra-ui/react';
+import React from 'react';
 
-interface OrganizationInfoProps {
-  avatar: string;
+type OrganizationInfoProps = {
+  avatarUrl?: string;
   name: string;
-  location: string;
-}
-
-const OrganizationInfo: React.FC<OrganizationInfoProps> = ({ avatar, name, location }) => {
-  return (
-    <HStack spacing={4} alignItems="center">
-  <Avatar src={avatar} size="md" />
-  <VStack alignItems="flex-start" spacing={0}>
-  <Text fontWeight="bold">Organisation: {name}</Text>
-  <Text>{location}</Text>
-  </VStack>
-  </HStack>
-);
+  address: string;
+  city: string;
+  country: string;
 };
 
-export default OrganizationInfo;
+export const OrganizationInfo: React.FC<OrganizationInfoProps> = ({
+  avatarUrl,
+  name,
+  address,
+  city,
+  country,
+}) => {
+  return (
+    <HStack spacing={4} alignItems="center">
+      <Avatar src={avatarUrl} size="md" />
+      <VStack alignItems="flex-start" spacing={0}>
+        <Text fontWeight="bold">Organisation: {name}</Text>
+        <Text>{`${address}, ${city}, ${country}`}</Text>
+      </VStack>
+    </HStack>
+  );
+};

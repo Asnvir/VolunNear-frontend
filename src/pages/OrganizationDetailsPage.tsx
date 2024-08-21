@@ -20,16 +20,16 @@ import {
   SimpleGrid,
   Divider,
 } from '@chakra-ui/react';
-import { Rating, Star } from '@smastrom/react-rating';
+import {Rating, Star} from '@smastrom/react-rating';
 import '@smastrom/react-rating/style.css';
-import { useLocation } from 'react-router-dom';
+import {useLocation} from 'react-router-dom';
 import NoImage from '../../resources/No_image_available.png';
-import { Organization } from '../api/services/organizations/types.ts';
-import { usePostFeedback } from '../hooks/feedbacks/usePostFeedback/usePostFeedback.ts';
-import { useAddOrUpdateRating } from '../hooks/organizations/userAddOrUpdateRating/useAddOrUpdateRating.ts';
-import { useGetOrganizationActivities } from '../hooks/activities/useGetOrganizationActivities/useGetOrganizationActivities.ts';
+import {Organization} from '../api/services/organizations/types.ts';
+import {usePostFeedback} from '../hooks/feedbacks/usePostFeedback/usePostFeedback.ts';
+import {useAddOrUpdateRating} from '../hooks/organizations/userAddOrUpdateRating/useAddOrUpdateRating.ts';
+import {useGetOrganizationActivities} from '../hooks/activities/useGetOrganizationActivities/useGetOrganizationActivities.ts';
 import SimilarListings from '../components/activities/activityDetails/SimilarListings.tsx';
-import { useGetFeedbacksByOrganisation } from '../hooks/feedbacks/useGetFeedbacksByOrganisation/useGetFeedbacksByOrganisation.ts';
+import {useGetFeedbacksByOrganisation} from '../hooks/feedbacks/useGetFeedbacksByOrganisation/useGetFeedbacksByOrganisation.ts';
 import TestimonialCarousel from '../components/TestimonialsCarousel.tsx';
 
 interface LocationState {
@@ -37,18 +37,30 @@ interface LocationState {
 }
 
 const OrganizationDetailsPage: React.FC = () => {
-  const { isOpen, onOpen, onClose } = useDisclosure();
-  const { isOpen: isAllFeedbacksOpen, onOpen: onAllFeedbacksOpen, onClose: onAllFeedbacksClose } = useDisclosure();
+  const {isOpen, onOpen, onClose} = useDisclosure();
+  const {
+    isOpen: isAllFeedbacksOpen,
+    onOpen: onAllFeedbacksOpen,
+    onClose: onAllFeedbacksClose,
+  } = useDisclosure();
   const [rating, setRating] = useState(0);
-  const [feedback, setFeedback] = useState("");
-  const { state } = useLocation<LocationState>();
+  const [feedback, setFeedback] = useState('');
+  const {state} = useLocation<LocationState>();
   const organisation = state?.organisation;
   const toast = useToast();
 
-  const { mutate: postFeedback } = usePostFeedback();
-  const { data: feedbacks, isLoading: isLoadingFeedbacks, refetch: refetchFeedbacks } = useGetFeedbacksByOrganisation(organisation.id);
-  const { mutate: rateOrganisation } = useAddOrUpdateRating();
-  const { data: similarActivities, isLoading: isLoadingActivities, error: errorActivities = [] } = useGetOrganizationActivities({
+  const {mutate: postFeedback} = usePostFeedback();
+  const {
+    data: feedbacks,
+    isLoading: isLoadingFeedbacks,
+    refetch: refetchFeedbacks,
+  } = useGetFeedbacksByOrganisation(organisation.id);
+  const {mutate: rateOrganisation} = useAddOrUpdateRating();
+  const {
+    data: similarActivities,
+    isLoading: isLoadingActivities,
+    error: errorActivities = [],
+  } = useGetOrganizationActivities({
     filters: {
       title: '',
       type: '',
@@ -60,7 +72,7 @@ const OrganizationDetailsPage: React.FC = () => {
 
   const handleFeedbackSubmit = () => {
     rateOrganisation(
-      { orgId: organisation.id, rating },
+      {orgId: organisation.id, rating},
       {
         onSuccess: () => {
           toast({
@@ -72,7 +84,11 @@ const OrganizationDetailsPage: React.FC = () => {
           });
 
           postFeedback(
-            { idOfOrganisation: organisation.id, rate: rating, feedbackDescription: feedback },
+            {
+              idOfOrganisation: organisation.id,
+              rate: rating,
+              feedbackDescription: feedback,
+            },
             {
               onSuccess: () => {
                 toast({
@@ -84,10 +100,12 @@ const OrganizationDetailsPage: React.FC = () => {
                 });
                 refetchFeedbacks(); // Refetch feedbacks after submitting
               },
-              onError: (error) => {
+              onError: error => {
                 toast({
                   title: 'Error submitting feedback.',
-                  description: error?.message || 'Unable to submit feedback. Please try again later.',
+                  description:
+                    error?.message ||
+                    'Unable to submit feedback. Please try again later.',
                   status: 'error',
                   duration: 5000,
                   isClosable: true,
@@ -96,10 +114,12 @@ const OrganizationDetailsPage: React.FC = () => {
             }
           );
         },
-        onError: (error) => {
+        onError: error => {
           toast({
             title: 'Error submitting rating.',
-            description: error?.message || 'Unable to submit rating. Please try again later.',
+            description:
+              error?.message ||
+              'Unable to submit rating. Please try again later.',
             status: 'error',
             duration: 5000,
             isClosable: true,
@@ -114,20 +134,19 @@ const OrganizationDetailsPage: React.FC = () => {
   return (
     <Box p={4}>
       <VStack spacing={8} align="stretch" maxW="1000px" mx="auto">
-
         {/* Header Section */}
         <Heading as="h1" size="2xl" mb="4" textAlign="start">
           {organisation.nameOfOrganisation}
         </Heading>
 
         {/* Image and Description Section */}
-        <Flex direction={{ base: 'column', md: 'row' }} gap={6}>
+        <Flex direction={{base: 'column', md: 'row'}} gap={6}>
           {/* Organization Image */}
           <Image
             src={organisation.avatarUrl || NoImage}
             alt="Organization Image"
             borderRadius="md"
-            maxW={{ base: "100%", md: "60%" }}
+            maxW={{base: '100%', md: '60%'}}
           />
 
           {/* Description Box */}
@@ -145,15 +164,14 @@ const OrganizationDetailsPage: React.FC = () => {
               <strong>Number of Reviews:</strong> {feedbacks?.length}
             </Text>
             <Text fontSize="lg" mb={4}>
-              <strong>Rating:</strong> {organisation.rating?.toFixed(1) || 4.5.toFixed(1)}
+              <strong>Rating:</strong>{' '}
+              {organisation.rating?.toFixed(1) || (4.5).toFixed(1)}
             </Text>
             <Button variant="primary" onClick={onOpen}>
               Add Feedback
             </Button>
           </Box>
         </Flex>
-
-
 
         {/* Feedback Form Modal */}
         <Modal isOpen={isOpen} onClose={onClose} isCentered>
@@ -163,10 +181,10 @@ const OrganizationDetailsPage: React.FC = () => {
             <ModalCloseButton />
             <ModalBody>
               <Rating
-                orientation='horizontal'
-                style={{ maxWidth: 100 }}
+                orientation="horizontal"
+                style={{maxWidth: 100}}
                 value={rating}
-                onChange={(value) => setRating(value)}
+                onChange={value => setRating(value)}
                 itemStyles={{
                   itemShapes: Star,
                   activeFillColor: 'orange',
@@ -177,14 +195,16 @@ const OrganizationDetailsPage: React.FC = () => {
                 mt={4}
                 placeholder="Text for feedback"
                 value={feedback}
-                onChange={(e) => setFeedback(e.target.value)}
+                onChange={e => setFeedback(e.target.value)}
               />
             </ModalBody>
             <ModalFooter>
               <Button variant="primary" mr={3} onClick={handleFeedbackSubmit}>
                 Submit
               </Button>
-              <Button variant="ghost" onClick={onClose}>Cancel</Button>
+              <Button variant="ghost" onClick={onClose}>
+                Cancel
+              </Button>
             </ModalFooter>
           </ModalContent>
         </Modal>
@@ -204,16 +224,21 @@ const OrganizationDetailsPage: React.FC = () => {
 
         <Divider />
 
-        {/* Slider Section */}
-        <SimilarListings
-          activities={similarActivities}
-          isLoading={isLoadingActivities}
-          error={errorActivities}
-        />
+        {/*/!* Slider Section *!/*/}
+        {/*<SimilarListings*/}
+        {/*  activities={similarActivities}*/}
+        {/*  isLoading={isLoadingActivities}*/}
+        {/*  error={errorActivities}*/}
+        {/*/>*/}
       </VStack>
 
       {/* All Feedbacks Modal */}
-      <Modal isOpen={isAllFeedbacksOpen} onClose={onAllFeedbacksClose} size="xl" scrollBehavior="inside">
+      <Modal
+        isOpen={isAllFeedbacksOpen}
+        onClose={onAllFeedbacksClose}
+        size="xl"
+        scrollBehavior="inside"
+      >
         <ModalOverlay />
         <ModalContent>
           <ModalHeader>All Feedbacks</ModalHeader>
@@ -232,7 +257,9 @@ const OrganizationDetailsPage: React.FC = () => {
                       mr={4}
                     />
                     <Box>
-                      <Text fontWeight="bold">{feedback.realNameOfUser || feedback.username}</Text>
+                      <Text fontWeight="bold">
+                        {feedback.realNameOfUser || feedback.username}
+                      </Text>
                       <Rating
                         value={feedback.rate}
                         readOnly
@@ -241,7 +268,7 @@ const OrganizationDetailsPage: React.FC = () => {
                           activeFillColor: 'orange',
                           inactiveFillColor: 'gray',
                         }}
-                        style={{ maxWidth: 100 }}
+                        style={{maxWidth: 100}}
                       />
                     </Box>
                   </Flex>
