@@ -13,19 +13,13 @@ import {useLoggedIn} from '../hooks/auth/useLoggedIn/useLoggedIn.ts';
 import {Flex, useColorModeValue, VStack} from '@chakra-ui/react';
 import {VolunteerSidebar} from '../components/volunteer/VolunteerSidebar.tsx';
 import {OrganizationSidebar} from '../components/organizations/OrganizationSidebar.tsx';
+import {ScrollToTopButton} from '../components/ScrollToTopButton.tsx';
 
 export const SidebarLayout = () => {
   const borderColor = useColorModeValue('gray.300', 'gray.700');
   const textColor = useColorModeValue('gray.800', 'white');
   const isLoggedIn = useLoggedIn();
   const userRole = useGetUserRole();
-
-  const scrollToSection = (id: string) => {
-    const element = document.getElementById(id);
-    if (element) {
-      element.scrollIntoView({behavior: 'smooth'});
-    }
-  };
 
   return (
     <Flex
@@ -75,6 +69,7 @@ export const SidebarLayout = () => {
           <AboutUs id="about-us" />
           <JourneyOfVolunNearSection />
           <Testimonials id="feedbacks" />
+          <ScrollToTopButton />
         </Flex>
       )}
     </Flex>

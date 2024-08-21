@@ -22,7 +22,7 @@ export class HttpClientImpl implements HttpClient {
         }
 
         const fullURL = `${config.baseURL || ''}${config.url}${config.params ? `?${new URLSearchParams(config.params).toString()}` : ''}`;
-        console.log('Request URL:', fullURL);
+        // console.log('Request URL:', fullURL);
 
         return config;
       },
