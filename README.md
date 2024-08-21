@@ -1,7 +1,7 @@
 
 # VolunNear-frontend
 
-VolunNear is an application designed to bridge the gap between volunteers and organizations in need. The platform simplifies the process of volunteer registration, activity management, feedback collection, and notification subscriptions, facilitating efficient coordination of volunteer efforts.
+VolunNear is an application designed to bridge the gap between volunteers and organizations in need. With its user-friendly interface and powerful features, the platform makes the user experience smooth, fast, and enjoyable, saving valuable time for everyone involved. For volunteers, it’s incredibly easy and convenient to find opportunities that match their preferences, while organizations can effortlessly find and manage volunteers, as well as coordinate volunteer activities.
 
 ## Project Video
 
@@ -26,8 +26,6 @@ VolunNear is an application designed to bridge the gap between volunteers and or
 - **Searching Activities by Different Filters**: Users can search for activities using various filters such as location, type, date, and more.
 - **Feedback Collection**: Volunteers can provide feedback on activities, helping organizations improve their events.
 - **Notification Subscriptions**: Users can subscribe to notifications for updates on activities they are interested in.
-
-
 
 
 ## Getting Started
