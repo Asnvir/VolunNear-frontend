@@ -128,9 +128,9 @@ export const LoginForm = () => {
           <PasswordRecoveryProcess
             onOtpVerified={() => {}}
             renderAction={({onForgotPasswordClick}) => (
-              <button color="blue.500" onClick={onForgotPasswordClick}>
+              <Button variant="secondary" onClick={onForgotPasswordClick}>
                 Forgot password?
-              </button>
+              </Button>
             )}
           />
         </Flex>
