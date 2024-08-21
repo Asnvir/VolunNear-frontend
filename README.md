@@ -2,7 +2,5 @@
 
 ## Project Video
 
-<video width="600" controls>
-  <source src="https://github.com/Asnvir/VolunNear-frontend/blob/main/volunnear-demo.mp4" type="video/mp4">
-  Your browser does not support the video tag.
-</video>
+https://github.com/user-attachments/assets/ec5f60a2-ce73-4d6a-be20-14ab3e8c6fa9
+
