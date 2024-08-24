@@ -24,15 +24,29 @@ import {
 import { ViewIcon, ViewOffIcon, AddIcon } from '@chakra-ui/icons';
 import { useForm, Controller } from 'react-hook-form';
 import { useUploadOrganisationAvatar } from '../hooks/files/useUploadOrganisationAvatar/useUploadOrganisationAvatar';
-import { useChangePassword } from '../hooks/auth/useChangePassword/useChangePassword.ts';
 import { useUpdateOrganizationProfile } from '../hooks/organizations/useUpdateOrganizationProfile/useUpdateOrganizationProfile.ts';
 import { useGetOrganizationProfile } from '../hooks/organizations/useGetOrganizationProfile/useGetOrganizationProfile.tsx';
+import {useChangePassword} from '../hooks/auth/useChangePassword/useChangePassword.ts';
 
 const OrganisationProfileSettings: React.FC = () => {
-  const { control, handleSubmit, formState: { errors }, reset } = useForm();
+  // Separate useForm instances for each form
+  const {
+    control: profileControl,
+    handleSubmit: handleProfileSubmit,
+    formState: { errors: profileErrors },
+    reset: resetProfile,
+  } = useForm();
+
+  const {
+    control: passwordControl,
+    handleSubmit: handlePasswordSubmit,
+    formState: { errors: passwordErrors },
+    reset: resetPassword,
+  } = useForm();
+
   const toast = useToast();
   const { mutate: updateOrganisationProfile } = useUpdateOrganizationProfile();
-  const { data: organisationProfile,refetch } = useGetOrganizationProfile();
+  const { data: organisationProfile, refetch } = useGetOrganizationProfile();
   const { mutate: uploadOrganisationAvatar } = useUploadOrganisationAvatar();
   const { mutate: changeOrganisationPassword } = useChangePassword();
 
@@ -43,7 +57,7 @@ const OrganisationProfileSettings: React.FC = () => {
 
   useEffect(() => {
     if (organisationProfile) {
-      reset({
+      resetProfile({
         email: organisationProfile.organisationResponseDTO?.email ?? '',
         username: organisationProfile.organisationResponseDTO?.username ?? '',
         nameOfOrganisation: organisationProfile.organisationResponseDTO?.nameOfOrganisation ?? '',
@@ -52,7 +66,7 @@ const OrganisationProfileSettings: React.FC = () => {
         address: organisationProfile.organisationResponseDTO?.address ?? '',
       });
     }
-  }, [organisationProfile, reset]);
+  }, [organisationProfile, resetProfile]);
 
   const onSubmit = (data) => {
     updateOrganisationProfile(
@@ -109,7 +123,7 @@ const OrganisationProfileSettings: React.FC = () => {
             duration: 5000,
             isClosable: true,
           });
-          reset({ oldPassword: '', newPassword: '', confirmNewPassword: '' });
+          resetPassword({ oldPassword: '', newPassword: '', confirmNewPassword: '' });
         },
         onError: (error) => {
           toast({
@@ -181,99 +195,99 @@ const OrganisationProfileSettings: React.FC = () => {
             </TabList>
             <TabPanels>
               <TabPanel>
-                <form onSubmit={handleSubmit(onSubmit)}>
+                <form onSubmit={handleProfileSubmit(onSubmit)}>
                   <HStack spacing={4}>
-                    <FormControl id="username" isInvalid={errors.username}>
+                    <FormControl id="username" isInvalid={profileErrors.username}>
                       <FormLabel>Username</FormLabel>
                       <Controller
                         name="username"
-                        control={control}
+                        control={profileControl}
                         rules={{ required: "Username is required" }}
                         render={({ field }) => (
                           <Input type="text" {...field} />
                         )}
                       />
-                      {errors.username && (
-                        <Box color="red.500">{errors.username.message}</Box>
+                      {profileErrors.username && (
+                        <Box color="red.500">{profileErrors.username.message}</Box>
                       )}
                     </FormControl>
-                    <FormControl id="nameOfOrganisation" isInvalid={errors.nameOfOrganisation}>
+                    <FormControl id="nameOfOrganisation" isInvalid={profileErrors.nameOfOrganisation}>
                       <FormLabel>Name of Organisation</FormLabel>
                       <Controller
                         name="nameOfOrganisation"
-                        control={control}
+                        control={profileControl}
                         rules={{ required: "Name of Organisation is required" }}
                         render={({ field }) => (
                           <Input type="text" {...field} />
                         )}
                       />
-                      {errors.nameOfOrganisation && (
-                        <Box color="red.500">{errors.nameOfOrganisation.message}</Box>
+                      {profileErrors.nameOfOrganisation && (
+                        <Box color="red.500">{profileErrors.nameOfOrganisation.message}</Box>
                       )}
                     </FormControl>
                   </HStack>
                   <HStack spacing={4} mt={4}>
-                    <FormControl id="email" isInvalid={errors.email}>
+                    <FormControl id="email" isInvalid={profileErrors.email}>
                       <FormLabel>Email</FormLabel>
                       <Controller
                         name="email"
-                        control={control}
+                        control={profileControl}
                         rules={{ required: "Email is required" }}
                         render={({ field }) => (
                           <Input type="email" {...field} />
                         )}
                       />
-                      {errors.email && (
-                        <Box color="red.500">{errors.email.message}</Box>
+                      {profileErrors.email && (
+                        <Box color="red.500">{profileErrors.email.message}</Box>
                       )}
                     </FormControl>
-                    <FormControl id="country" isInvalid={errors.country}>
+                    <FormControl id="country" isInvalid={profileErrors.country}>
                       <FormLabel>Country</FormLabel>
                       <Controller
                         name="country"
-                        control={control}
+                        control={profileControl}
                         rules={{ required: "Country is required" }}
                         render={({ field }) => (
                           <Input type="text" {...field} />
                         )}
                       />
-                      {errors.country && (
-                        <Box color="red.500">{errors.country.message}</Box>
+                      {profileErrors.country && (
+                        <Box color="red.500">{profileErrors.country.message}</Box>
                       )}
                     </FormControl>
                   </HStack>
                   <HStack spacing={4} mt={4}>
-                    <FormControl id="city" isInvalid={errors.city}>
+                    <FormControl id="city" isInvalid={profileErrors.city}>
                       <FormLabel>City</FormLabel>
                       <Controller
                         name="city"
-                        control={control}
+                        control={profileControl}
                         rules={{ required: "City is required" }}
                         render={({ field }) => (
                           <Input type="text" {...field} />
                         )}
                       />
-                      {errors.city && (
-                        <Box color="red.500">{errors.city.message}</Box>
+                      {profileErrors.city && (
+                        <Box color="red.500">{profileErrors.city.message}</Box>
                       )}
                     </FormControl>
-                    <FormControl id="address" isInvalid={errors.address}>
+                    <FormControl id="address" isInvalid={profileErrors.address}>
                       <FormLabel>Address</FormLabel>
                       <Controller
                         name="address"
-                        control={control}
+                        control={profileControl}
                         rules={{ required: "Address is required" }}
                         render={({ field }) => (
                           <Input type="text" {...field} />
                         )}
                       />
-                      {errors.address && (
-                        <Box color="red.500">{errors.address.message}</Box>
+                      {profileErrors.address && (
+                        <Box color="red.500">{profileErrors.address.message}</Box>
                       )}
                     </FormControl>
                   </HStack>
                   <Stack direction="row" spacing={4} justify="flex-end" mt={4}>
-                    <Button variant="outline" colorScheme="orange">
+                    <Button variant="outline" colorScheme="orange" onClick={() => resetProfile()}>
                       Cancel
                     </Button>
                     <Button colorScheme="orange" type="submit">
@@ -283,15 +297,15 @@ const OrganisationProfileSettings: React.FC = () => {
                 </form>
               </TabPanel>
               <TabPanel>
-                <form onSubmit={handleSubmit(handleChangePassword)}>
+                <form onSubmit={handlePasswordSubmit(handleChangePassword)}>
                   <Flex direction="column" align="center" justify="center" width="full">
                     <Box width="60%">
-                      <FormControl id="currentPassword" isInvalid={errors.oldPassword}>
+                      <FormControl id="currentPassword" isInvalid={passwordErrors.oldPassword}>
                         <FormLabel>Current Password</FormLabel>
                         <InputGroup>
                           <Controller
                             name="oldPassword"
-                            control={control}
+                            control={passwordControl}
                             rules={{ required: "Current password is required" }}
                             render={({ field }) => (
                               <Input
@@ -309,16 +323,16 @@ const OrganisationProfileSettings: React.FC = () => {
                             />
                           </InputRightElement>
                         </InputGroup>
-                        {errors.oldPassword && (
-                          <Box color="red.500">{errors.oldPassword.message}</Box>
+                        {passwordErrors.oldPassword && (
+                          <Box color="red.500">{passwordErrors.oldPassword.message}</Box>
                         )}
                       </FormControl>
-                      <FormControl id="newPassword" mt={4} isInvalid={errors.newPassword}>
+                      <FormControl id="newPassword" mt={4} isInvalid={passwordErrors.newPassword}>
                         <FormLabel>New Password</FormLabel>
                         <InputGroup>
                           <Controller
                             name="newPassword"
-                            control={control}
+                            control={passwordControl}
                             rules={{ required: "New password is required", minLength: { value: 8, message: "Password must be at least 8 characters long" } }}
                             render={({ field }) => (
                               <Input
@@ -336,16 +350,16 @@ const OrganisationProfileSettings: React.FC = () => {
                             />
                           </InputRightElement>
                         </InputGroup>
-                        {errors.newPassword && (
-                          <Box color="red.500">{errors.newPassword.message}</Box>
+                        {passwordErrors.newPassword && (
+                          <Box color="red.500">{passwordErrors.newPassword.message}</Box>
                         )}
                       </FormControl>
-                      <FormControl id="confirmNewPassword" mt={4} isInvalid={errors.confirmNewPassword}>
+                      <FormControl id="confirmNewPassword" mt={4} isInvalid={passwordErrors.confirmNewPassword}>
                         <FormLabel>Confirm New Password</FormLabel>
                         <InputGroup>
                           <Controller
                             name="confirmNewPassword"
-                            control={control}
+                            control={passwordControl}
                             rules={{ required: "Please confirm your new password" }}
                             render={({ field }) => (
                               <Input
@@ -363,8 +377,8 @@ const OrganisationProfileSettings: React.FC = () => {
                             />
                           </InputRightElement>
                         </InputGroup>
-                        {errors.confirmNewPassword && (
-                          <Box color="red.500">{errors.confirmNewPassword.message}</Box>
+                        {passwordErrors.confirmNewPassword && (
+                          <Box color="red.500">{passwordErrors.confirmNewPassword.message}</Box>
                         )}
                       </FormControl>
                       <Button mt={4} colorScheme="orange" type="submit">

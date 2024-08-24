@@ -11,6 +11,7 @@ export const useUpdateVolunteerProfile = () => {
   const mutation  = useMutation({
     mutationKey: [MUTATION_KEY_UPDATE_VOLUNTEER_PROFILE],
     mutationFn: (updatedProfileData: UpdateVolunteerInfo) => {
+      console.log('updatedProfileData', updatedProfileData);
       return volunteerService.updateVolunteerProfile(updatedProfileData);
     },
   });

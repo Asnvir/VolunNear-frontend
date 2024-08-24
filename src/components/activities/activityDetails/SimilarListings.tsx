@@ -10,12 +10,14 @@ interface SimilarListingsProps {
   activities?: Activity[];
   isLoading: boolean;
   error?: string;
+  withDistance?: boolean;
 }
 
 const SimilarListings: React.FC<SimilarListingsProps> = ({
   activities,
   isLoading,
   error,
+  withDistance,
 }) => {
   const navigate = useNavigate();
 
@@ -90,7 +92,7 @@ const SimilarListings: React.FC<SimilarListingsProps> = ({
       >
         {activities.map(activity => (
           <Box key={activity.activityId} p={2}>
-            <ActivityCard activity={activity} onClick={navigateToActivity} />
+            <ActivityCard activity={activity} onClick={navigateToActivity} withDistance={withDistance} />
           </Box>
         ))}
       </Carousel>

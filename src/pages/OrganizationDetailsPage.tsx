@@ -17,7 +17,6 @@ import {
   Image,
   Flex,
   useToast,
-  SimpleGrid,
   Divider,
 } from '@chakra-ui/react';
 import {Rating, Star} from '@smastrom/react-rating';
@@ -28,9 +27,10 @@ import {Organization} from '../api/services/organizations/types.ts';
 import {usePostFeedback} from '../hooks/feedbacks/usePostFeedback/usePostFeedback.ts';
 import {useAddOrUpdateRating} from '../hooks/organizations/userAddOrUpdateRating/useAddOrUpdateRating.ts';
 import {useGetOrganizationActivities} from '../hooks/activities/useGetOrganizationActivities/useGetOrganizationActivities.ts';
-import SimilarListings from '../components/activities/activityDetails/SimilarListings.tsx';
 import {useGetFeedbacksByOrganisation} from '../hooks/feedbacks/useGetFeedbacksByOrganisation/useGetFeedbacksByOrganisation.ts';
 import TestimonialCarousel from '../components/TestimonialsCarousel.tsx';
+import SimilarListings from '../components/activities/activityDetails/SimilarListings.tsx';
+import {useGetAverageRating} from '../hooks/organizations/useGetAvarageRating/useGetAverageRating.ts';
 
 interface LocationState {
   organisation: Organization;
@@ -56,6 +56,7 @@ const OrganizationDetailsPage: React.FC = () => {
     refetch: refetchFeedbacks,
   } = useGetFeedbacksByOrganisation(organisation.id);
   const {mutate: rateOrganisation} = useAddOrUpdateRating();
+  const {data: ratingByOrg, refetch: refetchRating} = useGetAverageRating(organisation.id);
   const {
     data: similarActivities,
     isLoading: isLoadingActivities,
@@ -69,6 +70,10 @@ const OrganizationDetailsPage: React.FC = () => {
       city: '',
     },
   });
+
+  useEffect(() => {
+    console.log("Feedbacks", feedbacks);
+  }, []);
 
   const handleFeedbackSubmit = () => {
     rateOrganisation(
@@ -99,6 +104,7 @@ const OrganizationDetailsPage: React.FC = () => {
                   isClosable: true,
                 });
                 refetchFeedbacks(); // Refetch feedbacks after submitting
+                refetchRating(); // Refetch rating after submitting
               },
               onError: error => {
                 toast({
@@ -165,7 +171,7 @@ const OrganizationDetailsPage: React.FC = () => {
             </Text>
             <Text fontSize="lg" mb={4}>
               <strong>Rating:</strong>{' '}
-              {organisation.rating?.toFixed(1) || (4.5).toFixed(1)}
+              {ratingByOrg?.toFixed(1) || (0.0).toFixed(1)}
             </Text>
             <Button variant="primary" onClick={onOpen}>
               Add Feedback
@@ -224,12 +230,13 @@ const OrganizationDetailsPage: React.FC = () => {
 
         <Divider />
 
-        {/*/!* Slider Section *!/*/}
-        {/*<SimilarListings*/}
-        {/*  activities={similarActivities}*/}
-        {/*  isLoading={isLoadingActivities}*/}
-        {/*  error={errorActivities}*/}
-        {/*/>*/}
+        {/* Slider Section */}
+        <SimilarListings
+          activities={similarActivities}
+          isLoading={isLoadingActivities}
+          error={errorActivities}
+          withDistance={false}
+        />
       </VStack>
 
       {/* All Feedbacks Modal */}
