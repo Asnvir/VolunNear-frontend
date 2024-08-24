@@ -32,7 +32,7 @@ const OrganisationProfileSettings: React.FC = () => {
   const { control, handleSubmit, formState: { errors }, reset } = useForm();
   const toast = useToast();
   const { mutate: updateOrganisationProfile } = useUpdateOrganizationProfile();
-  const { data: organisationProfile } = useGetOrganizationProfile();
+  const { data: organisationProfile,refetch } = useGetOrganizationProfile();
   const { mutate: uploadOrganisationAvatar } = useUploadOrganisationAvatar();
   const { mutate: changeOrganisationPassword } = useChangePassword();
 
@@ -124,6 +124,30 @@ const OrganisationProfileSettings: React.FC = () => {
     );
   };
 
+  const handleAvatarChange = (e) => {
+    if (e.target.files && e.target.files[0]) {
+      const formData = new FormData();
+      formData.append('file', e.target.files[0]);
+      uploadOrganisationAvatar(
+        { formData, id: organisationProfile?.organisationResponseDTO?.id },
+        {
+          onSuccess: () => {
+            refetch(); // Refetch the profile data after successful upload
+          },
+          onError: (error) => {
+            toast({
+              title: 'An error occurred',
+              description: error.message,
+              status: 'error',
+              duration: 5000,
+              isClosable: true,
+            });
+          },
+        }
+      );
+    }
+  };
+
   return (
     <Flex direction="column" flex="1" alignItems="center" justifyContent="center" width="full">
       <Box bg="white" p={6} rounded="md" boxShadow="xl" maxW="1200px" w="full">
@@ -133,6 +157,7 @@ const OrganisationProfileSettings: React.FC = () => {
             <Input
               type="file"
               accept="image/*"
+              onChange={handleAvatarChange}
               style={{ display: 'none' }}
               id="avatarUpload"
             />

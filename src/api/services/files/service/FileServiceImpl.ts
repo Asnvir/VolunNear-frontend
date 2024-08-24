@@ -20,6 +20,7 @@ export class FileUploadServiceImpl implements FileUploadService {
 
 
   public async uploadVolunteerAvatar(file: FormData, volunteerId: string): Promise<string> {
+    console.log('uploadVolunteerAvatar', file, volunteerId)
     const {data: avatarUrl} = await this.httpClient.post<string, FormData>(
       API_ENDPOINTS.UPLOAD_VOLUNTEER_AVATAR + "/" + volunteerId,
       file

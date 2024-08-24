@@ -32,7 +32,7 @@ const VolunteerProfileSettings: React.FC = () => {
   const toast = useToast();
 
   const { mutate: updateVolunteerProfile } = useUpdateVolunteerProfile();
-  const { data: volunteerProfile } = useGetVolunteerProfile();
+  const { data: volunteerProfile, refetch} = useGetVolunteerProfile();
   const { mutate: uploadVolunteerAvatar } = useUploadVolunteerAvatar();
   const { mutate: changePassword } = useChangePassword();
 
@@ -81,10 +81,10 @@ const VolunteerProfileSettings: React.FC = () => {
       const formData = new FormData();
       formData.append('file', e.target.files[0]);
       uploadVolunteerAvatar(
-        { formData, volunteerId: volunteerProfile.id },
+        { formData, id: volunteerProfile.id },
         {
-          onSuccess: (data) => {
-            reset({ avatarUrl: data });
+          onSuccess: () => {
+            refetch(); // Refetch the profile data after successful upload
           },
           onError: (error) => {
             toast({

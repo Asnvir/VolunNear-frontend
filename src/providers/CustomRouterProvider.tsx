@@ -105,6 +105,14 @@ export const CustomRouterProvider = () => {
           ),
         },
         {
+          path: 'organization/profile',
+          element: (
+            <ProtectedRoute>
+              <OrganisationProfileSettings />
+            </ProtectedRoute>
+          ),
+        },
+        {
           path: 'activity/:activityId',
           element: (
             <ProtectedRoute roles={[ROLE_ORGANISATION, ROLE_VOLUNTEER]}>

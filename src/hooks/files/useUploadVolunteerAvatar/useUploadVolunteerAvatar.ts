@@ -11,7 +11,7 @@ export const useUploadVolunteerAvatar = () => {
   const mutation = useMutation({
     mutationKey: [MUTATION_KEY_UPLOAD_VOLUNTEER_AVATAR],
     mutationFn: (uploadAvatarParams: UploadAvatarParams) => {
-      console.log('uploadAvatarParams', uploadAvatarParams);
+      console.log('uploadAvatarParams', uploadAvatarParams.id);
       return fileUploadService.uploadVolunteerAvatar(uploadAvatarParams.formData, uploadAvatarParams.id);
     },
   });
