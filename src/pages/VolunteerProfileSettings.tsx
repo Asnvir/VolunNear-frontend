@@ -25,35 +25,51 @@ import { useForm, Controller } from 'react-hook-form';
 import { useGetVolunteerProfile } from '../hooks/volunteer/useGetVolunteerProfile/useGetVolunteerProfile';
 import { useUpdateVolunteerProfile } from '../hooks/volunteer/useUpdateVolunteerProfile/useUpdateVolunteerProfile';
 import { useUploadVolunteerAvatar } from '../hooks/files/useUploadVolunteerAvatar/useUploadVolunteerAvatar.ts';
-import { useChangePassword } from '../hooks/auth/useChangePassword/useChangePassword.ts';
+import {useChangePassword} from '../hooks/auth/useChangePassword/useChangePassword.ts';
 
 const VolunteerProfileSettings: React.FC = () => {
-  const { control, handleSubmit, reset, formState: { errors } } = useForm();
-  const toast = useToast();
-
-  const { mutate: updateVolunteerProfile } = useUpdateVolunteerProfile();
-  const { data: volunteerProfile } = useGetVolunteerProfile();
-  const { mutate: uploadVolunteerAvatar } = useUploadVolunteerAvatar();
-  const { mutate: changePassword } = useChangePassword();
-
+  const [avatarUrl, setAvatarUrl] = useState('');
   const [showCurrentPassword, setShowCurrentPassword] = useState(false);
   const [showNewPassword, setShowNewPassword] = useState(false);
   const [showConfirmNewPassword, setShowConfirmNewPassword] = useState(false);
 
+  // Separate useForm instances for each form
+  const {
+    control: profileControl,
+    handleSubmit: handleProfileSubmit,
+    reset: resetProfile,
+    formState: { errors: profileErrors },
+  } = useForm();
+
+  const {
+    control: passwordControl,
+    handleSubmit: handlePasswordSubmit,
+    reset: resetPassword,
+    formState: { errors: passwordErrors },
+  } = useForm();
+
+  const toast = useToast();
+
+  const { data: volunteerProfile, refetch } = useGetVolunteerProfile();
+  const { mutate: updateVolunteerProfile } = useUpdateVolunteerProfile();
+  const { mutate: uploadVolunteerAvatar } = useUploadVolunteerAvatar();
+  const { mutate: changePassword } = useChangePassword();
+
   useEffect(() => {
     if (volunteerProfile) {
-      reset({
+      resetProfile({
         email: volunteerProfile.email ?? '',
         username: volunteerProfile.username ?? '',
         realName: volunteerProfile.realName ?? '',
-        avatarUrl: volunteerProfile.avatarUrl ?? ''
       });
+      setAvatarUrl(volunteerProfile.avatarUrl ?? '');
     }
-  }, [volunteerProfile, reset]);
+  }, [volunteerProfile, resetProfile]);
 
   const handleSave = (data) => {
+    console.log("Form data:", data);
     updateVolunteerProfile(
-      { email: data.email, username: data.username, realName: data.realName, avatarUrl: data.avatarUrl },
+      { ...data },
       {
         onSuccess: () => {
           toast({
@@ -81,10 +97,11 @@ const VolunteerProfileSettings: React.FC = () => {
       const formData = new FormData();
       formData.append('file', e.target.files[0]);
       uploadVolunteerAvatar(
-        { formData, volunteerId: volunteerProfile.id },
+        { formData, id: volunteerProfile.id },
         {
           onSuccess: (data) => {
-            reset({ avatarUrl: data });
+            setAvatarUrl(data);
+            refetch(); // Refetch the profile data after successful upload
           },
           onError: (error) => {
             toast({
@@ -141,7 +158,7 @@ const VolunteerProfileSettings: React.FC = () => {
             duration: 5000,
             isClosable: true,
           });
-          reset({ oldPassword: '', newPassword: '', confirmNewPassword: '' });
+          resetPassword({ oldPassword: '', newPassword: '', confirmNewPassword: '' });
         },
         onError: (error) => {
           toast({
@@ -161,7 +178,7 @@ const VolunteerProfileSettings: React.FC = () => {
       <Box bg="white" p={6} rounded="md" boxShadow="xl" maxW="600px" w="full">
         <VStack spacing={8} align="stretch">
           <Flex justify="center" position="relative">
-            <Avatar size="xl" src={volunteerProfile?.avatarUrl} />
+            <Avatar size="xl" src={avatarUrl} />
             <Input
               type="file"
               accept="image/*"
@@ -189,39 +206,48 @@ const VolunteerProfileSettings: React.FC = () => {
             </TabList>
             <TabPanels>
               <TabPanel>
-                <form onSubmit={handleSubmit(handleSave)}>
-                  <FormControl id="username" isInvalid={errors.username}>
+                <form onSubmit={handleProfileSubmit((data) => {
+                  console.log("Form data:", data);
+                  handleSave(data);
+                })}>
+                  <FormControl id="username" isInvalid={profileErrors.username}>
                     <FormLabel>Username</FormLabel>
                     <Controller
                       name="username"
-                      control={control}
+                      control={profileControl}
                       rules={{ required: "Username is required" }}
-                      render={({ field }) => <Input type="text" {...field} />}
+                      render={({ field }) => (
+                        <Input type="text" {...field} />
+                      )}
                     />
-                    {errors.username && <Box color="red.500">{errors.username.message}</Box>}
+                    {profileErrors.username && <Box color="red.500">{profileErrors.username.message}</Box>}
                   </FormControl>
-                  <FormControl id="realName" isInvalid={errors.realName}>
+                  <FormControl id="realName" isInvalid={profileErrors.realName}>
                     <FormLabel>Full Name</FormLabel>
                     <Controller
                       name="realName"
-                      control={control}
+                      control={profileControl}
                       rules={{ required: "Full Name is required" }}
-                      render={({ field }) => <Input type="text" {...field} />}
+                      render={({ field }) => (
+                        <Input type="text" {...field} />
+                      )}
                     />
-                    {errors.realName && <Box color="red.500">{errors.realName.message}</Box>}
+                    {profileErrors.realName && <Box color="red.500">{profileErrors.realName.message}</Box>}
                   </FormControl>
-                  <FormControl id="email" isInvalid={errors.email}>
+                  <FormControl id="email" isInvalid={profileErrors.email}>
                     <FormLabel>Email</FormLabel>
                     <Controller
                       name="email"
-                      control={control}
+                      control={profileControl}
                       rules={{ required: "Email is required" }}
-                      render={({ field }) => <Input type="email" {...field} />}
+                      render={({ field }) => (
+                        <Input type="email" {...field} />
+                      )}
                     />
-                    {errors.email && <Box color="red.500">{errors.email.message}</Box>}
+                    {profileErrors.email && <Box color="red.500">{profileErrors.email.message}</Box>}
                   </FormControl>
                   <Stack direction="row" spacing={4} justify="flex-end" mt={4}>
-                    <Button variant="outline" colorScheme="orange" onClick={() => reset()}>
+                    <Button variant="outline" colorScheme="orange" onClick={() => resetProfile()}>
                       Cancel
                     </Button>
                     <Button colorScheme="orange" type="submit">
@@ -231,13 +257,13 @@ const VolunteerProfileSettings: React.FC = () => {
                 </form>
               </TabPanel>
               <TabPanel>
-                <form onSubmit={handleSubmit(handleChangePassword)}>
-                  <FormControl id="currentPassword" isInvalid={errors.oldPassword}>
+                <form onSubmit={handlePasswordSubmit(handleChangePassword)}>
+                  <FormControl id="currentPassword" isInvalid={passwordErrors.oldPassword}>
                     <FormLabel>Current Password</FormLabel>
                     <InputGroup>
                       <Controller
                         name="oldPassword"
-                        control={control}
+                        control={passwordControl}
                         rules={{ required: "Current password is required" }}
                         render={({ field }) => (
                           <Input
@@ -255,15 +281,18 @@ const VolunteerProfileSettings: React.FC = () => {
                         />
                       </InputRightElement>
                     </InputGroup>
-                    {errors.oldPassword && <Box color="red.500">{errors.oldPassword.message}</Box>}
+                    {passwordErrors.oldPassword && <Box color="red.500">{passwordErrors.oldPassword.message}</Box>}
                   </FormControl>
-                  <FormControl id="newPassword" isInvalid={errors.newPassword}>
+                  <FormControl id="newPassword" isInvalid={passwordErrors.newPassword}>
                     <FormLabel>New Password</FormLabel>
                     <InputGroup>
                       <Controller
                         name="newPassword"
-                        control={control}
-                        rules={{ required: "New password is required", minLength: { value: 8, message: "Password must be at least 8 characters long" } }}
+                        control={passwordControl}
+                        rules={{
+                          required: "New password is required",
+                          minLength: { value: 8, message: "Password must be at least 8 characters long" },
+                        }}
                         render={({ field }) => (
                           <Input
                             type={showNewPassword ? 'text' : 'password'}
@@ -280,14 +309,14 @@ const VolunteerProfileSettings: React.FC = () => {
                         />
                       </InputRightElement>
                     </InputGroup>
-                    {errors.newPassword && <Box color="red.500">{errors.newPassword.message}</Box>}
+                    {passwordErrors.newPassword && <Box color="red.500">{passwordErrors.newPassword.message}</Box>}
                   </FormControl>
-                  <FormControl id="confirmNewPassword" isInvalid={errors.confirmNewPassword}>
+                  <FormControl id="confirmNewPassword" isInvalid={passwordErrors.confirmNewPassword}>
                     <FormLabel>Confirm New Password</FormLabel>
                     <InputGroup>
                       <Controller
                         name="confirmNewPassword"
-                        control={control}
+                        control={passwordControl}
                         rules={{ required: "Please confirm your new password" }}
                         render={({ field }) => (
                           <Input
@@ -305,7 +334,7 @@ const VolunteerProfileSettings: React.FC = () => {
                         />
                       </InputRightElement>
                     </InputGroup>
-                    {errors.confirmNewPassword && <Box color="red.500">{errors.confirmNewPassword.message}</Box>}
+                    {passwordErrors.confirmNewPassword && <Box color="red.500">{passwordErrors.confirmNewPassword.message}</Box>}
                   </FormControl>
                   <Button mt={4} colorScheme="orange" type="submit">
                     Change Password

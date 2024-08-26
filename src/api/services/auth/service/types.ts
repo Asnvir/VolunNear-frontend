@@ -24,10 +24,11 @@ export type AuthService = {
   getCurrentUser: () => User | null;
   verifyEmail(email: string): Promise<ResponseForgotPasswordDTO>;
   verifyOTP(otp: string, email: string): Promise<ResponseForgotPasswordDTO>;
-  changePassword(
+  changeForgottedPassword(
     email: string,
     changePasswordRequest: ChangePasswordRequest
   ): Promise<ChangePasswordResponse>;
+  changePassword(oldPassword: string, newPassword: string): Promise<void>;
 };
 
 export type Role = typeof ROLE_ORGANISATION | typeof ROLE_VOLUNTEER;

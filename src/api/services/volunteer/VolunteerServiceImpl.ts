@@ -49,6 +49,7 @@ export class VolunteerServiceImpl implements VolunteerService {
   public async updateVolunteerProfile(
     updateVolunteerInfo: UpdateVolunteerInfo
   ): Promise<IUpdateVolunteerInfoRequestDTO> {
+    console.log('updateVolunteerInfo', updateVolunteerInfo)
     const updateVolunteerInfoDTO =
       this.volMapper.updateVolunteerInfoToDTO(updateVolunteerInfo);
     const {data: updatedVolunteerInfoDTO} = await this.httpClient.put<

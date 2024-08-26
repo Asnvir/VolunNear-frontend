@@ -16,9 +16,10 @@ interface ActivityCardProps {
     activityDistance: number;
   };
   onClick: (activity: any) => void;
+  withDistance?: boolean;
 }
 
-export const ActivityCard = ({activity, onClick}: ActivityCardProps) => {
+export const ActivityCard = ({activity, onClick, withDistance}: ActivityCardProps) => {
   return (
     <Box
       borderWidth="1px"
@@ -67,7 +68,9 @@ export const ActivityCard = ({activity, onClick}: ActivityCardProps) => {
           <Text mb="4">
             Type: {beautifyActivityType(activity.activityKind)}
           </Text>
-          <Text>Distance: {activity.activityDistance.toFixed(2)} km</Text>
+          {withDistance && (
+            <Text>Distance: {activity.activityDistance.toFixed(2)} km</Text>
+          )}
         </Box>
       </Box>
     </Box>

@@ -28,6 +28,7 @@ import {
 } from '../utils/constants/routesConstants.ts';
 import {ProtectedRoute} from '../components/navigation/ProtectedRoute.tsx';
 import {OrganisationActivities} from '../pages/OrganisationActivities.tsx';
+import OrganisationProfileSettings from '../pages/OrganisationProfileSettings.tsx';
 
 export const CustomRouterProvider = () => {
   const userRole = useGetUserRole();
@@ -101,6 +102,14 @@ export const CustomRouterProvider = () => {
           element: (
             <ProtectedRoute>
               <VolunteerProfileSettings />
+            </ProtectedRoute>
+          ),
+        },
+        {
+          path: 'organization/profile',
+          element: (
+            <ProtectedRoute>
+              <OrganisationProfileSettings />
             </ProtectedRoute>
           ),
         },

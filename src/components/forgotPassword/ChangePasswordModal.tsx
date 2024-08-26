@@ -16,7 +16,7 @@ import {
 import {SubmitHandler, useForm} from 'react-hook-form';
 import {z} from 'zod';
 import {zodResolver} from '@hookform/resolvers/zod';
-import {useChangePassword} from '../../hooks/auth/useChangePassword/useChangePassword.ts';
+import {useChangeForgottedPassword} from '../../hooks/auth/useChangePassword/useChangeForgottedPassword.ts';
 import {ChangePasswordRequest} from '../../api/httpClient/types.ts';
 
 // Define Zod schema for validation
@@ -56,7 +56,7 @@ export const ChangePasswordModal = ({
 
   const toast = useToast();
 
-  const {changePassword, isLoading, error} = useChangePassword(
+  const {changePassword, isLoading, error} = useChangeForgottedPassword(
     () => {
       toast({
         title: 'Password Changed.',
