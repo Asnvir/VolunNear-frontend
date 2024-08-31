@@ -1,16 +1,6 @@
 import React from 'react';
 import {useLocation} from 'react-router-dom';
-import {
-  Alert,
-  AlertIcon,
-  Box,
-  Button,
-  Flex,
-  Stack,
-  Text,
-  useToast,
-} from '@chakra-ui/react';
-import {FaCalendarAlt, FaMapMarkerAlt, FaRoute, FaStar} from 'react-icons/fa';
+import {Alert, AlertIcon, Box, Flex, Text, useToast} from '@chakra-ui/react';
 import {Activity} from '../api/types';
 import {useGetAverageRating} from '../hooks/organizations/useGetAvarageRating/useGetAverageRating.ts';
 import {useGetVolunteerActivities} from '../hooks/activities/useGetVolunteerActivities/useGetVolunteerActivities.ts';
@@ -22,18 +12,22 @@ import SimilarListings from '../components/activities/activityDetails/SimilarLis
 import {useVolunteerActivityJoined} from '../hooks/volunteer/useVolunteerActivityJoined/useVolunteerActivityJoined.ts';
 import {useJoinToActivity} from '../hooks/activities/useJoinToActivity/useJoinToActivity.ts';
 import {useLeaveActivity} from '../hooks/activities/useLeaveActivity/useLeaveActivity.ts';
+import {BIG_NUMBER_FOR_PAGINATION} from '../utils/constants/defaultActivitiesPagingValues.ts';
+import {ActivityInfo} from '../components/activities/activityDetails/ActivityInfo.tsx';
+import {Rating} from '../components/activities/activityDetails/Rating.tsx';
+import {FeedbackCount} from '../components/activities/activityDetails/FeedbackCount.tsx';
+import {JoinButton} from '../components/activities/activityDetails/JoinButton.tsx';
+import {LeaveButton} from '../components/activities/activityDetails/LeaveButton.tsx';
 
 interface LocationState {
   activity: Activity;
 }
 
 const ActivityDetailsPage: React.FC = () => {
-  const {state} = useLocation<LocationState>();
+  const location = useLocation();
+  const state = location.state as LocationState;
   const activity = state?.activity;
 
-  console.log(activity);
-
-  // Fetch average rating
   const {data: averageRating, isLoading: isLoadingRating} = useGetAverageRating(
     activity?.organisationId || ''
   );
@@ -49,6 +43,7 @@ const ActivityDetailsPage: React.FC = () => {
     error: errorSimilarActivities,
   } = useGetVolunteerActivities({
     filters: {type: activity?.activityKind, date: ''},
+    size: BIG_NUMBER_FOR_PAGINATION,
   });
 
   const similarActivities = similarActivitiesData?.filter(
@@ -57,15 +52,10 @@ const ActivityDetailsPage: React.FC = () => {
 
   const toast = useToast();
 
-  const {data: isJoined, isLoading} = useVolunteerActivityJoined(
-    activity.activityId
-  );
-  const {mutate: joinToActivity} = useJoinToActivity();
-  const {mutate: leaveActivity} = useLeaveActivity();
+  const {data: isJoined} = useVolunteerActivityJoined(activity.activityId);
 
-  const handleJoinActivity = () => {
-    // Add logic to join the activity
-    joinToActivity(activity.activityId, {
+  const {mutate: joinToActivity, isLoading: isLoadingJoinButton} =
+    useJoinToActivity({
       onSuccess: () => {
         toast({
           title: 'Activity joined successfully',
@@ -77,17 +67,20 @@ const ActivityDetailsPage: React.FC = () => {
       onError: error => {
         toast({
           title: 'An error occurred',
-          description: error,
+          description: error instanceof Error ? error.message : String(error),
           status: 'error',
           duration: 5000,
           isClosable: true,
         });
       },
     });
+
+  const handleJoinActivity = () => {
+    joinToActivity(activity.activityId);
   };
 
-  const handleCancelActivity = () => {
-    leaveActivity(activity.activityId, {
+  const {mutate: leaveActivity, isLoading: isLoadingLeaveActivityButton} =
+    useLeaveActivity({
       onSuccess: () => {
         toast({
           title: 'Activity cancelled successfully',
@@ -99,12 +92,16 @@ const ActivityDetailsPage: React.FC = () => {
       onError: error => {
         toast({
           title: 'An error occurred',
+          description: error instanceof Error ? error.message : String(error),
           status: 'error',
           duration: 5000,
           isClosable: true,
         });
       },
     });
+
+  const handleCancelActivity = () => {
+    leaveActivity(activity.activityId);
   };
 
   if (!activity) {
@@ -141,55 +138,18 @@ const ActivityDetailsPage: React.FC = () => {
 
         <Box p={6}>
           <Flex justify="space-between" mb={6}>
-            <Box flex="1" mr={4}>
-              <Stack spacing={4}>
-                <Text fontSize="2xl" fontWeight="semibold">
-                  Organisation: {activity.organisationName}
-                </Text>
-                <Flex alignItems="center">
-                  <FaStar color="black" style={{marginRight: '8px'}} />
-                  <Text>{averageRating}</Text>
-                </Flex>
-
-                <Flex alignItems="center">
-                  <FaCalendarAlt style={{marginRight: '8px'}} />
-                  <Text>
-                    {new Date(
-                      activity.activityDateOfPlace
-                    ).toLocaleDateString()}{' '}
-                    at{' '}
-                    {new Date(
-                      activity.activityDateOfPlace
-                    ).toLocaleTimeString()}
-                  </Text>
-                </Flex>
-
-                <Flex alignItems="center">
-                  <FaMapMarkerAlt style={{marginRight: '8px'}} />
-                  <Text>
-                    {`${activity.activityStreet} ${activity.activityNumberOfHouse}, ${activity.activityCity}, ${activity.activityCountry}`}
-                  </Text>
-                </Flex>
-
-                <Flex alignItems="center">
-                  <FaRoute style={{marginRight: '8px'}} />
-                  <Text>{activity.activityDistance.toFixed(2)} km</Text>
-                </Flex>
-
-                <Box>
-                  <Text>Description</Text>
-                  <Box
-                    fontSize="md"
-                    color="gray.500"
-                    dangerouslySetInnerHTML={{
-                      __html: activity.activityDescription,
-                    }}
-                  />
-                </Box>
-              </Stack>
-            </Box>
+            <ActivityInfo activity={activity} />
 
             <Box flex="1">
+              <Rating
+                averageRating={averageRating}
+                isLoadingRating={isLoadingRating}
+              />
+              <FeedbackCount
+                numOfFeedbacks={numOfFeedbacks}
+                isLoadingFeedbacks={isLoadingFeedbacks}
+              />
+
               <MapContainer
                 center={[activity.activityLatitude, activity.activityLongitude]}
                 zoom={13}
@@ -212,16 +172,19 @@ const ActivityDetailsPage: React.FC = () => {
           </Flex>
         </Box>
 
-        <Flex justify="center" mb={6}>
-          {!isLoading && (
-            <Button
-              colorScheme={isJoined ? 'red' : 'primary'}
-              onClick={isJoined ? handleCancelActivity : handleJoinActivity}
-            >
-              {isJoined ? 'Leave event' : 'Join event'}
-            </Button>
+        <>
+          {isJoined ? (
+            <LeaveButton
+              isLoading={isLoadingLeaveActivityButton}
+              onLeave={handleCancelActivity}
+            />
+          ) : (
+            <JoinButton
+              isLoading={isLoadingJoinButton}
+              onJoin={handleJoinActivity}
+            />
           )}
-        </Flex>
+        </>
 
         <Box p={6} bg="gray.50">
           <SimilarListings

@@ -2,7 +2,7 @@ import {
   Activity,
   ActivityDTO,
   CreateActivityRequest,
-  OrganisationDTO,
+  OrganisationResponseDTO,
 } from '../../types.ts';
 import {ActivityMapper} from './types.ts';
 import {
@@ -50,7 +50,7 @@ export class ActivityMapperImpl implements ActivityMapper {
     organization,
   }: {
     activity: ActivityDTO;
-    organization: OrganisationDTO;
+    organization: OrganisationResponseDTO;
   }): Activity {
     return {
       activityId: activity.id,

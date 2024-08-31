@@ -1,8 +1,6 @@
 import {Activity, CreateActivityRequest} from '../../../types.ts';
 import {ICreatedActivityDTO} from '../../../../data-contracts.ts';
 
-export type SortOrder = 'ASC' | 'DESC';
-
 export type Coordinates = {
   latitude: number;
   longitude: number;
@@ -47,14 +45,25 @@ export enum ActivityType {
 }
 export type ActivitiesTypes = ActivityType[];
 
-export type VolunteerActivitiesQueryParams = VolunteerActivitiesFiltersType & {
-  sortOrder: SortOrder;
-} & Coordinates;
+export type PaginationParams = {
+  page: number;
+  size: number;
+};
+
+export type SortOrder = {
+  sortOrder: 'ASC' | 'DESC';
+};
+
+export type VolunteerActivitiesQueryParams = VolunteerActivitiesFiltersType &
+  PaginationParams &
+  SortOrder &
+  Coordinates;
 
 export type OrganisationActivitiesQueryParams =
-  OrganisationActivitiesFiltersType & {
-    sortOrder: SortOrder;
-  } & Coordinates;
+  OrganisationActivitiesFiltersType &
+    PaginationParams &
+    Coordinates &
+    SortOrder;
 
 export type BackendActivitiesFiltersType = Omit<
   VolunteerActivitiesFiltersType,

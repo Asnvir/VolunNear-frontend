@@ -43,6 +43,41 @@ export class ActivitiesServiceImpl implements ActivitiesService {
     return ActivitiesServiceImpl.instance;
   }
 
+  // public async getVolunteerActivities(
+  //   params: VolunteerActivitiesQueryParams
+  // ): Promise<Activity[]> {
+  //   const queryParams = {
+  //     ...params,
+  //     type: params.type === ActivityType.ALL ? '' : params.type,
+  //   };
+  //   const backendFilters = this.activityMapper.mapFrontendToBackendFilters(
+  //     queryParams,
+  //     false
+  //   );
+  //   const filteredParams = this.activityUtil.filterEmptyFilters(backendFilters);
+  //
+  //   const queryParamsAsString =
+  //     this.activityMapper.convertToQueryParams(filteredParams);
+  //
+  //   const queryParamsString = new URLSearchParams(
+  //     queryParamsAsString
+  //   ).toString();
+  //
+  //   const {data: organizationsDTO} =
+  //     await this.httpClient.get<ActivitiesResponse>(
+  //       `/api/v1/organisation/activities?${queryParamsString}`
+  //     );
+  //
+  //   return organizationsDTO.flatMap(({activities, organisationResponseDTO}) =>
+  //     activities.map(activity =>
+  //       this.activityMapper.fromDTO({
+  //         activity,
+  //         organization: organisationResponseDTO,
+  //       })
+  //     )
+  //   );
+  // }
+
   public async getVolunteerActivities(
     params: VolunteerActivitiesQueryParams
   ): Promise<Activity[]> {
@@ -50,10 +85,12 @@ export class ActivitiesServiceImpl implements ActivitiesService {
       ...params,
       type: params.type === ActivityType.ALL ? '' : params.type,
     };
+
     const backendFilters = this.activityMapper.mapFrontendToBackendFilters(
       queryParams,
       false
     );
+
     const filteredParams = this.activityUtil.filterEmptyFilters(backendFilters);
 
     const queryParamsAsString =
@@ -63,16 +100,18 @@ export class ActivitiesServiceImpl implements ActivitiesService {
       queryParamsAsString
     ).toString();
 
-    const {data: organizationsDTO} =
+    const {data: pageActivitiesDTO} =
       await this.httpClient.get<ActivitiesResponse>(
         `/api/v1/organisation/activities?${queryParamsString}`
       );
 
-    return organizationsDTO.flatMap(({activities, organisationResponseDTO}) =>
-      activities.map(activity =>
+    console.log(pageActivitiesDTO); // Логирование для проверки ответа
+
+    return pageActivitiesDTO.content.flatMap(activitiesDTO =>
+      activitiesDTO.activities.map(activity =>
         this.activityMapper.fromDTO({
           activity,
-          organization: organisationResponseDTO,
+          organization: activitiesDTO.organisationResponseDTO,
         })
       )
     );
@@ -104,7 +143,7 @@ export class ActivitiesServiceImpl implements ActivitiesService {
       await this.httpClient.get<OrganisationActivitiesResponse>(
         `/api/v1/organisation/get_activities?${queryParamsString}`
       );
-    console.log("Get organisation activities", activityDTOS)
+    console.log('Get organisation activities', activityDTOS);
     return activityDTOS.map(activityDTO =>
       this.mapActivityDTOToActivity(activityDTO)
     );

@@ -2,7 +2,7 @@ import {
   Activity,
   ActivityDTO,
   CreateActivityRequest,
-  OrganisationDTO,
+  OrganisationResponseDTO,
 } from '../../types.ts';
 import {
   VolunteerActivitiesFiltersType,
@@ -22,7 +22,7 @@ export type ActivityMapper = {
     organization,
   }: {
     activity: ActivityDTO;
-    organization: OrganisationDTO;
+    organization: OrganisationResponseDTO;
   }): Activity;
 
   toDto(activity: CreateActivityRequest): IAddActivityRequestDTO;

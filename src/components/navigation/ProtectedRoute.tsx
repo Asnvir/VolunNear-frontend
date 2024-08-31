@@ -13,6 +13,10 @@ export const ProtectedRoute = ({roles = [], children}: ProtectedRouteProps) => {
   const userRole = useGetUserRole();
   const location = useLocation();
 
+  console.log(
+    `isLoggedIn: ${isLoggedIn}, userRole: ${userRole}, location: ${location}`
+  );
+
   if (!isLoggedIn) {
     // Redirect to login page if the user is not authenticated
     return <Navigate to="/login" state={{from: location}} replace />;

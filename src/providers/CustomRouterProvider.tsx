@@ -100,7 +100,7 @@ export const CustomRouterProvider = () => {
         {
           path: 'volunteer/profile',
           element: (
-            <ProtectedRoute>
+            <ProtectedRoute roles={[ROLE_ORGANISATION, ROLE_VOLUNTEER]}>
               <VolunteerProfileSettings />
             </ProtectedRoute>
           ),
