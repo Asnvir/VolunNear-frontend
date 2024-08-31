@@ -2,4 +2,5 @@ import {VolunteerActivitiesFiltersType} from '../../../api/services/activities/s
 
 export type UseGetActivitiesProps = {
   filters: VolunteerActivitiesFiltersType;
+  size: number;
 };

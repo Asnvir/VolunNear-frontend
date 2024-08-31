@@ -5,6 +5,8 @@ import {useState} from 'react';
 import {VolunteerActivitiesFiltersType} from '../api/services/activities/service/types.ts';
 import {useGetVolunteerActivities} from '../hooks/activities/useGetVolunteerActivities/useGetVolunteerActivities.ts';
 import {VolunteerActivitiesFilterFormWrapper} from '../components/activities/filter/VolunteerActivitiesFilterFormWrapper.tsx';
+import {DEFAULT_ACTIVITIES_PAGINATION_SIZE} from '../utils/constants/defaultActivitiesPagingValues.ts';
+import {LoadMoreButton} from '../components/activities/activityDetails/LoadMoreButton.tsx';
 
 const emptyFilters: VolunteerActivitiesFiltersType = {
   title: '',
@@ -23,17 +25,32 @@ export const AllActivities = () => {
     setFilters(filters);
   };
 
-  const {data: activities = []} = useGetVolunteerActivities({filters});
+  const {
+    data: activities,
+    fetchNextPage,
+    hasNextPage,
+    isFetchingNextPage,
+  } = useGetVolunteerActivities({
+    filters,
+    size: DEFAULT_ACTIVITIES_PAGINATION_SIZE,
+  });
 
   return (
     <>
       <VolunteerActivitiesFilterFormWrapper
         onChangeFilters={handleFiltersChange}
       />
+
       <Box w="full">
         <ActivitiesMapComponent activities={activities} />
       </Box>
       <ActivitiesList activities={activities} />
+
+      <LoadMoreButton
+        fetchNextPage={fetchNextPage}
+        hasNextPage={hasNextPage}
+        isFetchingNextPage={isFetchingNextPage}
+      />
     </>
   );
 };

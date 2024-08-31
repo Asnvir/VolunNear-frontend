@@ -50,22 +50,55 @@ export type ActivityDTO = {
   distance: number;
   coverImage: string;
   galleryImages: string[];
-  appUser?: AppUserDTO;
 };
 
-export type OrganisationDTO = {
+export type OrganisationResponseDTO = {
   id: string;
   nameOfOrganisation: string;
   country: string;
   city: string;
   address: string;
   avatarUrl?: string;
+  email: string;
+  username: string;
+  rating: number;
 };
 
-export type ActivitiesResponse = {
+export type ActivitiesDTO = {
   activities: ActivityDTO[];
-  organisationResponseDTO: OrganisationDTO;
+  organisationResponseDTO: OrganisationResponseDTO;
 }[];
+
+export type PageActivitiesDTO = {
+  totalElements: number;
+  totalPages: number;
+  size: number;
+  content: ActivitiesDTO;
+  number: number;
+  sort: {
+    empty: boolean;
+    sorted: boolean;
+    unsorted: boolean;
+  };
+  pageable: {
+    offset: number;
+    sort: {
+      empty: boolean;
+      sorted: boolean;
+      unsorted: boolean;
+    };
+    pageNumber: number;
+    pageSize: number;
+    paged: boolean;
+    unpaged: boolean;
+  };
+  numberOfElements: number;
+  first: boolean;
+  last: boolean;
+  empty: boolean;
+};
+
+export type ActivitiesResponse = PageActivitiesDTO;
 
 export type OrganisationActivitiesResponse = ActivityDTO[];
 
